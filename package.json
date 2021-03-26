@@ -28,7 +28,7 @@
     "@proc7ts/fun-events": "^10.4.0"
   },
   "dependencies": {
-    "@frontmeans/namespace-aliaser": "workspace:^2.3.0",
+    "@frontmeans/namespace-aliaser": "^2.3.0",
     "@proc7ts/primitives": "^2.0.0",
     "@proc7ts/supply": "^1.0.0"
   },
