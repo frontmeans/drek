@@ -8,7 +8,7 @@ import typescript from 'typescript';
 
 export default {
   input: {
-    'dom-events': './src/index.ts',
+    drek: './src/index.ts',
   },
   plugins: [
     commonjs(),
