@@ -1,72 +1,67 @@
 import type { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import type { RenderScheduler } from '@frontmeans/render-scheduler';
-import { DrekContext$createForDocument, DrekContext$Holder, DrekContext__symbol } from './context.impl';
+import { DrekContext$Holder, DrekContext$ofDocument, DrekContext__symbol } from './context.impl';
+import { isDocumentFragmentNode } from './misc';
+import { DrekContentStatus, DrekPlacement } from './target';
 
 /**
  * Document rendering context.
+ *
+ * @typeParam TStatus - A type of the tuple containing a context content status as its first element.
  */
-export interface DrekContext {
+export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekContentStatus]>
+    extends DrekPlacement<TStatus> {
+
+  /**
+   * Obtains a rendering context of the given node.
+   *
+   * The rendering context is provided to the node by the closest {@link DrekFragment rendering fragment}. If the node
+   * does not belong to any fragment, then the context is the one of the document.
+   *
+   * @param node - Target node.
+   *
+   * @returns Document rendering context with respect to the given defaults.
+   */
+  static of(node: Node): DrekContext {
+    for (;;) {
+
+      const root = node.getRootNode({ composed: true });
+
+      if (root === node) {
+        if (isDocumentFragmentNode(node)) {
+
+          const { [DrekContext__symbol]: fragmentCtx }: DrekContext$Holder<DocumentFragment> = node;
+
+          if (fragmentCtx) {
+            return fragmentCtx;
+          }
+        }
+
+        return DrekContext$ofDocument(node.ownerDocument || (node as Document));
+      }
+
+      node = root;
+    }
+  }
+
+  /**
+   * The window this context belongs to.
+   */
+  abstract readonly window: Window;
+
+  /**
+   * The document this context belongs to.
+   */
+  abstract readonly document: Document;
 
   /**
    * Namespace aliaser to use.
    */
-  readonly nsAlias: NamespaceAliaser;
+  abstract readonly nsAlias: NamespaceAliaser;
 
   /**
    * Render scheduler to use.
    */
-  readonly scheduler: RenderScheduler;
+  abstract readonly scheduler: RenderScheduler;
 
 }
-
-export namespace DrekContext {
-
-  /**
-   * Document rendering defaults.
-   *
-   * Passed to {@link of} to specify default rendering context values.
-   */
-  export interface Defaults {
-
-    /**
-     * Namespace aliaser to use by default.
-     */
-    readonly nsAlias?: NamespaceAliaser;
-
-    /**
-     * Render scheduler to use by default.
-     */
-    readonly scheduler?: RenderScheduler;
-
-  }
-
-}
-
-export const DrekContext = {
-
-  /**
-   * Obtains a rendering context applicable to the given node.
-   *
-   * @param node - Target node.
-   * @param defaults - Rendering defaults.
-   *
-   * @returns Document rendering context with respect to the given defaults.
-   */
-  of(this: void, node: Node, defaults?: DrekContext.Defaults): DrekContext {
-
-    let holder: DrekContext$Holder<Document> | null = node.ownerDocument;
-
-    if (!holder) {
-      holder = node as DrekContext$Holder<Document>;
-    }
-
-    const getContext: (
-        this: void,
-        defaults?: DrekContext.Defaults,
-    ) => DrekContext = holder[DrekContext__symbol]
-        || (holder[DrekContext__symbol] = DrekContext$createForDocument(holder));
-
-    return getContext(defaults);
-  },
-
-};

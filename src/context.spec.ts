@@ -1,4 +1,3 @@
-import { NamespaceAliaser, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, setRenderScheduler } from '@frontmeans/render-scheduler';
 import { DrekContext } from './context';
 import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
@@ -14,11 +13,13 @@ describe('DrekContext', () => {
   });
 
   describe('of', () => {
-    it('obtains rendering context from document', () => {
-      expect(DrekContext.of(doc)).toEqual({
-        nsAlias: expect.any(Function),
-        scheduler: expect.any(Function),
-      });
+    it('obtains a rendering context of the document', () => {
+
+      const context = DrekContext.of(doc);
+
+      expect(context).toBeInstanceOf(DrekContext);
+      expect(context.window).toBe(window);
+      expect(context.document).toBe(doc);
     });
     it('caches rendering context in document', () => {
       expect(DrekContext.of(doc)).toBe(DrekContext.of(doc));
@@ -28,36 +29,12 @@ describe('DrekContext', () => {
     });
   });
 
-  describe('nsAlias', () => {
-    it('respects default ns aliaser defaults', () => {
-
-      const fallbackCtx = DrekContext.of(element);
-      const nsAliaser = newNamespaceAliaser();
-      const nsAlias: NamespaceAliaser = options => nsAliaser(options);
-
-      expect(DrekContext.of(element, { nsAlias })).toEqual({
-        nsAlias,
-        scheduler: fallbackCtx.scheduler,
-      });
-    });
-  });
-
   describe('scheduler', () => {
     afterEach(() => {
       delete (document as DrekContext$Holder<Document>)[DrekContext__symbol];
       setRenderScheduler();
     });
 
-    it('respects default scheduler', () => {
-
-      const fallbackCtx = DrekContext.of(element);
-      const scheduler = newManualRenderScheduler();
-
-      expect(DrekContext.of(element, { scheduler })).toEqual({
-        nsAlias: fallbackCtx.nsAlias,
-        scheduler,
-      });
-    });
     it('specifies schedule window', () => {
 
       const scheduler = jest.fn(newManualRenderScheduler());
