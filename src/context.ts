@@ -2,7 +2,7 @@ import type { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import type { RenderScheduler } from '@frontmeans/render-scheduler';
 import { newRenderSchedule, RenderSchedule, RenderScheduleOptions } from '@frontmeans/render-scheduler';
-import { AfterEvent, afterThe } from '@proc7ts/fun-events';
+import { AfterEvent, afterThe, OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
 import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
 import { isDocumentFragmentNode } from './misc';
@@ -79,6 +79,19 @@ export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekCon
    * Render scheduler to use.
    */
   abstract readonly scheduler: RenderScheduler;
+
+  /**
+   * An `OnEvent` sender of a settlement event.
+   *
+   * Such event can be sent by {@link DrekFragment.settle rendered fragment}.
+   *
+   * The same as {@link whenConnected} by default.
+   *
+   * Cuts off the event supply after sending the first event.
+   */
+  get whenSettled(): OnEvent<TStatus> {
+    return this.whenConnected;
+  }
 
   /**
    * Creates a rendering context based on this one.

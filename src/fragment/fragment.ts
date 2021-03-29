@@ -1,6 +1,6 @@
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
-import { AfterEvent } from '@proc7ts/fun-events';
+import { AfterEvent, OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
 import { DrekTarget } from '../target';
@@ -48,7 +48,7 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    *
    * After the fragment is {@link render rendered} switches to the {@link target} context's one.
    */
-  get scheduler(): DrekFragmentRenderScheduler {
+  get scheduler(): DrekFragmentRenderScheduler<TStatus> {
     return this[DrekFragment$Impl__symbol].scheduler;
   }
 
@@ -57,6 +57,17 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    */
   get readStatus(): AfterEvent<DrekFragment.Status<TStatus>> {
     return this[DrekFragment$Impl__symbol].readStatus;
+  }
+
+  /**
+   * An `OnEvent` sender of a settlement event.
+   *
+   * This event is sent each time the {@link settle} method called and when the fragment is {@link render rendered}.
+   *
+   * After the fragment is {@link render rendered}, this is the same as {@link whenConnected}.
+   */
+  get whenSettled(): OnEvent<DrekFragment.Status<TStatus>> {
+    return this[DrekFragment$Impl__symbol].whenSettled();
   }
 
   /**
@@ -76,7 +87,24 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    */
   constructor(target: DrekTarget<TStatus>, options: DrekFragment.Options = {}) {
     super();
-    this[DrekFragment$Impl__symbol] = DrekFragment$Impl.attach(this, target, options);
+
+    const impl = this[DrekFragment$Impl__symbol] = DrekFragment$Impl.attach(this, target, options);
+
+    impl.init();
+  }
+
+  /**
+   * Settles previously rendered content.
+   *
+   * A {@link whenSettled} event sender notifies its receivers once settled.
+   *
+   * Has no effect after the fragment is {@link isRendered rendered}.
+   *
+   * @returns `this` instance.
+   */
+  settle(): this {
+    this[DrekFragment$Impl__symbol].settle();
+    return this;
   }
 
   /**
@@ -85,7 +113,7 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    *
    * Once rendered the fragment can no longer be used to render anything.
    *
-   * @returns A result of content {@link DrekTarget.placeContent placement}.
+   * @returns `this` instance as a result of content {@link DrekTarget.placeContent placement}.
    */
   render(): this {
     this[DrekFragment$Impl__symbol].render();

@@ -102,19 +102,6 @@ describe('DrekContext', () => {
     });
   });
 
-  describe('whenConnected', () => {
-
-    let context: DrekContext;
-
-    beforeEach(() => {
-      context = DrekContext.of(doc);
-    });
-
-    it('always reports connected status', async () => {
-      expect(await context.whenConnected).toEqual({ connected: true });
-    });
-  });
-
   describe('onceConnected', () => {
 
     let context: DrekContext;
@@ -135,6 +122,32 @@ describe('DrekContext', () => {
 
       expect(supply.isOff).toBe(false);
       supply.off();
+    });
+  });
+
+  describe('whenConnected', () => {
+
+    let context: DrekContext;
+
+    beforeEach(() => {
+      context = DrekContext.of(doc);
+    });
+
+    it('always reports connected status', async () => {
+      expect(await context.whenConnected).toEqual({ connected: true });
+    });
+  });
+
+  describe('whenSettled', () => {
+
+    let context: DrekContext;
+
+    beforeEach(() => {
+      context = DrekContext.of(doc);
+    });
+
+    it('is the same as `whenConnected`', () => {
+      expect(context.whenSettled).toBe(context.whenConnected);
     });
   });
 
