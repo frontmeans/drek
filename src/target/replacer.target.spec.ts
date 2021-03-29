@@ -1,22 +1,24 @@
 import { DrekContext } from '../context';
-import { drekAppender } from './appender.target';
+import { drekReplacer } from './replacer.target';
 
-describe('drekAppender', () => {
+describe('drekReplacer', () => {
   it('appends node to parent target', () => {
 
     const parent = document.createElement('div');
-    const target = drekAppender(parent);
+    const initial = parent.appendChild(document.createElement('span'));
+    const target = drekReplacer(parent);
     const node = document.createElement('test');
 
     expect(target.context).toBe(DrekContext.of(parent));
     expect(target.placeContent(node)).toBe(target.context);
     expect(parent.children).toContain(node);
+    expect(parent.children).not.toContain(initial);
   });
   it('uses explicit context', () => {
 
     const context: DrekContext = {} as any;
     const parent = document.createElement('div');
-    const target = drekAppender(parent, context);
+    const target = drekReplacer(parent, context);
     const node = document.createElement('test');
 
     expect(target.context).toBe(context);
