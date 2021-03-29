@@ -24,7 +24,9 @@ export interface DrekFragmentRenderExecution extends RenderExecution {
   readonly fragment: DrekFragment;
 
   /**
-   * The content of this fragment.
+   * The content of the rendered fragment.
+   *
+   * The content update has no effect after the fragment is {@link DrekFragment.isRendered rendered}.
    */
   readonly content: DocumentFragment;
 

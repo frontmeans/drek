@@ -22,10 +22,13 @@ export interface DrekTarget<TStatus extends [DrekContentStatus] = [DrekContentSt
    * It is up to the implementation to decide how the content is placed. E.g. some implementations append the content,
    * while the others replace it.
    *
-   * @param content - Rendered DOM node(s) to place.
+   * It is expected that this operation is performed within a render scheduler the user chooses, probably the one of
+   * rendering {@link context}.
+   *
+   * @param content - Rendered DOM node to place.
    *
    * @returns Rendered content placement status.
    */
-  placeContent(...content: [Node, ...Node[]]): DrekPlacement<TStatus>
+  placeContent(content: Node): DrekPlacement<TStatus>
 
 }

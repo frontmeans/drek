@@ -42,6 +42,11 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
     return this[DrekFragment$Impl__symbol].nsAlias;
   }
 
+  /**
+   * A render scheduler to use to build the fragment contents.
+   *
+   * After the fragment is {@link render rendered} switches to the {@link target} context's one.
+   */
   get scheduler(): DrekFragmentRenderScheduler {
     return this[DrekFragment$Impl__symbol].scheduler;
   }
@@ -54,10 +59,19 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
   }
 
   /**
+   * Whether this fragment is rendered already.
+   *
+   * This flag is set immediately on {@link render} call.
+   */
+  get isRendered(): boolean {
+    return this[DrekFragment$Impl__symbol].isRendered;
+  }
+
+  /**
    * Construct rendered fragment.
    *
    * @param target - Rendering target to place the
-   * @param options
+   * @param options - Fragment rendering options.
    */
   constructor(target: DrekTarget<TStatus>, options: DrekFragment.Options = {}) {
     super();
@@ -85,13 +99,13 @@ export namespace DrekFragment {
    * A status of rendered fragment content.
    */
   export type Status<TStatus extends [DrekContentStatus]> =
-      | [InitialStatus]
+      | [OwnStatus]
       | TStatus;
 
   /**
    * Initial rendered fragment content status.
    */
-  export interface InitialStatus extends DrekContentStatus {
+  export interface OwnStatus extends DrekContentStatus {
 
     readonly connected: false;
 

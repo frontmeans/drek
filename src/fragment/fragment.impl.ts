@@ -28,10 +28,12 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
       {
         nsAlias = target.context.nsAlias,
         scheduler = queuedRenderScheduler,
-        content = target.context.document.createDocumentFragment(),
+        content,
       }: DrekFragment$Options = {},
-      ): DrekFragment$Impl<TStatus> {
-    if (content[DrekContext__symbol]) {
+  ): DrekFragment$Impl<TStatus> {
+    if (!content) {
+      content = target.context.document.createDocumentFragment();
+    } else if (content[DrekContext__symbol]) {
       throw new TypeError('Fragment already rendered');
     }
 
@@ -40,23 +42,24 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     return new DrekFragment$Impl(
         fragment,
         target,
+        content,
         nsAlias,
         scheduler,
-        content,
     );
   }
 
-  scheduler: DrekFragmentRenderScheduler;
+  readonly scheduler: DrekFragmentRenderScheduler;
+  isRendered = false;
   readonly readStatus: AfterEvent<DrekFragment.Status<TStatus>>;
   private readonly _status = trackValue<DrekFragment.Status<TStatus>>([{ connected: false }]);
-  private readonly _scheduler: RenderScheduler;
+  private _scheduler: RenderScheduler;
 
   private constructor(
       readonly fragment: DrekFragment,
       readonly target: DrekTarget<TStatus>,
+      readonly content: DrekContext$Holder<DocumentFragment>,
       readonly nsAlias: NamespaceAliaser,
       scheduler: RenderScheduler,
-      readonly content: DrekContext$Holder<DocumentFragment>,
   ) {
     this.content = content;
     this.readStatus = this._status.read.do(
@@ -67,19 +70,23 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
   }
 
   render(): void {
-
-    const schedule = this.scheduler();
-
     this.render = DrekFragment$alreadyRendered;
-    this.scheduler = DrekFragment$alreadyRendered;
+
+    const schedule = this._createSchedule();
+
+    this.isRendered = true;
+    this._scheduler = this.target.context.scheduler;
 
     schedule(context => {
       // Await for all scheduled shots to render.
       context.postpone(() => {
         // Place the rendered content.
-        const placement = this.target.placeContent(this.content);
+        this.target.context.scheduler()(() => {
+          // The content is placed within target's scheduler.
+          const placement = this.target.placeContent(this.content);
 
-        this._status.by(placement, (...status) => afterThe(status));
+          this._status.by(placement, (...status) => afterThe(status));
+        });
       });
     });
   }
@@ -110,12 +117,12 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
 
 }
 
-function DrekFragment$alreadyRendered(): never {
-  throw new TypeError('Fragment already rendered');
-}
-
 interface DrekFragment$Options extends DrekFragment.Options {
 
   readonly content?: DrekContext$Holder<DocumentFragment>;
 
+}
+
+function DrekFragment$alreadyRendered(): never {
+  throw new TypeError('Fragment already rendered');
 }
