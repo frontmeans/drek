@@ -1,5 +1,5 @@
 import { newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
-import { immediateRenderScheduler, newManualRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
+import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
@@ -20,7 +20,7 @@ describe('DrekFragment', () => {
   let fragment: DrekFragment;
 
   beforeEach(() => {
-    targetScheduler = jest.fn(immediateRenderScheduler);
+    targetScheduler = jest.fn(queuedRenderScheduler);
     targetContext = DrekContext.of(doc).with({
       scheduler: targetScheduler,
     });
@@ -187,6 +187,42 @@ describe('DrekFragment', () => {
 
       fragment.render();
       expect(status).toEqual({ connected: true });
+    });
+  });
+
+  describe('whenSettled', () => {
+    it('sends a status one time when `settle()` called', () => {
+
+      let settled1: DrekContentStatus | undefined;
+      const supply1 = fragment.whenSettled(s => settled1 = s);
+
+      expect(settled1).toBeUndefined();
+
+      fragment.settle();
+      expect(settled1).toEqual({ connected: false });
+      expect(supply1.isOff).toBe(true);
+
+      let settled2: DrekContentStatus | undefined;
+      const supply2 = fragment.whenSettled(s => settled2 = s);
+      expect(settled2).toBeUndefined();
+
+      fragment.settle();
+      expect(settled2).toEqual({ connected: false });
+      expect(supply2.isOff).toBe(true);
+    });
+    it('sends a status one time when rendered', () => {
+
+      let settled: DrekContentStatus | undefined;
+      const supply = fragment.whenSettled(s => settled = s);
+
+      fragment.render();
+      expect(settled).toEqual({ connected: true });
+      expect(supply.isOff).toBe(true);
+    });
+    it('is the same as `whenConnected` once rendered', () => {
+      fragment.render();
+
+      expect(fragment.whenSettled).toBe(fragment.whenConnected);
     });
   });
 

@@ -6,7 +6,8 @@ import {
   RenderScheduleOptions,
   RenderScheduler,
 } from '@frontmeans/render-scheduler';
-import { AfterEvent, afterThe, trackValue, translateAfter_ } from '@proc7ts/fun-events';
+import { AfterEvent, afterThe, EventEmitter, onceOn, OnEvent, trackValue, translateAfter_ } from '@proc7ts/fun-events';
+import { noop, valueProvider } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext$Holder, DrekContext__symbol } from '../context.impl';
 import { DrekTarget } from '../target';
@@ -24,7 +25,7 @@ export const DrekFragment$Impl__symbol = (/*#__PURE__*/ Symbol('DrekFragment.imp
 export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
 
   static attach<TStatus extends [DrekContentStatus]>(
-      fragment: DrekFragment,
+      fragment: DrekFragment<TStatus>,
       target: DrekTarget<TStatus>,
       {
         nsAlias = target.context.nsAlias,
@@ -49,14 +50,15 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     );
   }
 
-  readonly scheduler: DrekFragmentRenderScheduler;
+  readonly scheduler: DrekFragmentRenderScheduler<TStatus>;
   isRendered = false;
   readonly readStatus: AfterEvent<DrekFragment.Status<TStatus>>;
   private readonly _status = trackValue<DrekFragment.Status<TStatus>>([{ connected: false }]);
   private _scheduler: RenderScheduler;
+  private readonly _settled = new EventEmitter<DrekFragment.Status<TStatus>>();
 
   private constructor(
-      readonly fragment: DrekFragment,
+      readonly fragment: DrekFragment<TStatus>,
       readonly target: DrekTarget<TStatus>,
       readonly content: DrekContext$Holder<DocumentFragment>,
       readonly nsAlias: NamespaceAliaser,
@@ -70,8 +72,37 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     this.scheduler = this._createSchedule.bind(this);
   }
 
+  init(): void {
+    this.fragment.whenConnected((...status) => {
+      // `whenSettled` is the same as `whenConnected` now.
+      this.whenSettled = valueProvider(this.fragment.whenConnected);
+      // Send a settlement event one last time.
+      this._settled.send(...status);
+    });
+  }
+
+  whenSettled(): OnEvent<DrekFragment.Status<TStatus>> {
+    return (this.whenSettled = valueProvider(this._settled.on.do(
+        onceOn,
+    )))();
+  }
+
+  settle(): void {
+
+    const schedule = this._createSchedule();
+
+    return (this.settle = () => {
+      schedule(context => {
+        context.postpone(() => {
+          this._settled.send(...this._status.it);
+        });
+      });
+    })();
+  }
+
   render(): void {
     this.render = DrekFragment$alreadyRendered;
+    this.settle = noop;
 
     const schedule = this._createSchedule();
 
@@ -81,11 +112,12 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     schedule(context => {
       // Await for all scheduled shots to render.
       context.postpone(() => {
-        // Place the rendered content.
         this.target.context.scheduler()(() => {
-          // The content is placed within target's scheduler.
+
+          // Place the rendered content within target's scheduler.
           const placement = this.target.placeContent(this.content);
 
+          // Derive the status from the target context.
           this._status.by(placement, (...status) => afterThe(status));
         });
       });
@@ -94,7 +126,7 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
 
   private _createSchedule(
       initialOptions: RenderScheduleOptions = {},
-  ): RenderSchedule<DrekFragmentRenderExecution> {
+  ): RenderSchedule<DrekFragmentRenderExecution<TStatus>> {
 
     const options: RenderScheduleOptions = {
       ...initialOptions,
@@ -105,7 +137,7 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     return shot => schedule(execution => shot(this._createExecution(execution)));
   }
 
-  private _createExecution(execution: RenderExecution): DrekFragmentRenderExecution {
+  private _createExecution(execution: RenderExecution): DrekFragmentRenderExecution<TStatus> {
     return {
       ...execution,
       fragment: this.fragment,

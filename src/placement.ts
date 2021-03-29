@@ -39,7 +39,7 @@ export abstract class DrekPlacement<TStatus extends [DrekContentStatus] = [DrekC
    * The registered receiver is called when placed content is {@link DrekContentStatus.connected connected}.
    * If connected already the receiver is called immediately.
    */
-  get onceConnected(): OnEvent<[DrekContentStatus]> {
+  get onceConnected(): OnEvent<TStatus> {
     return this[DrekPlacement$Status__symbol].onceConnected();
   }
 
@@ -51,7 +51,7 @@ export abstract class DrekPlacement<TStatus extends [DrekContentStatus] = [DrekC
    *
    * In contrast to {@link onceConnected}, cuts off the event supply after sending the first event.
    */
-  get whenConnected(): OnEvent<[DrekContentStatus]> {
+  get whenConnected(): OnEvent<TStatus> {
     return this[DrekPlacement$Status__symbol].whenConnected();
   }
 
