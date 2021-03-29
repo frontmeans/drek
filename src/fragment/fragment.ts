@@ -1,8 +1,9 @@
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
 import { AfterEvent } from '@proc7ts/fun-events';
+import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
-import { DrekContentStatus, DrekTarget } from '../target';
+import { DrekTarget } from '../target';
 import { DrekFragmentRenderScheduler } from './fragment-scheduler';
 import { DrekFragment$Impl, DrekFragment$Impl__symbol } from './fragment.impl';
 

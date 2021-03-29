@@ -43,7 +43,7 @@ function DrekPlacement$once<TStatus extends [DrekContentStatus]>(
 
         const newValue = test(...status);
 
-        if (newValue && !value) {
+        if (newValue || value !== newValue) {
           value = newValue;
           receiver.receive(eventCtx, ...status);
         }

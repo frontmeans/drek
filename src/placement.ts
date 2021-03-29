@@ -52,7 +52,7 @@ export abstract class DrekPlacement<TStatus extends [DrekContentStatus] = [DrekC
    * In contrast to {@link onceConnected}, cuts off the event supply after sending the first event.
    */
   get whenConnected(): OnEvent<[DrekContentStatus]> {
-    return this[DrekPlacement$Status__symbol].onceConnected();
+    return this[DrekPlacement$Status__symbol].whenConnected();
   }
 
 }

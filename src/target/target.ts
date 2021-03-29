@@ -1,6 +1,6 @@
+import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
-import { DrekContentStatus } from './content-status';
-import { DrekPlacement } from './placement';
+import { DrekPlacement } from '../placement';
 
 /**
  * Rendering target.

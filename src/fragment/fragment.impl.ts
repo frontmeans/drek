@@ -7,8 +7,9 @@ import {
   RenderScheduler,
 } from '@frontmeans/render-scheduler';
 import { AfterEvent, afterThe, trackValue, translateAfter_ } from '@proc7ts/fun-events';
+import { DrekContentStatus } from '../content-status';
 import { DrekContext$Holder, DrekContext__symbol } from '../context.impl';
-import { DrekContentStatus, DrekTarget } from '../target';
+import { DrekTarget } from '../target';
 import { DrekFragment } from './fragment';
 import { DrekFragmentRenderExecution, DrekFragmentRenderScheduler } from './fragment-scheduler';
 
@@ -29,12 +30,12 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
         nsAlias = target.context.nsAlias,
         scheduler = queuedRenderScheduler,
         content,
-      }: DrekFragment$Options = {},
+      }: DrekFragment$Options,
   ): DrekFragment$Impl<TStatus> {
     if (!content) {
       content = target.context.document.createDocumentFragment();
     } else if (content[DrekContext__symbol]) {
-      throw new TypeError('Fragment already rendered');
+      throw new TypeError('Can not render content of another fragment');
     }
 
     content[DrekContext__symbol] = fragment;
