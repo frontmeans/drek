@@ -121,8 +121,10 @@ describe('DrekFragment', () => {
       fragment = new DrekFragment(target, { scheduler });
 
       const contentPromise = new Promise<DocumentFragment>(resolve => {
-        fragment.scheduler()(({ content }) => {
-          resolve(content);
+        fragment.scheduler()(exec => {
+          exec.postpone(({ content }) => {
+            resolve(content);
+          });
         });
       });
 

@@ -9,8 +9,10 @@ import {
 import { AfterEvent, afterThe, EventEmitter, onceOn, OnEvent, trackValue, translateAfter_ } from '@proc7ts/fun-events';
 import { noop, valueProvider } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
+import { DrekContext } from '../context';
 import { DrekContext$Holder, DrekContext__symbol } from '../context.impl';
 import { DrekTarget } from '../target';
+import { UpdatableScheduler } from '../updatable-scheduler.impl';
 import { DrekFragment } from './fragment';
 import { DrekFragmentRenderExecution, DrekFragmentRenderScheduler } from './fragment-scheduler';
 
@@ -54,7 +56,7 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
   isRendered = false;
   readonly readStatus: AfterEvent<DrekFragment.Status<TStatus>>;
   private readonly _status = trackValue<DrekFragment.Status<TStatus>>([{ connected: false }]);
-  private _scheduler: RenderScheduler;
+  private readonly _scheduler: UpdatableScheduler;
   private readonly _settled = new EventEmitter<DrekFragment.Status<TStatus>>();
 
   private constructor(
@@ -68,7 +70,7 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     this.readStatus = this._status.read.do(
         translateAfter_((send, status) => send(...status)),
     );
-    this._scheduler = scheduler;
+    this._scheduler = new UpdatableScheduler(scheduler);
     this.scheduler = this._createSchedule.bind(this);
   }
 
@@ -87,8 +89,12 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     )))();
   }
 
+  lift(): DrekContext {
+    return this.fragment;
+  }
+
   settle(): void {
-    this._createSchedule()(context => {
+    this._scheduler.impl()(context => {
       context.postpone(() => {
         this._settled.send(...this._status.it);
       });
@@ -97,12 +103,13 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
 
   render(): void {
     this.render = DrekFragment$alreadyRendered;
+    this.lift = valueProvider(this.target.context);
     this.settle = noop;
 
-    const schedule = this._createSchedule();
+    const schedule = this._scheduler.impl();
 
     this.isRendered = true;
-    this._scheduler = this.target.context.scheduler;
+    this._scheduler.set(this.target.context.scheduler);
 
     schedule(context => {
       // Await for all scheduled shots to render.
@@ -121,13 +128,14 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
 
   private _createSchedule(
       initialOptions: RenderScheduleOptions = {},
+      scheduler: RenderScheduler = this._scheduler.scheduler,
   ): RenderSchedule<DrekFragmentRenderExecution<TStatus>> {
 
     const options: RenderScheduleOptions = {
       ...initialOptions,
       window: this.fragment.window,
     };
-    const schedule = this._scheduler(options);
+    const schedule = scheduler(options);
 
     return shot => schedule(execution => shot(this._createExecution(execution)));
   }
