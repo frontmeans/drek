@@ -17,7 +17,7 @@ describe('DrekContext', () => {
     it('can be specified', () => {
 
       const customNsAlias = jest.fn(newNamespaceAliaser());
-      const { nsAlias } = drekContextOf(doc, { nsAlias: customNsAlias });
+      const { nsAlias } = drekContextOf(doc).update({ nsAlias: customNsAlias });
 
       nsAlias(XHTML__NS);
 
@@ -28,7 +28,7 @@ describe('DrekContext', () => {
       const { nsAlias } = drekContextOf(doc);
       const customNsAlias = jest.fn(newNamespaceAliaser());
 
-      drekContextOf(doc, { nsAlias: customNsAlias });
+      drekContextOf(doc).update({ nsAlias: customNsAlias });
       nsAlias(XHTML__NS);
 
       expect(customNsAlias).toHaveBeenCalledWith(XHTML__NS);
@@ -56,7 +56,7 @@ describe('DrekContext', () => {
     it('can be specified', () => {
 
       const customScheduler = jest.fn(newManualRenderScheduler());
-      const { scheduler } = drekContextOf(doc, { scheduler: customScheduler });
+      const { scheduler } = drekContextOf(doc).update({ scheduler: customScheduler });
       const node = doc.createElement('span');
 
       scheduler({ node });
@@ -68,7 +68,7 @@ describe('DrekContext', () => {
       const { scheduler } = drekContextOf(doc);
       const customScheduler = jest.fn(newManualRenderScheduler());
 
-      drekContextOf(doc, { scheduler: customScheduler });
+      drekContextOf(doc).update({ scheduler: customScheduler });
 
       const node = doc.createElement('span');
 

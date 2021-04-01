@@ -11,33 +11,22 @@ import { DrekContext } from './context';
 import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
 import { UpdatableScheduler } from './updatable-scheduler.impl';
 
-const DrekContext$update__symbol = (/*#__PURE__*/ Symbol('DrekContext.update'));
-
 /**
  * @internal
  */
-export function DrekContext$ofDocument(
-    document: DrekContext$Holder<Document>,
-    update?: DrekContext.Update,
-): DrekContext {
+export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): DrekContext.Updatable {
 
   const existing = document[DrekContext__symbol] as DrekContext$OfDocument | undefined;
 
   if (existing) {
-    if (update) {
-      existing[DrekContext$update__symbol](update);
-    }
     return existing;
   }
 
-  const options = update || {};
-
-  let { nsAlias: nsAliasImpl = newNamespaceAliaser() } = options;
-  const { scheduler: initialScheduler = newRenderSchedule } = options;
+  let nsAliasImpl = newNamespaceAliaser();
+  const schedulerImpl = new UpdatableScheduler(newRenderSchedule);
 
   const view = document.defaultView || window;
   const nsAlias: NamespaceAliaser = ns => nsAliasImpl(ns);
-  const schedulerImpl = new UpdatableScheduler(initialScheduler);
   const scheduler = (
       options?: RenderScheduleOptions,
   ): RenderSchedule => schedulerImpl.scheduler({
@@ -46,7 +35,7 @@ export function DrekContext$ofDocument(
   });
   const readStatus = afterThe<[DrekContentStatus]>({ connected: true });
 
-  class DrekContext$OfDocument extends DrekContext {
+  class DrekContext$OfDocument extends DrekContext implements DrekContext.Updatable {
 
     get window(): Window {
       return view;
@@ -72,14 +61,15 @@ export function DrekContext$ofDocument(
       return this;
     }
 
-    [DrekContext$update__symbol](
+    update(
         {
           nsAlias = nsAliasImpl,
           scheduler = schedulerImpl.impl,
         }: DrekContext.Update,
-    ): void {
+    ): this {
       nsAliasImpl = nsAlias;
       schedulerImpl.set(scheduler);
+      return this;
     }
 
   }

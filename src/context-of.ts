@@ -9,14 +9,13 @@ import { isDocumentNode } from './misc';
 import { UpdatableScheduler } from './updatable-scheduler.impl';
 
 /**
- * Obtains and possibly updates a rendering context of the given document.
+ * Obtains a updatable a rendering context of the given document.
  *
  * @param document - Target document.
- * @param update - An update to target document context.
  *
- * @returns Target document rendering context updates applied.
+ * @returns Updatable document rendering context.
  */
-export function drekContextOf(document: Document, update?: DrekContext.Update): DrekContext;
+export function drekContextOf(document: Document): DrekContext.Updatable;
 
 /**
  * Obtains a rendering context of the given node.
@@ -32,23 +31,21 @@ export function drekContextOf(document: Document, update?: DrekContext.Update): 
  */
 export function drekContextOf(node: Node): DrekContext;
 
-export function drekContextOf(node: Node, update?: DrekContext.Update): DrekContext {
+export function drekContextOf(node: Node): DrekContext {
   for (;;) {
 
     const root = node.getRootNode({ composed: true });
 
     if (root === node) {
-      return DrekContext$ofRoot(node, update);
+      return DrekContext$ofRoot(node);
     }
 
     node = root;
   }
 }
 
-function DrekContext$ofRoot(root: DrekContext$Holder<Node>, update?: DrekContext.Update): DrekContext {
-  return isDocumentNode(root)
-      ? DrekContext$ofDocument(root, update)
-      : DrekContext$ofRootNode(root);
+function DrekContext$ofRoot(root: DrekContext$Holder<Node>): DrekContext {
+  return isDocumentNode(root) ? DrekContext$ofDocument(root) : DrekContext$ofRootNode(root);
 }
 
 function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
@@ -60,7 +57,9 @@ function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
   }
 
   const status = trackValue<DrekContentStatus>({ connected: false });
-  let derivedCtx = DrekContext$ofDocument(root.ownerDocument!); // Not a document, so `ownerDocument` is set.
+  let derivedCtx: DrekContext = DrekContext$ofDocument(
+      root.ownerDocument! /* Not a document, so `ownerDocument` is set */,
+  );
   const scheduler = new UpdatableScheduler(derivedCtx.scheduler);
   let lift = (ctx: DrekContext): DrekContext => {
 

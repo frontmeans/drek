@@ -64,6 +64,22 @@ export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekCon
 export namespace DrekContext {
 
   /**
+   * Updatable document rendering context.
+   */
+  export interface Updatable extends DrekContext {
+
+    /**
+     * Updates this context.
+     *
+     * @param update - An update to apply to this context.
+     *
+     * @returns `this` instance.
+     */
+    update(update?: Update): this;
+
+  }
+
+  /**
    * An update to rendering context.
    */
   export interface Update {

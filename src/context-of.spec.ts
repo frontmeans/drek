@@ -76,7 +76,7 @@ describe('drekContextOf', () => {
 
       beforeEach(() => {
         mockScheduler = jest.fn(immediateRenderScheduler);
-        drekContextOf(doc, { scheduler: mockScheduler });
+        drekContextOf(doc).update({ scheduler: mockScheduler });
       });
 
       it('is inherited from document context', () => {

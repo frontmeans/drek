@@ -31,7 +31,7 @@ describe('deriveDrekContext', () => {
 
     const scheduler = jest.fn(immediateRenderScheduler);
 
-    drekContextOf(doc, { scheduler });
+    drekContextOf(doc).update({ scheduler });
 
     const context = deriveDrekContext(base);
 
