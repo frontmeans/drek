@@ -1,6 +1,6 @@
 import type { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import type { RenderScheduler } from '@frontmeans/render-scheduler';
-import { AfterEvent, OnEvent } from '@proc7ts/fun-events';
+import { OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
 import { DrekPlacement } from './placement';
 
@@ -46,17 +46,6 @@ export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekCon
   }
 
   /**
-   * Creates a rendering context based on this one.
-   *
-   * @param update - Context update.
-   *
-   * @returns Updated rendering context.
-   */
-  with(update: DrekContext.Update = {}): DrekContext<TStatus> {
-    return DrekContext$with(this, update);
-  }
-
-  /**
    * Tries to lift this rendering context to enclosing one.
    *
    * This is only meaningful for context attached to disconnected DOM node by {@link drekContextOf} function.
@@ -95,56 +84,4 @@ export namespace DrekContext {
 
   }
 
-}
-
-function DrekContext$with<TStatus extends [DrekContentStatus] = [DrekContentStatus]>(
-    ancestor: DrekContext<TStatus>,
-    {
-      nsAlias = ancestor.nsAlias,
-      scheduler = ancestor.scheduler,
-    }: DrekContext.Update,
-): DrekContext<TStatus> {
-
-  let lift = (derived: DrekContext): DrekContext => {
-
-    const lifted = ancestor.lift();
-
-    if (lifted === ancestor) {
-      return derived;
-    }
-
-    lift = _derived => lifted;
-
-    return lifted;
-  };
-
-  class DrekContext$Derived extends DrekContext<TStatus> {
-
-    get window(): Window {
-      return ancestor.window;
-    }
-
-    get document(): Document {
-      return ancestor.document;
-    }
-
-    get nsAlias(): NamespaceAliaser {
-      return nsAlias;
-    }
-
-    get scheduler(): RenderScheduler {
-      return scheduler;
-    }
-
-    get readStatus(): AfterEvent<TStatus> {
-      return ancestor.readStatus;
-    }
-
-    lift(): DrekContext {
-      return lift(this);
-    }
-
-  }
-
-  return new DrekContext$Derived();
 }

@@ -4,6 +4,7 @@ import { noop } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
 import { drekContextOf } from '../context-of';
+import { deriveDrekContext } from '../derive-context';
 import { drekAppender, drekReplacer, DrekTarget } from '../target';
 import { DrekFragment } from './fragment';
 
@@ -22,9 +23,12 @@ describe('DrekFragment', () => {
 
   beforeEach(() => {
     targetScheduler = jest.fn(queuedRenderScheduler);
-    targetContext = drekContextOf(doc).with({
-      scheduler: targetScheduler,
-    });
+    targetContext = deriveDrekContext(
+        drekContextOf(doc),
+        {
+          scheduler: targetScheduler,
+        },
+    );
     target = drekReplacer(doc.body, targetContext);
     fragment = new DrekFragment(target);
   });

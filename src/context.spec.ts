@@ -126,38 +126,4 @@ describe('DrekContext', () => {
       expect(context.whenSettled).toBe(context.whenConnected);
     });
   });
-
-  describe('with', () => {
-
-    let ancestor: DrekContext;
-
-    beforeEach(() => {
-      ancestor = drekContextOf(doc);
-    });
-
-    it('updates namespace aliaser', () => {
-
-      const nsAlias = newNamespaceAliaser();
-      const derived = ancestor.with({ nsAlias });
-
-      expect(derived.nsAlias).toBe(nsAlias);
-    });
-    it('updates render scheduler', () => {
-
-      const scheduler = newManualRenderScheduler();
-      const derived = ancestor.with({ scheduler });
-
-      expect(derived.scheduler).toBe(scheduler);
-    });
-    it('derives everything else', () => {
-
-      const derived = ancestor.with();
-
-      expect(derived.window).toBe(ancestor.window);
-      expect(derived.document).toBe(ancestor.document);
-      expect(derived.nsAlias).toBe(ancestor.nsAlias);
-      expect(derived.scheduler).toBe(ancestor.scheduler);
-      expect(derived.readStatus).toBe(ancestor.readStatus);
-    });
-  });
 });
