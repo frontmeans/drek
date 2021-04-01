@@ -3,6 +3,7 @@ import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from
 import { noop } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
+import { drekContextOf } from '../context-of';
 import { drekAppender, drekReplacer, DrekTarget } from '../target';
 import { DrekFragment } from './fragment';
 
@@ -21,7 +22,7 @@ describe('DrekFragment', () => {
 
   beforeEach(() => {
     targetScheduler = jest.fn(queuedRenderScheduler);
-    targetContext = DrekContext.of(doc).with({
+    targetContext = drekContextOf(doc).with({
       scheduler: targetScheduler,
     });
     target = drekReplacer(doc.body, targetContext);
@@ -34,7 +35,7 @@ describe('DrekFragment', () => {
       fragment.scheduler()(({ content }) => resolve(content));
     });
 
-    expect(DrekContext.of(content)).toBe(fragment);
+    expect(drekContextOf(content)).toBe(fragment);
   });
 
   it('used as rendering context for nested elements', async () => {
@@ -44,7 +45,7 @@ describe('DrekFragment', () => {
 
         const span = content.appendChild(document.createElement('span'));
 
-        resolve(DrekContext.of(span));
+        resolve(drekContextOf(span));
       });
     });
 
@@ -65,7 +66,7 @@ describe('DrekFragment', () => {
       });
 
       expect(content).toBe(customContent);
-      expect(DrekContext.of(customContent)).toBe(fragment);
+      expect(drekContextOf(customContent)).toBe(fragment);
     });
     it('can not be reused by another fragment', async () => {
 

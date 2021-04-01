@@ -1,4 +1,5 @@
 import { DrekContext } from '../context';
+import { drekContextOf } from '../context-of';
 import { drekReplacer } from './replacer.target';
 
 describe('drekReplacer', () => {
@@ -9,7 +10,7 @@ describe('drekReplacer', () => {
     const target = drekReplacer(parent);
     const node = document.createElement('test');
 
-    expect(target.context).toBe(DrekContext.of(parent));
+    expect(target.context).toBe(drekContextOf(parent));
     expect(target.placeContent(node)).toBe(target.context);
     expect(parent.children).toContain(node);
     expect(parent.children).not.toContain(initial);
