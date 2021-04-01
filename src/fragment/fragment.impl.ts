@@ -88,16 +88,11 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
   }
 
   settle(): void {
-
-    const schedule = this._createSchedule();
-
-    return (this.settle = () => {
-      schedule(context => {
-        context.postpone(() => {
-          this._settled.send(...this._status.it);
-        });
+    this._createSchedule()(context => {
+      context.postpone(() => {
+        this._settled.send(...this._status.it);
       });
-    })();
+    });
   }
 
   render(): void {
