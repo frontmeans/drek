@@ -1,4 +1,4 @@
-import { newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
+import { NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { immediateRenderScheduler } from '@frontmeans/render-scheduler';
 import { DrekContext } from './context';
 import { drekContextOf } from './context-of';
@@ -20,12 +20,26 @@ describe('deriveDrekContext', () => {
     base = drekContextOf(element);
   });
 
+  it('derives namespace aliaser', () => {
+
+    const nsAlias = jest.fn(newNamespaceAliaser());
+
+    drekContextOf(doc).update({ nsAlias });
+
+    const context = deriveDrekContext(base);
+    const ns = new NamespaceDef('uri:test:ns');
+
+    context.nsAlias(ns);
+    expect(nsAlias).toHaveBeenCalledWith(ns);
+  });
   it('updates namespace aliaser', () => {
 
-    const nsAlias = newNamespaceAliaser();
+    const nsAlias = jest.fn(newNamespaceAliaser());
     const derived = deriveDrekContext(base, { nsAlias });
+    const ns = new NamespaceDef('http://test');
 
-    expect(derived.nsAlias).toBe(nsAlias);
+    derived.nsAlias(ns);
+    expect(nsAlias).toHaveBeenCalledWith(ns);
   });
   it('derives render scheduler', () => {
 
@@ -52,7 +66,6 @@ describe('deriveDrekContext', () => {
 
     expect(derived.window).toBe(base.window);
     expect(derived.document).toBe(base.document);
-    expect(derived.nsAlias).toBe(base.nsAlias);
     expect(derived.readStatus).toBe(base.readStatus);
   });
 

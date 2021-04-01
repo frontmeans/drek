@@ -1,4 +1,4 @@
-import { newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
+import { NamespaceAliaser, NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
@@ -17,15 +17,18 @@ describe('DrekFragment', () => {
   });
 
   let target: DrekTarget;
+  let targetNsAlias: NamespaceAliaser;
   let targetScheduler: RenderScheduler;
   let targetContext: DrekContext;
   let fragment: DrekFragment;
 
   beforeEach(() => {
+    targetNsAlias = jest.fn(newNamespaceAliaser());
     targetScheduler = jest.fn(queuedRenderScheduler);
     targetContext = deriveDrekContext(
         drekContextOf(doc),
         {
+          nsAlias: targetNsAlias,
           scheduler: targetScheduler,
         },
     );
@@ -104,16 +107,23 @@ describe('DrekFragment', () => {
 
   describe('nsAlias', () => {
     it('is derived from target by default', () => {
-      expect(fragment.nsAlias).toBe(target.context.nsAlias);
+
+      const ns = new NamespaceDef('uri:test:ns');
+
+      fragment.nsAlias(ns);
+      expect(targetNsAlias).toHaveBeenCalledWith(ns);
     });
     it('can be specified explicitly', () => {
 
-      const nsAlias = newNamespaceAliaser();
+      const nsAlias = jest.fn(newNamespaceAliaser());
 
       fragment = new DrekFragment(target, { nsAlias });
 
-      expect(fragment.nsAlias).toBe(nsAlias);
-      expect(fragment.nsAlias).not.toBe(target.context.nsAlias);
+      const ns = new NamespaceDef('uri:test:ns');
+
+      fragment.nsAlias(ns);
+      expect(nsAlias).toHaveBeenCalledWith(ns);
+      expect(targetNsAlias).not.toHaveBeenCalled();
     });
   });
 

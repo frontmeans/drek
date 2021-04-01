@@ -3,7 +3,7 @@ import { RenderScheduler } from '@frontmeans/render-scheduler';
 import { AfterEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
 import { DrekContext } from './context';
-import { UpdatableScheduler } from './updatable-scheduler.impl';
+import { DrekContext$State } from './context.impl';
 
 /**
  * Creates a rendering context based on another one.
@@ -20,11 +20,14 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
 ): DrekContext<TStatus> {
 
   const {
-    nsAlias = base.nsAlias,
+    nsAlias: initialNsAlias = base.nsAlias,
     scheduler: initialScheduler = base.scheduler,
   } = update;
 
-  const scheduler = new UpdatableScheduler(initialScheduler);
+  const state = new DrekContext$State({
+    nsAlias: initialNsAlias,
+    scheduler: initialScheduler,
+  });
   let lift = (derived: DrekContext): DrekContext => {
 
     const lifted = base.lift();
@@ -33,7 +36,7 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
       return derived;
     }
 
-    scheduler.set(lifted.scheduler);
+    state.set(lifted);
     lift = _derived => lifted;
 
     return lifted;
@@ -50,11 +53,11 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
     }
 
     get nsAlias(): NamespaceAliaser {
-      return nsAlias;
+      return state.nsAlias;
     }
 
     get scheduler(): RenderScheduler {
-      return scheduler.scheduler;
+      return state.scheduler;
     }
 
     get readStatus(): AfterEvent<TStatus> {

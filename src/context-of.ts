@@ -3,10 +3,9 @@ import { RenderScheduler } from '@frontmeans/render-scheduler';
 import { AfterEvent, trackValue } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
 import { DrekContext } from './context';
-import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
+import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from './context.impl';
 import { DrekContext$ofDocument } from './context.of-document.impl';
 import { isDocumentNode } from './misc';
-import { UpdatableScheduler } from './updatable-scheduler.impl';
 
 /**
  * Obtains a updatable a rendering context of the given document.
@@ -60,7 +59,7 @@ function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
   let derivedCtx: DrekContext = DrekContext$ofDocument(
       root.ownerDocument! /* Not a document, so `ownerDocument` is set */,
   );
-  const scheduler = new UpdatableScheduler(derivedCtx.scheduler);
+  const scheduler = new DrekContext$State(derivedCtx);
   let lift = (ctx: DrekContext): DrekContext => {
 
     const newRoot = root.getRootNode({ composed: true });
@@ -72,7 +71,7 @@ function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
     const lifted = DrekContext$ofRoot(newRoot);
 
     root[DrekContext__symbol] = undefined;
-    scheduler.set(lifted.scheduler);
+    scheduler.set(lifted);
     status.by(lifted);
     lift = _ctx => lifted;
     derivedCtx = lifted;

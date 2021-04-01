@@ -8,8 +8,7 @@ import {
 import { AfterEvent, afterThe } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
 import { DrekContext } from './context';
-import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
-import { UpdatableScheduler } from './updatable-scheduler.impl';
+import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from './context.impl';
 
 /**
  * @internal
@@ -22,14 +21,15 @@ export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): 
     return existing;
   }
 
-  let nsAliasImpl = newNamespaceAliaser();
-  const schedulerImpl = new UpdatableScheduler(newRenderSchedule);
+  const state = new DrekContext$State({
+    nsAlias: newNamespaceAliaser(),
+    scheduler: newRenderSchedule,
+  });
 
   const view = document.defaultView || window;
-  const nsAlias: NamespaceAliaser = ns => nsAliasImpl(ns);
   const scheduler = (
       options?: RenderScheduleOptions,
-  ): RenderSchedule => schedulerImpl.scheduler({
+  ): RenderSchedule => state.scheduler({
     window: view,
     ...options,
   });
@@ -46,7 +46,7 @@ export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): 
     }
 
     get nsAlias(): NamespaceAliaser {
-      return nsAlias;
+      return state.nsAlias;
     }
 
     get scheduler(): RenderScheduler {
@@ -63,12 +63,11 @@ export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): 
 
     update(
         {
-          nsAlias = nsAliasImpl,
-          scheduler = schedulerImpl.impl,
+          nsAlias = state._nsAlias,
+          scheduler = state._scheduler,
         }: DrekContext.Update,
     ): this {
-      nsAliasImpl = nsAlias;
-      schedulerImpl.set(scheduler);
+      state.set({ nsAlias, scheduler });
       return this;
     }
 

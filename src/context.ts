@@ -50,7 +50,7 @@ export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekCon
    *
    * This is only meaningful for context attached to disconnected DOM node by {@link drekContextOf} function.
    *
-   * Tries to find new root node. If the new root differs from current one, the {@link drekContextOf finds} a context
+   * Tries to find new root node. If the new root differs from current one, then {@link drekContextOf finds} a context
    * of that new root and connects the status of this context to the found one.
    *
    * This has no effect for document rendering context and for {@link DrekFragment rendered fragments}.
