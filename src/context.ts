@@ -1,11 +1,7 @@
 import type { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
-import { newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import type { RenderScheduler } from '@frontmeans/render-scheduler';
-import { newRenderSchedule, RenderSchedule, RenderScheduleOptions } from '@frontmeans/render-scheduler';
-import { AfterEvent, afterThe, OnEvent } from '@proc7ts/fun-events';
+import { OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
-import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
-import { isDocumentFragmentNode } from './misc';
 import { DrekPlacement } from './placement';
 
 /**
@@ -15,50 +11,6 @@ import { DrekPlacement } from './placement';
  */
 export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekContentStatus]>
     extends DrekPlacement<TStatus> {
-
-  /**
-   * Obtains and possibly updated a rendering context of the given document.
-   *
-   * @param document - Target document.
-   * @param update - An update to target document context.
-   *
-   * @returns Target document rendering context updates applied.
-   */
-  static of(document: Document, update?: DrekContext.Update): DrekContext;
-
-  /**
-   * Obtains a rendering context of the given node.
-   *
-   * The rendering context is provided to the node by the closest {@link DrekFragment rendering fragment}. If the node
-   * does not belong to any fragment, then the context is the one of the document.
-   *
-   * @param node - Target node.
-   *
-   * @returns Target node rendering context.
-   */
-  static of(node: Node): DrekContext;
-
-  static of(node: Node, update?: DrekContext.Update): DrekContext {
-    for (;;) {
-
-      const root = node.getRootNode({ composed: true });
-
-      if (root === node) {
-        if (isDocumentFragmentNode(node)) {
-
-          const { [DrekContext__symbol]: fragmentCtx }: DrekContext$Holder<DocumentFragment> = node;
-
-          if (fragmentCtx) {
-            return fragmentCtx;
-          }
-        }
-
-        return DrekContext$ofDocument(node.ownerDocument || (node as Document), update);
-      }
-
-      node = root;
-    }
-  }
 
   /**
    * The window this context belongs to.
@@ -94,19 +46,38 @@ export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekCon
   }
 
   /**
-   * Creates a rendering context based on this one.
+   * Tries to lift this rendering context to enclosing one.
    *
-   * @param update - Context update.
+   * This is only meaningful for context attached to disconnected DOM node by {@link drekContextOf} function.
    *
-   * @returns Updated rendering context.
+   * Tries to find new root node. If the new root differs from current one, then {@link drekContextOf finds} a context
+   * of that new root and connects the status of this context to the found one.
+   *
+   * This has no effect for document rendering context and for {@link DrekFragment rendered fragments}.
+   *
+   * @returns Either a rendering context of the new root node, or this one.
    */
-  with(update: DrekContext.Update = {}): DrekContext<TStatus> {
-    return DrekContext$with(this, update);
-  }
+  abstract lift(): DrekContext;
 
 }
 
 export namespace DrekContext {
+
+  /**
+   * Updatable document rendering context.
+   */
+  export interface Updatable extends DrekContext {
+
+    /**
+     * Updates this context.
+     *
+     * @param update - An update to apply to this context.
+     *
+     * @returns `this` instance.
+     */
+    update(update?: Update): this;
+
+  }
 
   /**
    * An update to rendering context.
@@ -129,107 +100,4 @@ export namespace DrekContext {
 
   }
 
-}
-
-const DrekContext$update__symbol = (/*#__PURE__*/ Symbol('DrekContext.update'));
-
-function DrekContext$ofDocument(
-    document: DrekContext$Holder<Document>,
-    update?: DrekContext.Update,
-): DrekContext {
-
-  const existing = document[DrekContext__symbol] as DrekContext$OfDocument | undefined;
-
-  if (existing) {
-    if (update) {
-      existing[DrekContext$update__symbol](update);
-    }
-    return existing;
-  }
-
-  let {
-    nsAlias: nsAliasImpl = newNamespaceAliaser(),
-    scheduler: schedulerImpl = newRenderSchedule,
-  } = update || {};
-
-  const view = document.defaultView || window;
-  const nsAlias: NamespaceAliaser = ns => nsAliasImpl(ns);
-  const scheduler = (
-      options?: RenderScheduleOptions,
-  ): RenderSchedule => schedulerImpl({
-    window: view,
-    ...options,
-  });
-  const readStatus = afterThe<[DrekContentStatus]>({ connected: true });
-
-  class DrekContext$OfDocument extends DrekContext {
-
-    get window(): Window {
-      return view;
-    }
-
-    get document(): Document {
-      return document;
-    }
-
-    get nsAlias(): NamespaceAliaser {
-      return nsAlias;
-    }
-
-    get scheduler(): RenderScheduler {
-      return scheduler;
-    }
-
-    get readStatus(): AfterEvent<[DrekContentStatus]> {
-      return readStatus;
-    }
-
-    [DrekContext$update__symbol](
-        {
-          nsAlias = nsAliasImpl,
-          scheduler = schedulerImpl,
-        }: DrekContext.Update,
-    ): void {
-      nsAliasImpl = nsAlias;
-      schedulerImpl = scheduler;
-    }
-
-  }
-
-  return document[DrekContext__symbol] = new DrekContext$OfDocument();
-}
-
-function DrekContext$with<TStatus extends [DrekContentStatus] = [DrekContentStatus]>(
-    ancestor: DrekContext<TStatus>,
-    {
-      nsAlias = ancestor.nsAlias,
-      scheduler = ancestor.scheduler,
-    }: DrekContext.Update,
-): DrekContext<TStatus> {
-
-  class DrekContext$Derived extends DrekContext<TStatus> {
-
-    get window(): Window {
-      return ancestor.window;
-    }
-
-    get document(): Document {
-      return ancestor.document;
-    }
-
-    get nsAlias(): NamespaceAliaser {
-      return nsAlias;
-    }
-
-    get scheduler(): RenderScheduler {
-      return scheduler;
-    }
-
-    get readStatus(): AfterEvent<TStatus> {
-      return ancestor.readStatus;
-    }
-
-  }
-
-  return new DrekContext$Derived();
 }

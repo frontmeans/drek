@@ -1,4 +1,5 @@
 import { DrekContext } from '../context';
+import { drekContextOf } from '../context-of';
 import { DrekTarget } from './target';
 
 /**
@@ -9,7 +10,7 @@ import { DrekTarget } from './target';
  *
  * @returns Rendering target.
  */
-export function drekAppender(parent: Node, context: DrekContext = DrekContext.of(parent)): DrekTarget {
+export function drekAppender(parent: Node, context: DrekContext = drekContextOf(parent)): DrekTarget {
   return {
     context,
     placeContent(content: Node) {

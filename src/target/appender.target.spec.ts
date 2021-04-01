@@ -1,4 +1,5 @@
 import { DrekContext } from '../context';
+import { drekContextOf } from '../context-of';
 import { drekAppender } from './appender.target';
 
 describe('drekAppender', () => {
@@ -8,7 +9,7 @@ describe('drekAppender', () => {
     const target = drekAppender(parent);
     const node = document.createElement('test');
 
-    expect(target.context).toBe(DrekContext.of(parent));
+    expect(target.context).toBe(drekContextOf(parent));
     expect(target.placeContent(node)).toBe(target.context);
     expect(parent.children).toContain(node);
   });

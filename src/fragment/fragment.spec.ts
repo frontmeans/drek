@@ -1,8 +1,10 @@
-import { newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
+import { NamespaceAliaser, NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
+import { drekContextOf } from '../context-of';
+import { deriveDrekContext } from '../derive-context';
 import { drekAppender, drekReplacer, DrekTarget } from '../target';
 import { DrekFragment } from './fragment';
 
@@ -15,15 +17,21 @@ describe('DrekFragment', () => {
   });
 
   let target: DrekTarget;
+  let targetNsAlias: NamespaceAliaser;
   let targetScheduler: RenderScheduler;
   let targetContext: DrekContext;
   let fragment: DrekFragment;
 
   beforeEach(() => {
+    targetNsAlias = jest.fn(newNamespaceAliaser());
     targetScheduler = jest.fn(queuedRenderScheduler);
-    targetContext = DrekContext.of(doc).with({
-      scheduler: targetScheduler,
-    });
+    targetContext = deriveDrekContext(
+        drekContextOf(doc),
+        {
+          nsAlias: targetNsAlias,
+          scheduler: targetScheduler,
+        },
+    );
     target = drekReplacer(doc.body, targetContext);
     fragment = new DrekFragment(target);
   });
@@ -34,7 +42,7 @@ describe('DrekFragment', () => {
       fragment.scheduler()(({ content }) => resolve(content));
     });
 
-    expect(DrekContext.of(content)).toBe(fragment);
+    expect(drekContextOf(content)).toBe(fragment);
   });
 
   it('used as rendering context for nested elements', async () => {
@@ -44,7 +52,7 @@ describe('DrekFragment', () => {
 
         const span = content.appendChild(document.createElement('span'));
 
-        resolve(DrekContext.of(span));
+        resolve(drekContextOf(span));
       });
     });
 
@@ -65,7 +73,7 @@ describe('DrekFragment', () => {
       });
 
       expect(content).toBe(customContent);
-      expect(DrekContext.of(customContent)).toBe(fragment);
+      expect(drekContextOf(customContent)).toBe(fragment);
     });
     it('can not be reused by another fragment', async () => {
 
@@ -99,16 +107,23 @@ describe('DrekFragment', () => {
 
   describe('nsAlias', () => {
     it('is derived from target by default', () => {
-      expect(fragment.nsAlias).toBe(target.context.nsAlias);
+
+      const ns = new NamespaceDef('uri:test:ns');
+
+      fragment.nsAlias(ns);
+      expect(targetNsAlias).toHaveBeenCalledWith(ns);
     });
     it('can be specified explicitly', () => {
 
-      const nsAlias = newNamespaceAliaser();
+      const nsAlias = jest.fn(newNamespaceAliaser());
 
       fragment = new DrekFragment(target, { nsAlias });
 
-      expect(fragment.nsAlias).toBe(nsAlias);
-      expect(fragment.nsAlias).not.toBe(target.context.nsAlias);
+      const ns = new NamespaceDef('uri:test:ns');
+
+      fragment.nsAlias(ns);
+      expect(nsAlias).toHaveBeenCalledWith(ns);
+      expect(targetNsAlias).not.toHaveBeenCalled();
     });
   });
 
@@ -120,8 +135,10 @@ describe('DrekFragment', () => {
       fragment = new DrekFragment(target, { scheduler });
 
       const contentPromise = new Promise<DocumentFragment>(resolve => {
-        fragment.scheduler()(({ content }) => {
-          resolve(content);
+        fragment.scheduler()(exec => {
+          exec.postpone(({ content }) => {
+            resolve(content);
+          });
         });
       });
 

@@ -94,6 +94,15 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
   }
 
   /**
+   * Tries to lift this rendering context to {@link target} one.
+   *
+   * @returns The {@link target} context when the fragment is {@link isRendered}, or `this` instance otherwise.
+   */
+  lift(): DrekContext {
+    return this[DrekFragment$Impl__symbol].lift();
+  }
+
+  /**
    * Settles previously rendered content.
    *
    * A {@link whenSettled} event sender notifies its receivers once settled.

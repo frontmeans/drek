@@ -2,46 +2,22 @@ import { newNamespaceAliaser, XHTML__NS } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, setRenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
 import { DrekContext } from './context';
+import { drekContextOf } from './context-of';
 import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
 
 describe('DrekContext', () => {
 
   let doc: Document;
-  let element: Element;
 
   beforeEach(() => {
     doc = document.implementation.createHTMLDocument('test');
-    element = doc.body.appendChild(doc.createElement('span'));
-  });
-
-  describe('of', () => {
-    it('obtains a rendering context of the document', () => {
-
-      const context = DrekContext.of(doc);
-
-      expect(context).toBeInstanceOf(DrekContext);
-      expect(context.window).toBe(window);
-      expect(context.document).toBe(doc);
-    });
-    it('caches rendering context in document', () => {
-      expect(DrekContext.of(doc)).toBe(DrekContext.of(doc));
-    });
-    it('obtains rendering context from element', () => {
-      expect(DrekContext.of(element)).toBe(DrekContext.of(doc));
-    });
-    it('obtains rendering context from document fragment', () => {
-
-      const fragment = doc.createDocumentFragment();
-
-      expect(DrekContext.of(fragment)).toBe(DrekContext.of(doc));
-    });
   });
 
   describe('nsAlias', () => {
     it('can be specified', () => {
 
       const customNsAlias = jest.fn(newNamespaceAliaser());
-      const { nsAlias } = DrekContext.of(doc, { nsAlias: customNsAlias });
+      const { nsAlias } = drekContextOf(doc).update({ nsAlias: customNsAlias });
 
       nsAlias(XHTML__NS);
 
@@ -49,10 +25,10 @@ describe('DrekContext', () => {
     });
     it('can be updated', () => {
 
-      const { nsAlias } = DrekContext.of(doc);
+      const { nsAlias } = drekContextOf(doc);
       const customNsAlias = jest.fn(newNamespaceAliaser());
 
-      DrekContext.of(doc, { nsAlias: customNsAlias });
+      drekContextOf(doc).update({ nsAlias: customNsAlias });
       nsAlias(XHTML__NS);
 
       expect(customNsAlias).toHaveBeenCalledWith(XHTML__NS);
@@ -73,14 +49,14 @@ describe('DrekContext', () => {
 
       const span = document.createElement('span');
 
-      DrekContext.of(span).scheduler({ node: span });
+      drekContextOf(span).scheduler({ node: span });
 
       expect(scheduler).toHaveBeenCalledWith({ window, node: span });
     });
     it('can be specified', () => {
 
       const customScheduler = jest.fn(newManualRenderScheduler());
-      const { scheduler } = DrekContext.of(doc, { scheduler: customScheduler });
+      const { scheduler } = drekContextOf(doc).update({ scheduler: customScheduler });
       const node = doc.createElement('span');
 
       scheduler({ node });
@@ -89,10 +65,10 @@ describe('DrekContext', () => {
     });
     it('can be updated', () => {
 
-      const { scheduler } = DrekContext.of(doc);
+      const { scheduler } = drekContextOf(doc);
       const customScheduler = jest.fn(newManualRenderScheduler());
 
-      DrekContext.of(doc, { scheduler: customScheduler });
+      drekContextOf(doc).update({ scheduler: customScheduler });
 
       const node = doc.createElement('span');
 
@@ -107,7 +83,7 @@ describe('DrekContext', () => {
     let context: DrekContext;
 
     beforeEach(() => {
-      context = DrekContext.of(doc);
+      context = drekContextOf(doc);
     });
 
     it('always reports connected status', async () => {
@@ -130,7 +106,7 @@ describe('DrekContext', () => {
     let context: DrekContext;
 
     beforeEach(() => {
-      context = DrekContext.of(doc);
+      context = drekContextOf(doc);
     });
 
     it('always reports connected status', async () => {
@@ -143,45 +119,11 @@ describe('DrekContext', () => {
     let context: DrekContext;
 
     beforeEach(() => {
-      context = DrekContext.of(doc);
+      context = drekContextOf(doc);
     });
 
     it('is the same as `whenConnected`', () => {
       expect(context.whenSettled).toBe(context.whenConnected);
-    });
-  });
-
-  describe('with', () => {
-
-    let ancestor: DrekContext;
-
-    beforeEach(() => {
-      ancestor = DrekContext.of(doc);
-    });
-
-    it('updates namespace aliaser', () => {
-
-      const nsAlias = newNamespaceAliaser();
-      const derived = ancestor.with({ nsAlias });
-
-      expect(derived.nsAlias).toBe(nsAlias);
-    });
-    it('updates render scheduler', () => {
-
-      const scheduler = newManualRenderScheduler();
-      const derived = ancestor.with({ scheduler });
-
-      expect(derived.scheduler).toBe(scheduler);
-    });
-    it('derives everything else', () => {
-
-      const derived = ancestor.with();
-
-      expect(derived.window).toBe(ancestor.window);
-      expect(derived.document).toBe(ancestor.document);
-      expect(derived.nsAlias).toBe(ancestor.nsAlias);
-      expect(derived.scheduler).toBe(ancestor.scheduler);
-      expect(derived.readStatus).toBe(ancestor.readStatus);
     });
   });
 });
