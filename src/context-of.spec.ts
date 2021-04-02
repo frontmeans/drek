@@ -133,6 +133,27 @@ describe('drekContextOf', () => {
         expect(context.lift()).toBe(fragment);
       });
     });
+
+    describe('whenSettled', () => {
+      it('reports settlement when lifted', () => {
+
+        const fragment = new DrekFragment(drekAppender(document.body));
+
+        fragment.scheduler()(({ content }) => {
+          content.appendChild(root);
+        });
+
+        const whenSettled = jest.fn();
+        const settlementSupply = context.whenSettled(whenSettled);
+
+        context.lift();
+        expect(whenSettled).not.toHaveBeenCalled();
+
+        fragment.settle();
+        expect(whenSettled).toHaveBeenCalledWith({ connected: false });
+        expect(settlementSupply.isOff).toBe(true);
+      });
+    });
   });
 
 });

@@ -1,6 +1,6 @@
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
-import { AfterEvent, trackValue } from '@proc7ts/fun-events';
+import { AfterEvent, EventEmitter, OnEvent, trackValue } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
 import { DrekContext } from './context';
 import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from './context.impl';
@@ -56,6 +56,7 @@ function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
   }
 
   const status = trackValue<DrekContentStatus>({ connected: false });
+  const settled = new EventEmitter<[DrekContentStatus]>();
   let derivedCtx: DrekContext = DrekContext$ofDocument(
       root.ownerDocument! /* Not a document, so `ownerDocument` is set */,
   );
@@ -72,6 +73,7 @@ function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
 
     root[DrekContext__symbol] = undefined;
     scheduler.set(lifted);
+    lifted.whenSettled(status => settled.send(status)).cuts(settled);
     status.by(lifted);
     lift = _ctx => lifted;
     derivedCtx = lifted;
@@ -99,6 +101,10 @@ function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
 
     get readStatus(): AfterEvent<[DrekContentStatus]> {
       return status.read;
+    }
+
+    get whenSettled(): OnEvent<[DrekContentStatus]> {
+      return settled.on;
     }
 
     lift(): DrekContext {
