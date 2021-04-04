@@ -1,9 +1,9 @@
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
 import { AfterEvent } from '@proc7ts/fun-events';
-import { DrekContentStatus } from './content-status';
-import { DrekContext } from './context';
-import { DrekContext$State } from './context.impl';
+import { DrekContentStatus } from '../content-status';
+import { DrekContext } from '../context';
+import { DrekContext$State } from '../context.impl';
 
 /**
  * Creates a rendering context based on another one.

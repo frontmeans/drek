@@ -1,7 +1,7 @@
 import { NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { immediateRenderScheduler } from '@frontmeans/render-scheduler';
-import { DrekContext } from './context';
-import { drekContextOf } from './context-of';
+import { DrekContext } from '../context';
+import { drekContextOf } from '../context-of';
 import { deriveDrekContext } from './derive-context';
 
 describe('deriveDrekContext', () => {

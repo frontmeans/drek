@@ -4,10 +4,10 @@ import {
   newManualRenderScheduler,
 } from '@frontmeans/render-scheduler';
 import { neverSupply } from '@proc7ts/supply';
-import { deriveDrekContext } from '../derive-context';
 import { DrekFragment } from '../fragment';
 import { drekAppender } from '../target';
 import { DrekCssClasses, drekCssClassesOf } from './css-classes';
+import { deriveDrekContext } from './derive-context';
 
 describe('drekCssClassesOf', () => {
 
