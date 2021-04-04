@@ -7,6 +7,8 @@ import { DrekPlacement } from './placement';
 /**
  * Document rendering context.
  *
+ * Can be obtained by {@link drekContextOf} function, or constructed by {@link DrekFragment rendered fragment}.
+ *
  * @typeParam TStatus - A type of the tuple containing a context content status as its first element.
  */
 export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekContentStatus]>
