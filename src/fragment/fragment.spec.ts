@@ -1,10 +1,10 @@
 import { NamespaceAliaser, NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
+import { deriveDrekContext } from '../common';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
 import { drekContextOf } from '../context-of';
-import { deriveDrekContext } from '../derive-context';
 import { drekAppender, drekReplacer, DrekTarget } from '../target';
 import { DrekFragment } from './fragment';
 

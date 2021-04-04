@@ -1,7 +1,7 @@
 import { NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { immediateRenderScheduler } from '@frontmeans/render-scheduler';
-import { DrekContext } from './context';
-import { drekContextOf } from './context-of';
+import { DrekContext } from '../context';
+import { drekContextOf } from '../context-of';
 import { deriveDrekContext } from './derive-context';
 
 describe('deriveDrekContext', () => {
@@ -26,7 +26,7 @@ describe('deriveDrekContext', () => {
 
     drekContextOf(doc).update({ nsAlias });
 
-    const context = deriveDrekContext(base);
+    const context = deriveDrekContext(base, { scheduler: immediateRenderScheduler });
     const ns = new NamespaceDef('uri:test:ns');
 
     context.nsAlias(ns);
@@ -40,6 +40,9 @@ describe('deriveDrekContext', () => {
 
     derived.nsAlias(ns);
     expect(nsAlias).toHaveBeenCalledWith(ns);
+    expect(derived.window).toBe(base.window);
+    expect(derived.document).toBe(base.document);
+    expect(derived.readStatus).toBe(base.readStatus);
   });
   it('derives render scheduler', () => {
 
@@ -47,7 +50,7 @@ describe('deriveDrekContext', () => {
 
     drekContextOf(doc).update({ scheduler });
 
-    const context = deriveDrekContext(base);
+    const context = deriveDrekContext(base, { nsAlias: newNamespaceAliaser() });
 
     context.scheduler();
     expect(scheduler).toHaveBeenCalledTimes(1);
@@ -55,18 +58,18 @@ describe('deriveDrekContext', () => {
   it('updates render scheduler', () => {
 
     const scheduler = jest.fn(immediateRenderScheduler);
-    const context = deriveDrekContext(base, { scheduler });
+    const derived = deriveDrekContext(base, { scheduler });
 
-    context.scheduler();
+    derived.scheduler();
     expect(scheduler).toHaveBeenCalledTimes(1);
-  });
-  it('derives everything else', () => {
-
-    const derived = deriveDrekContext(base);
-
     expect(derived.window).toBe(base.window);
     expect(derived.document).toBe(base.document);
     expect(derived.readStatus).toBe(base.readStatus);
+  });
+  it('returns the base context without update', () => {
+    expect(deriveDrekContext(base)).toBe(base);
+    expect(deriveDrekContext(base, {})).toBe(base);
+    expect(deriveDrekContext(base, { nsAlias: base.nsAlias, scheduler: base.scheduler })).toBe(base);
   });
 
   describe('lift', () => {
@@ -74,7 +77,7 @@ describe('deriveDrekContext', () => {
     let context: DrekContext;
 
     beforeEach(() => {
-      context = deriveDrekContext(base);
+      context = deriveDrekContext(base, { nsAlias: newNamespaceAliaser() });
     });
 
     it('returns itself if not lifted', () => {

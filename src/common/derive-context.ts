@@ -1,9 +1,9 @@
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
 import { AfterEvent } from '@proc7ts/fun-events';
-import { DrekContentStatus } from './content-status';
-import { DrekContext } from './context';
-import { DrekContext$State } from './context.impl';
+import { DrekContentStatus } from '../content-status';
+import { DrekContext } from '../context';
+import { DrekContext$State } from '../context.impl';
 
 /**
  * Creates a rendering context based on another one.
@@ -12,7 +12,7 @@ import { DrekContext$State } from './context.impl';
  * @param base - Base rendering context.
  * @param update - Context update.
  *
- * @returns Updated rendering context.
+ * @returns Updated rendering context, or the `base` one if nothing to update.
  */
 export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekContentStatus]>(
     base: DrekContext<TStatus>,
@@ -23,6 +23,10 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
     nsAlias: initialNsAlias = base.nsAlias,
     scheduler: initialScheduler = base.scheduler,
   } = update;
+
+  if (initialNsAlias === base.nsAlias && initialScheduler === base.scheduler) {
+    return base;
+  }
 
   const state = new DrekContext$State({
     nsAlias: initialNsAlias,
