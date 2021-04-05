@@ -1,6 +1,6 @@
+import { removeNodeContent } from '@frontmeans/dom-primitives';
 import { DrekContext } from '../context';
 import { drekContextOf } from '../context-of';
-import { removeNodeContent } from '../misc';
 import { DrekTarget } from './target';
 
 /**

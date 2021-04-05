@@ -1,6 +1,6 @@
 {
   "name": "@frontmeans/drek",
-  "version": "1.0.0-dev.2",
+  "version": "1.0.0-dev.3",
   "description": "Document render kit",
   "keywords": [
     "dom",
@@ -28,6 +28,7 @@
     "@proc7ts/fun-events": "^10.4.0"
   },
   "dependencies": {
+    "@frontmeans/dom-primitives": "^1.0.0-dev.0",
     "@frontmeans/namespace-aliaser": "^2.3.0",
     "@frontmeans/render-scheduler": "^1.5.1",
     "@proc7ts/primitives": "^2.0.0",

@@ -1,3 +1,4 @@
+import { isDocumentNode } from '@frontmeans/dom-primitives';
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
 import { AfterEvent, EventEmitter, OnEvent, trackValue } from '@proc7ts/fun-events';
@@ -5,7 +6,6 @@ import { DrekContentStatus } from './content-status';
 import { DrekContext } from './context';
 import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from './context.impl';
 import { DrekContext$ofDocument } from './context.of-document.impl';
-import { isDocumentNode } from './misc';
 
 /**
  * Obtains a updatable a rendering context of the given document.
