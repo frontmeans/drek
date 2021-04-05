@@ -1,3 +1,7 @@
+/**
+ * @packageDocumentation
+ * @module Module @frontmeans/drek
+ */
 export * from './common';
 export * from './content-status';
 export * from './context';
