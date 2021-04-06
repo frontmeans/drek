@@ -24,9 +24,7 @@ describe('drekCssClassesOf', () => {
 
   beforeEach(() => {
     element = document.createElement('span');
-    fragment.scheduler()(({ content }) => {
-      content.appendChild(element);
-    });
+    fragment.content.appendChild(element);
     scheduler.render();
 
     css = drekCssClassesOf(element);
@@ -127,7 +125,10 @@ describe('drekCssClassesOf', () => {
   describe('renderIn', () => {
     it('renders in custom context', () => {
 
-      const updatedCss = css.renderIn(deriveDrekContext(fragment, { scheduler: immediateRenderScheduler }));
+      const updatedCss = css.renderIn(deriveDrekContext(
+          fragment.innerContext,
+          { scheduler: immediateRenderScheduler },
+      ));
       const supply = updatedCss.add('test');
 
       expect(css.has('test')).toBe(true);
@@ -141,9 +142,12 @@ describe('drekCssClassesOf', () => {
     });
     it('returns original instance if context did not change', () => {
 
-      const updatedCss = css.renderIn(deriveDrekContext(fragment, { scheduler: immediateRenderScheduler }));
+      const updatedCss = css.renderIn(deriveDrekContext(
+          fragment.innerContext,
+          { scheduler: immediateRenderScheduler },
+      ));
 
-      expect(updatedCss.renderIn(fragment)).toBe(css);
+      expect(updatedCss.renderIn(fragment.innerContext)).toBe(css);
     });
   });
 });

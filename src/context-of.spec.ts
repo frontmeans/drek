@@ -88,13 +88,11 @@ describe('drekContextOf', () => {
         const fragmentScheduler = jest.fn(immediateRenderScheduler);
         const fragment = new DrekFragment(drekAppender(document.body), { scheduler: fragmentScheduler });
 
-        fragment.scheduler()(({ content }) => {
-          content.appendChild(root);
-        });
+        fragment.content.appendChild(root);
 
         context.lift();
         context.scheduler();
-        expect(fragmentScheduler).toHaveBeenCalledTimes(2);
+        expect(fragmentScheduler).toHaveBeenCalledTimes(1);
       });
       it('renders in new scheduler when lifted', () => {
 
@@ -106,14 +104,12 @@ describe('drekContextOf', () => {
         const fragmentScheduler = jest.fn(() => fragmentSchedule);
         const fragment = new DrekFragment(drekAppender(document.body), { scheduler: fragmentScheduler });
 
-        fragment.scheduler()(({ content }) => {
-          content.appendChild(root);
-        });
+        fragment.content.appendChild(root);
 
         context.lift();
         schedule(noop);
-        expect(fragmentScheduler).toHaveBeenCalledTimes(2);
-        expect(fragmentSchedule).toHaveBeenCalledTimes(2);
+        expect(fragmentScheduler).toHaveBeenCalledTimes(1);
+        expect(fragmentSchedule).toHaveBeenCalledTimes(1);
       });
     });
 
@@ -125,12 +121,10 @@ describe('drekContextOf', () => {
 
         const fragment = new DrekFragment(drekAppender(document.body));
 
-        fragment.scheduler()(({ content }) => {
-          content.appendChild(root);
-        });
+        fragment.content.appendChild(root);
 
-        expect(context.lift()).toBe(fragment);
-        expect(context.lift()).toBe(fragment);
+        expect(context.lift()).toBe(fragment.innerContext);
+        expect(context.lift()).toBe(fragment.innerContext);
       });
     });
 
@@ -139,9 +133,7 @@ describe('drekContextOf', () => {
 
         const fragment = new DrekFragment(drekAppender(document.body));
 
-        fragment.scheduler()(({ content }) => {
-          content.appendChild(root);
-        });
+        fragment.content.appendChild(root);
 
         const whenSettled = jest.fn();
         const settlementSupply = context.whenSettled(whenSettled);
@@ -150,7 +142,7 @@ describe('drekContextOf', () => {
         expect(whenSettled).not.toHaveBeenCalled();
 
         fragment.settle();
-        expect(whenSettled).toHaveBeenCalledWith({ connected: false });
+        expect(whenSettled).toHaveBeenCalledWith({ connected: false, withinFragment: 'added' });
         expect(settlementSupply.isOff).toBe(true);
       });
     });

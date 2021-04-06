@@ -36,54 +36,27 @@ describe('DrekFragment', () => {
     fragment = new DrekFragment(target);
   });
 
-  it('used as rendering context for its content', async () => {
-
-    const content = await new Promise<DocumentFragment>(resolve => {
-      fragment.scheduler()(({ content }) => resolve(content));
-    });
-
-    expect(drekContextOf(content)).toBe(fragment);
-  });
-
-  it('used as rendering context for nested elements', async () => {
-
-    const context = await new Promise<DrekContext>(resolve => {
-      fragment.scheduler()(({ fragment: { document }, content }) => {
-
-        const span = content.appendChild(document.createElement('span'));
-
-        resolve(drekContextOf(span));
-      });
-    });
-
-    expect(context).toBe(fragment);
-  });
-
   describe('content', () => {
-    it('can be specified explicitly', async () => {
+    it('can be specified explicitly', () => {
 
       const customContent = doc.createDocumentFragment();
 
       fragment = new DrekFragment(target, { content: customContent });
 
-      const content = await new Promise<DocumentFragment>(resolve => {
-        fragment.scheduler()(({ content }) => {
-          resolve(content);
-        });
-      });
-
-      expect(content).toBe(customContent);
-      expect(drekContextOf(customContent)).toBe(fragment);
+      expect(fragment.content).toBe(customContent);
+      expect(drekContextOf(customContent)).toBe(fragment.innerContext);
     });
-    it('can not be reused by another fragment', async () => {
+    it('should be standalone', () => {
 
-      const content = await new Promise<DocumentFragment>(resolve => {
-        fragment.scheduler()(({ content }) => {
-          resolve(content);
-        });
-      });
+      const element = document.createElement('test-element');
+      const shadowRoot = element.attachShadow({ mode: 'open' });
 
-      expect(() => new DrekFragment(target, { content })).toThrow('Can not render content of another fragment');
+      expect(() => new DrekFragment(target, { content: shadowRoot }))
+          .toThrow('Not a standalone DocumentFragment');
+    });
+    it('can not be reused by another fragment', () => {
+      expect(() => new DrekFragment(target, { content: fragment.content }))
+          .toThrow('Can not render content of another fragment');
     });
   });
 
@@ -93,160 +66,187 @@ describe('DrekFragment', () => {
     });
   });
 
-  describe('window', () => {
-    it('is derived from target', () => {
-      expect(fragment.window).toBe(window);
+  describe('innerContext', () => {
+    it('is used as rendering context for its content', () => {
+      expect(drekContextOf(fragment.content)).toBe(fragment.innerContext);
     });
-  });
 
-  describe('document', () => {
-    it('is derived from target', () => {
-      expect(fragment.document).toBe(doc);
+    it('is used as rendering context for nested elements', () => {
+
+      const span = fragment.content.appendChild(document.createElement('span'));
+
+      expect(drekContextOf(span)).toBe(fragment.innerContext);
     });
-  });
 
-  describe('nsAlias', () => {
-    it('is derived from target by default', () => {
-
-      const ns = new NamespaceDef('uri:test:ns');
-
-      fragment.nsAlias(ns);
-      expect(targetNsAlias).toHaveBeenCalledWith(ns);
+    describe('window', () => {
+      it('is derived from target', () => {
+        expect(fragment.innerContext.window).toBe(window);
+      });
     });
-    it('can be specified explicitly', () => {
 
-      const nsAlias = jest.fn(newNamespaceAliaser());
-
-      fragment = new DrekFragment(target, { nsAlias });
-
-      const ns = new NamespaceDef('uri:test:ns');
-
-      fragment.nsAlias(ns);
-      expect(nsAlias).toHaveBeenCalledWith(ns);
-      expect(targetNsAlias).not.toHaveBeenCalled();
+    describe('document', () => {
+      it('is derived from target', () => {
+        expect(fragment.innerContext.document).toBe(doc);
+      });
     });
-  });
 
-  describe('scheduler', () => {
-    it('can be specified explicitly', async () => {
+    describe('nsAlias', () => {
+      it('is derived from target by default', () => {
 
-      const scheduler = newManualRenderScheduler();
+        const ns = new NamespaceDef('uri:test:ns');
 
-      fragment = new DrekFragment(target, { scheduler });
+        fragment.innerContext.nsAlias(ns);
+        expect(targetNsAlias).toHaveBeenCalledWith(ns);
+      });
+      it('can be specified explicitly', () => {
 
-      const contentPromise = new Promise<DocumentFragment>(resolve => {
-        fragment.scheduler()(exec => {
-          exec.postpone(({ content }) => {
-            resolve(content);
+        const nsAlias = jest.fn(newNamespaceAliaser());
+
+        fragment = new DrekFragment(target, { nsAlias });
+
+        const ns = new NamespaceDef('uri:test:ns');
+
+        fragment.innerContext.nsAlias(ns);
+        expect(nsAlias).toHaveBeenCalledWith(ns);
+        expect(targetNsAlias).not.toHaveBeenCalled();
+      });
+    });
+
+    describe('scheduler', () => {
+      it('can be specified explicitly', async () => {
+
+        const scheduler = newManualRenderScheduler();
+
+        fragment = new DrekFragment(target, { scheduler });
+
+        const contentPromise = new Promise<DocumentFragment>(resolve => {
+          fragment.innerContext.scheduler()(exec => {
+            exec.postpone(({ content }) => {
+              resolve(content);
+            });
           });
         });
+
+        scheduler.render();
+
+        const content = await contentPromise;
+
+        expect(content.hasChildNodes()).toBe(false);
+
+        fragment.innerContext.scheduler()(({ content }) => {
+          content.appendChild(content.ownerDocument.createElement('test-element'));
+        });
+
+        expect(content.hasChildNodes()).toBe(false);
+
+        scheduler.render();
+        expect(content.children[0]?.tagName.toLowerCase()).toBe('test-element');
       });
+      it('reset to target context scheduler when rendered', () => {
+        fragment.innerContext.scheduler()(noop);
+        expect(targetScheduler).not.toHaveBeenCalled();
 
-      scheduler.render();
+        fragment.render();
+        expect(targetScheduler).toHaveBeenCalledTimes(1);
 
-      const content = await contentPromise;
-
-      expect(content.hasChildNodes()).toBe(false);
-
-      fragment.scheduler()(({ fragment: { document }, content }) => {
-        content.appendChild(document.createElement('test-element'));
+        fragment.innerContext.scheduler()(noop);
+        expect(targetScheduler).toHaveBeenCalledTimes(2);
       });
-
-      expect(content.hasChildNodes()).toBe(false);
-
-      scheduler.render();
-      expect(content.children[0]?.tagName.toLowerCase()).toBe('test-element');
     });
-    it('reset to target context scheduler when rendered', () => {
-      fragment.scheduler()(noop);
-      expect(targetScheduler).not.toHaveBeenCalled();
 
-      fragment.render();
-      expect(targetScheduler).toHaveBeenCalledTimes(1);
+    describe('readStatus', () => {
+      it('sends `connected` status once rendered to document', () => {
 
-      fragment.scheduler()(noop);
-      expect(targetScheduler).toHaveBeenCalledTimes(2);
-    });
-  });
+        let status!: DrekContentStatus;
 
-  describe('isRendered', () => {
-    it('is `false` by default', () => {
-      expect(fragment.isRendered).toBe(false);
-    });
-    it('set to `true` when fragment rendered', () => {
-      expect(fragment.render().isRendered).toBe(true);
-    });
-  });
+        fragment.innerContext.readStatus(s => status = s);
+        expect(status).toEqual({ connected: false, withinFragment: 'added' });
 
-  describe('readStatus', () => {
-    it('sends `connected` status once rendered to document', () => {
-
-      let status!: DrekContentStatus;
-
-      fragment.readStatus(s => status = s);
-      expect(status).toEqual({ connected: false });
-
-      fragment.render();
-      expect(status).toEqual({ connected: true });
-    });
-    it('sends `connected` status once render target fragment is rendered', async () => {
-
-      const fragment2 = await new Promise<DrekFragment>(resolve => {
-        fragment.scheduler()(({ content }) => resolve(new DrekFragment(drekAppender(content))));
+        fragment.render();
+        expect(status).toEqual({ connected: true });
       });
+      it('sends `rendered` status while rendering', () => {
 
-      let status!: DrekContentStatus;
+        const statuses: DrekContentStatus[] = [];
 
-      fragment.readStatus(s => status = s);
+        fragment.innerContext.readStatus(s => statuses.push(s));
+        expect(statuses).toEqual([{ connected: false, withinFragment: 'added' }]);
 
-      fragment2.render();
-      expect(status).toEqual({ connected: false });
+        fragment.render();
+        expect(statuses).toEqual([
+          { connected: false, withinFragment: 'added' },
+          { connected: false, withinFragment: 'rendered' },
+          { connected: true },
+        ]);
+      });
+      it('sends `connected` status once render target fragment is rendered', async () => {
 
-      fragment.render();
-      expect(status).toEqual({ connected: true });
+        const fragment2 = await new Promise<DrekFragment>(resolve => {
+          fragment.innerContext.scheduler()(
+              ({ content }) => resolve(new DrekFragment(drekAppender(content))),
+          );
+        });
+
+        let status!: DrekContentStatus;
+
+        fragment.innerContext.readStatus(s => status = s);
+
+        fragment2.render();
+        expect(status).toEqual({ connected: false, withinFragment: 'added' });
+
+        fragment.render();
+        expect(status).toEqual({ connected: true });
+      });
     });
-  });
 
-  describe('whenSettled', () => {
-    it('sends a status one time when `settle()` called', () => {
+    describe('whenSettled', () => {
+      it('sends a status one time when `settle()` called', () => {
 
-      let settled1: DrekContentStatus | undefined;
-      const supply1 = fragment.whenSettled(s => settled1 = s);
+        let settled1: DrekContentStatus | undefined;
+        const supply1 = fragment.innerContext.whenSettled(s => settled1 = s);
 
-      expect(settled1).toBeUndefined();
+        expect(settled1).toBeUndefined();
 
-      fragment.settle();
-      expect(settled1).toEqual({ connected: false });
-      expect(supply1.isOff).toBe(true);
+        fragment.settle();
+        expect(settled1).toEqual({ connected: false, withinFragment: 'added' });
+        expect(supply1.isOff).toBe(true);
 
-      let settled2: DrekContentStatus | undefined;
-      const supply2 = fragment.whenSettled(s => settled2 = s);
-      expect(settled2).toBeUndefined();
+        let settled2: DrekContentStatus | undefined;
+        const supply2 = fragment.innerContext.whenSettled(s => settled2 = s);
+        expect(settled2).toBeUndefined();
 
-      fragment.settle();
-      expect(settled2).toEqual({ connected: false });
-      expect(supply2.isOff).toBe(true);
-    });
-    it('sends a status one time when rendered', () => {
+        fragment.settle();
+        expect(settled2).toEqual({ connected: false, withinFragment: 'added' });
+        expect(supply2.isOff).toBe(true);
+      });
+      it('sends a status one time when rendered', () => {
 
-      let settled: DrekContentStatus | undefined;
-      const supply = fragment.whenSettled(s => settled = s);
+        let settled: DrekContentStatus | undefined;
+        const supply = fragment.innerContext.whenSettled(s => settled = s);
 
-      fragment.render();
-      expect(settled).toEqual({ connected: true });
-      expect(supply.isOff).toBe(true);
-    });
-    it('is the same as `whenConnected` once rendered', () => {
-      fragment.render();
+        fragment.render();
+        expect(settled).toEqual({ connected: true });
+        expect(supply.isOff).toBe(true);
+      });
+      it('is the same as `whenConnected` once rendered', () => {
 
-      expect(fragment.whenSettled).toBe(fragment.whenConnected);
+        const context = fragment.innerContext;
+
+        fragment.render();
+
+        expect(context.whenSettled).toBe(context.whenConnected);
+      });
     });
   });
 
   describe('render', () => {
-    it('prevents rendering for the second time', () => {
+    it('updates inner context', () => {
+
+      const prevContext = fragment.innerContext;
+
       fragment.render();
-      expect(() => fragment.render()).toThrow('Fragment already rendered');
+
+      expect(fragment.innerContext).not.toBe(prevContext);
     });
   });
 });

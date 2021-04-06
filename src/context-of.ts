@@ -19,10 +19,11 @@ export function drekContextOf(document: Document): DrekContext.Updatable;
 /**
  * Obtains a rendering context of the given node.
  *
- * If the node is connected to document, the rendering context is the one of the document. Otherwise, if the node
- * belongs to the {@link DrekFragment rendering fragment}, then the latter is used. Otherwise, a new context is created
+ * If the node is connected to document, then the rendering context of that document is returned. Otherwise, if the node
+ * belongs to the {@link DrekFragment.content content} of the rendered fragment, then the context
+ * {@link DrekFragment.innerContext provided} by that fragment is returned. Otherwise, a new context is created
  * and attached to the node root. The latter does not track a document connection automatically.
- * A {@link DrekContext.expand} method could be used to track the connection status manually.
+ * A {@link DrekContext.lift} method can be used to track the connection status manually.
  *
  * @param node - Target node.
  *
