@@ -164,14 +164,17 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   }
 
   private _createExecution(execution: RenderExecution): DrekFragmentRenderExecution<TStatus> {
-    return {
+
+    const fragmentExecution: DrekFragmentRenderExecution<TStatus> = {
       ...execution,
       fragment: this._fragment,
       content: this._content,
       postpone(postponed) {
-        execution.postpone(_execution => postponed(this));
+        execution.postpone(_execution => postponed(fragmentExecution));
       },
     };
+
+    return fragmentExecution;
   }
 
 }
