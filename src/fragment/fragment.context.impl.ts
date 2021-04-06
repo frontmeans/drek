@@ -7,7 +7,6 @@ import {
   RenderScheduler,
 } from '@frontmeans/render-scheduler';
 import { AfterEvent, afterThe, EventEmitter, onceOn, OnEvent, trackValue, translateAfter_ } from '@proc7ts/fun-events';
-import { noop, valueProvider } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
 import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from '../context.impl';
@@ -18,12 +17,14 @@ import { DrekFragmentRenderExecution, DrekFragmentRenderScheduler } from './frag
 /**
  * @internal
  */
-export const DrekFragment$Impl__symbol = (/*#__PURE__*/ Symbol('DrekFragment.impl'));
+export const DrekFragment$Context__symbol = (/*#__PURE__*/ Symbol('DrekFragment.context'));
 
 /**
  * @internal
  */
-export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
+export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
+    extends DrekContext<DrekFragment.Status<TStatus>>
+    implements DrekFragment.InnerContext<TStatus> {
 
   static attach<TStatus extends [DrekContentStatus]>(
       fragment: DrekFragment<TStatus>,
@@ -33,16 +34,14 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
         scheduler = queuedRenderScheduler,
         content,
       }: DrekFragment$Options,
-  ): DrekFragment$Impl<TStatus> {
+  ): DrekFragment$Context<TStatus> {
     if (!content) {
       content = target.context.document.createDocumentFragment();
     } else if (content[DrekContext__symbol]) {
       throw new TypeError('Can not render content of another fragment');
     }
 
-    content[DrekContext__symbol] = fragment;
-
-    return new DrekFragment$Impl(
+    return content[DrekContext__symbol] = new DrekFragment$Context(
         fragment,
         target,
         content,
@@ -52,51 +51,59 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
   }
 
   readonly scheduler: DrekFragmentRenderScheduler<TStatus>;
-  isRendered = false;
   readonly readStatus: AfterEvent<DrekFragment.Status<TStatus>>;
   private readonly _status = trackValue<DrekFragment.Status<TStatus>>([{ connected: false }]);
   private readonly _state: DrekContext$State;
   private readonly _settled = new EventEmitter<DrekFragment.Status<TStatus>>();
+  private _lift: DrekContext;
+  private _whenSettled?: OnEvent<DrekFragment.Status<TStatus>>;
 
   private constructor(
-      readonly fragment: DrekFragment<TStatus>,
-      readonly target: DrekTarget<TStatus>,
-      readonly content: DrekContext$Holder<DocumentFragment>,
+      readonly _fragment: DrekFragment<TStatus>,
+      readonly _target: DrekTarget<TStatus>,
+      readonly _content: DrekContext$Holder<DocumentFragment>,
       nsAlias: NamespaceAliaser,
       scheduler: RenderScheduler,
   ) {
-    this.content = content;
+    super();
+    this._lift = this;
     this.readStatus = this._status.read.do(
         translateAfter_((send, status) => send(...status)),
     );
     this._state = new DrekContext$State({ nsAlias, scheduler });
     this.scheduler = this._createSchedule.bind(this);
+
+    this.whenConnected((...status) => {
+      // `whenSettled` is the same as `whenConnected` now.
+      this._whenSettled = this.whenConnected;
+      // Send a settlement event one last time.
+      this._settled.send(...status);
+    });
+  }
+
+  get window(): Window {
+    return this._target.context.window;
+  }
+
+  get document(): Document {
+    return this._target.context.document;
   }
 
   get nsAlias(): NamespaceAliaser {
     return this._state.nsAlias;
   }
 
-  init(): void {
-    this.fragment.whenConnected((...status) => {
-      // `whenSettled` is the same as `whenConnected` now.
-      this.whenSettled = valueProvider(this.fragment.whenConnected);
-      // Send a settlement event one last time.
-      this._settled.send(...status);
-    });
-  }
-
-  whenSettled(): OnEvent<DrekFragment.Status<TStatus>> {
-    return (this.whenSettled = valueProvider(this._settled.on.do(
+  get whenSettled(): OnEvent<DrekFragment.Status<TStatus>> {
+    return this._whenSettled || (this._whenSettled = this._settled.on.do(
         onceOn,
-    )))();
+    ));
   }
 
   lift(): DrekContext {
-    return this.fragment;
+    return this._lift;
   }
 
-  settle(): void {
+  _settle(): void {
     this._state._scheduler()(context => {
       context.postpone(() => {
         this._settled.send(...this._status.it);
@@ -104,29 +111,35 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
     });
   }
 
-  render(): void {
-    this.render = DrekFragment$alreadyRendered;
-    this.lift = valueProvider(this.target.context);
-    this.settle = noop;
+  _render(): this {
+    this._lift = this._target.context;
 
     const schedule = this._state._scheduler();
 
-    this.isRendered = true;
-    this._state.set(this.target.context);
+    this._state.set(this._target.context);
 
     schedule(context => {
       // Await for all scheduled shots to render.
       context.postpone(() => {
-        this.target.context.scheduler()(() => {
+        this._target.context.scheduler()(() => {
 
           // Place the rendered content within target's scheduler.
-          const placement = this.target.placeContent(this.content);
+          const placement = this._target.placeContent(this._content);
+
+          this._content[DrekContext__symbol] = this._fragment[DrekFragment$Context__symbol] = new DrekFragment$Context(
+              this._fragment,
+              this._target,
+              this._content,
+              this.nsAlias,
+              this.scheduler,
+          );
 
           // Derive the status from the target context.
           this._status.by(placement, (...status) => afterThe(status));
         });
       });
     });
+    return this;
   }
 
   private _createSchedule(
@@ -136,7 +149,7 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
 
     const options: RenderScheduleOptions = {
       ...initialOptions,
-      window: this.fragment.window,
+      window: this.window,
     };
     const schedule = scheduler(options);
 
@@ -146,8 +159,8 @@ export class DrekFragment$Impl<TStatus extends [DrekContentStatus]> {
   private _createExecution(execution: RenderExecution): DrekFragmentRenderExecution<TStatus> {
     return {
       ...execution,
-      fragment: this.fragment,
-      content: this.content,
+      fragment: this._fragment,
+      content: this._content,
       postpone(postponed) {
         execution.postpone(_execution => postponed(this));
       },
@@ -160,8 +173,4 @@ interface DrekFragment$Options extends DrekFragment.Options {
 
   readonly content?: DrekContext$Holder<DocumentFragment>;
 
-}
-
-function DrekFragment$alreadyRendered(): never {
-  throw new TypeError('Fragment already rendered');
 }

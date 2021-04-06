@@ -1,34 +1,25 @@
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
-import { AfterEvent, OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
+import { DrekPlacement } from '../placement';
 import { DrekTarget } from '../target';
 import { DrekFragmentRenderScheduler } from './fragment-scheduler';
-import { DrekFragment$Impl, DrekFragment$Impl__symbol } from './fragment.impl';
+import { DrekFragment$Context, DrekFragment$Context__symbol } from './fragment.context.impl';
 
 /**
  * A fragment of DOM tree, which content is to be {@link DrekTarget.placeContent placed} to the document once rendered.
  *
- * It serves as {@link DrekContext rendering context} for its nodes.
+ * Provides separate {@link DrekContext rendering context} for its nodes.
  *
  * @typeParam TStatus - A type of the tuple containing a rendered content status as its first element.
  */
-export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStatus]>
-    extends DrekContext<DrekFragment.Status<TStatus>> {
+export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStatus]> {
 
   /**
    * @internal
    */
-  private [DrekFragment$Impl__symbol]: DrekFragment$Impl<TStatus>;
-
-  get window(): Window {
-    return this.target.context.window;
-  }
-
-  get document(): Document {
-    return this.target.context.document;
-  }
+  [DrekFragment$Context__symbol]: DrekFragment$Context<TStatus>;
 
   /**
    * Rendering target.
@@ -36,47 +27,25 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    * When the fragment is {@link render rendered}, the rendered content is placed to this target.
    */
   get target(): DrekTarget {
-    return this[DrekFragment$Impl__symbol].target;
-  }
-
-  get nsAlias(): NamespaceAliaser {
-    return this[DrekFragment$Impl__symbol].nsAlias;
+    return this[DrekFragment$Context__symbol]._target;
   }
 
   /**
-   * A render scheduler to use to build the fragment contents.
+   * Inner rendering context of the fragment.
    *
-   * After the fragment is {@link render rendered} switches to the {@link target} context's one.
+   * This context as available to the {@link content} nodes.
+   *
+   * This context updated each time the fragment is {@link render rendered}.
    */
-  get scheduler(): DrekFragmentRenderScheduler<TStatus> {
-    return this[DrekFragment$Impl__symbol].scheduler;
+  get innerContext(): DrekFragment.InnerContext<TStatus> {
+    return this[DrekFragment$Context__symbol];
   }
 
   /**
-   * An `AfterEvent` keeper of fragment content status.
+   * The content of the fragment.
    */
-  get readStatus(): AfterEvent<DrekFragment.Status<TStatus>> {
-    return this[DrekFragment$Impl__symbol].readStatus;
-  }
-
-  /**
-   * An `OnEvent` sender of a settlement event.
-   *
-   * This event is sent each time the {@link settle} method called and when the fragment is {@link render rendered}.
-   *
-   * After the fragment is {@link render rendered}, this is the same as {@link whenConnected}.
-   */
-  get whenSettled(): OnEvent<DrekFragment.Status<TStatus>> {
-    return this[DrekFragment$Impl__symbol].whenSettled();
-  }
-
-  /**
-   * Whether this fragment is rendered already.
-   *
-   * This flag is set immediately on {@link render} call.
-   */
-  get isRendered(): boolean {
-    return this[DrekFragment$Impl__symbol].isRendered;
+  get content(): DocumentFragment {
+    return this[DrekFragment$Context__symbol]._content;
   }
 
   /**
@@ -86,20 +55,7 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    * @param options - Fragment rendering options.
    */
   constructor(target: DrekTarget<TStatus>, options: DrekFragment.Options = {}) {
-    super();
-
-    const impl = this[DrekFragment$Impl__symbol] = DrekFragment$Impl.attach(this, target, options);
-
-    impl.init();
-  }
-
-  /**
-   * Tries to lift this rendering context to {@link target} one.
-   *
-   * @returns The {@link target} context when the fragment is {@link isRendered}, or `this` instance otherwise.
-   */
-  lift(): DrekContext {
-    return this[DrekFragment$Impl__symbol].lift();
+    this[DrekFragment$Context__symbol] = DrekFragment$Context.attach(this, target, options);
   }
 
   /**
@@ -107,12 +63,10 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    *
    * A {@link whenSettled} event sender notifies its receivers once settled.
    *
-   * Has no effect after the fragment is {@link isRendered rendered}.
-   *
    * @returns `this` instance.
    */
   settle(): this {
-    this[DrekFragment$Impl__symbol].settle();
+    this[DrekFragment$Context__symbol]._settle();
     return this;
   }
 
@@ -120,18 +74,35 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    * Renders this fragment by {@link DrekTarget.placeContent placing} its {@link DrekFragmentRenderExecution.content
    * content} to {@link target rendering target}.
    *
-   * Once rendered the fragment can no longer be used to render anything.
+   * Once rendered the fragment {@link content} becomes empty and can be reused. Its rendering context is updated.
    *
-   * @returns `this` instance as a result of content {@link DrekTarget.placeContent placement}.
+   * @returns Content {@link DrekTarget.placeContent placement} to {@link target}.
    */
-  render(): this {
-    this[DrekFragment$Impl__symbol].render();
-    return this;
+  render(): DrekPlacement<DrekFragment.Status<TStatus>> {
+    return this[DrekFragment$Context__symbol]._render();
   }
 
 }
 
 export namespace DrekFragment {
+
+  /**
+   * Rendering context provided by fragment to its content nodes.
+   *
+   * @typeParam TStatus - A type of the tuple containing a rendered content status as its first element.
+   */
+  export interface InnerContext<TStatus extends [DrekContentStatus]> extends DrekContext<Status<TStatus>> {
+
+    readonly scheduler: DrekFragmentRenderScheduler<TStatus>;
+
+    /**
+     * Tries to lift this rendering context to {@link target} one.
+     *
+     * @returns The {@link target} context when the fragment is rendered, or `this` instance otherwise.
+     */
+    lift(): DrekContext;
+
+  }
 
   /**
    * A status of rendered fragment content.
@@ -155,14 +126,14 @@ export namespace DrekFragment {
   export interface Options {
 
     /**
-     * Namespace aliaser to use.
+     * Namespace aliaser to use by content nodes.
      *
      * The one from the {@link DrekFragment.target.context target context} is used when omitted.
      */
     readonly nsAlias?: NamespaceAliaser;
 
     /**
-     * Render scheduler to use.
+     * Render scheduler to use by content nodes.
      *
      * A `queuedRenderScheduler` is used when omitted.
      */
