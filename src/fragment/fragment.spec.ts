@@ -46,6 +46,14 @@ describe('DrekFragment', () => {
       expect(fragment.content).toBe(customContent);
       expect(drekContextOf(customContent)).toBe(fragment.innerContext);
     });
+    it('should be standalone', () => {
+
+      const element = document.createElement('test-element');
+      const shadowRoot = element.attachShadow({ mode: 'open' });
+
+      expect(() => new DrekFragment(target, { content: shadowRoot }))
+          .toThrow('Not a standalone DocumentFragment');
+    });
     it('can not be reused by another fragment', () => {
       expect(() => new DrekFragment(target, { content: fragment.content }))
           .toThrow('Can not render content of another fragment');

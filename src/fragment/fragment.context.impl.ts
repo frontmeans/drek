@@ -37,6 +37,8 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   ): DrekFragment$Context<TStatus> {
     if (!content) {
       content = target.context.document.createDocumentFragment();
+    } else if (content.getRootNode({ composed: true }) !== content) {
+      throw new TypeError('Not a standalone DocumentFragment');
     } else if (content[DrekContext__symbol]) {
       throw new TypeError('Can not render content of another fragment');
     }
