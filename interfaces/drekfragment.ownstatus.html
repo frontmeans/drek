@@ -71,8 +71,9 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Initial rendered fragment content status.</p>
+						<p>A status of rendered fragment content.</p>
 					</div>
+					<p>This status is replaced by the target one</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
@@ -96,6 +97,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="drekfragment.ownstatus.html#connected" class="tsd-kind-icon">connected</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="drekfragment.ownstatus.html#withinfragment" class="tsd-kind-icon">within<wbr>Fragment</a></li>
 							</ul>
 						</section>
 					</div>
@@ -110,7 +112,7 @@
 					<aside class="tsd-sources">
 						<p>Overrides <a href="drekcontentstatus.html">DrekContentStatus</a>.<a href="drekcontentstatus.html#connected">connected</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/fragment/fragment.ts#L148">fragment/fragment.ts:148</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/fragment/fragment.ts#L121">fragment/fragment.ts:121</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -118,6 +120,27 @@
 							<p>Whether the content connected to the document.</p>
 						</div>
 						<p>This is always <code>true</code> for document content, but may be <code>false</code> e.g. until a fragment is <a href="../classes/drekfragment.html#render">rendered</a>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+					<a name="withinfragment" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> within<wbr>Fragment</h3>
+					<div class="tsd-signature tsd-kind-icon">within<wbr>Fragment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;added&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;rendered&quot;</span></div>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="drekcontentstatus.html">DrekContentStatus</a>.<a href="drekcontentstatus.html#withinfragment">withinFragment</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/fragment/fragment.ts#L131">fragment/fragment.ts:131</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A status of the content within a fragment.</p>
+						</div>
+						<p>Can be one of:</p>
+						<ul>
+							<li><code>&#39;added&#39;</code> - when the content is added to the fragment, but not yet rendered.</li>
+							<li><code>&#39;rendered&#39;</code> - while the content is being rendered, but not yet placed to <a href="../classes/drekfragment.html#target">target</a>.</li>
+						</ul>
 					</div>
 				</section>
 			</section>
@@ -141,6 +164,9 @@
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="drekfragment.innercontext.html" class="tsd-kind-icon">Inner<wbr>Context</a>
+					</li>
 					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
 						<a href="drekfragment.options.html" class="tsd-kind-icon">Options</a>
 					</li>
@@ -151,6 +177,9 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
 								<a href="drekfragment.ownstatus.html#connected" class="tsd-kind-icon">connected</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+								<a href="drekfragment.ownstatus.html#withinfragment" class="tsd-kind-icon">within<wbr>Fragment</a>
 							</li>
 						</ul>
 					</li>

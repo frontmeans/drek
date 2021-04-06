@@ -113,7 +113,7 @@
 					<div class="tsd-signature tsd-kind-icon">Drek__NS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">NamespaceDef</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/drek.ns.ts#L6">drek.ns.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/drek.ns.ts#L6">drek.ns.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -135,7 +135,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/common/derive-context.ts#L17">common/derive-context.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/common/derive-context.ts#L17">common/derive-context.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -182,7 +182,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/target/appender.target.ts#L13">target/appender.target.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/appender.target.ts#L13">target/appender.target.ts:13</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -220,7 +220,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/target/charger.target.ts#L17">target/charger.target.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/charger.target.ts#L17">target/charger.target.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -268,7 +268,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/context-of.ts#L17">context-of.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/context-of.ts#L17">context-of.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -291,17 +291,18 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/context-of.ts#L31">context-of.ts:31</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/context-of.ts#L32">context-of.ts:32</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
 									<p>Obtains a rendering context of the given node.</p>
 								</div>
-								<p>If the node is connected to document, the rendering context is the one of the document. Otherwise, if the node
-									belongs to the <a href="classes/drekfragment.html">rendering fragment</a>, then the latter is used. Otherwise, a new context is created
+								<p>If the node is connected to document, then the rendering context of that document is returned. Otherwise, if the node
+									belongs to the <a href="classes/drekfragment.html#content">content</a> of the rendered fragment, then the context
+									<a href="classes/drekfragment.html#innercontext">provided</a> by that fragment is returned. Otherwise, a new context is created
 									and attached to the node root. The latter does not track a document connection automatically.
-								A {@link DrekContext.expand} method could be used to track the connection status manually.</p>
+								A <a href="classes/drekcontext.html#lift">DrekContext.lift</a> method can be used to track the connection status manually.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -327,7 +328,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/common/css-classes.ts#L64">common/css-classes.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/common/css-classes.ts#L64">common/css-classes.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -359,7 +360,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/176686f/src/target/replacer.target.ts#L14">target/replacer.target.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/replacer.target.ts#L14">target/replacer.target.ts:14</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
