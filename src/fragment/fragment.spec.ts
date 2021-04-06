@@ -152,10 +152,24 @@ describe('DrekFragment', () => {
         let status!: DrekContentStatus;
 
         fragment.innerContext.readStatus(s => status = s);
-        expect(status).toEqual({ connected: false });
+        expect(status).toEqual({ connected: false, withinFragment: 'added' });
 
         fragment.render();
         expect(status).toEqual({ connected: true });
+      });
+      it('sends `rendered` status while rendering', () => {
+
+        const statuses: DrekContentStatus[] = [];
+
+        fragment.innerContext.readStatus(s => statuses.push(s));
+        expect(statuses).toEqual([{ connected: false, withinFragment: 'added' }]);
+
+        fragment.render();
+        expect(statuses).toEqual([
+          { connected: false, withinFragment: 'added' },
+          { connected: false, withinFragment: 'rendered' },
+          { connected: true },
+        ]);
       });
       it('sends `connected` status once render target fragment is rendered', async () => {
 
@@ -170,7 +184,7 @@ describe('DrekFragment', () => {
         fragment.innerContext.readStatus(s => status = s);
 
         fragment2.render();
-        expect(status).toEqual({ connected: false });
+        expect(status).toEqual({ connected: false, withinFragment: 'added' });
 
         fragment.render();
         expect(status).toEqual({ connected: true });
@@ -186,7 +200,7 @@ describe('DrekFragment', () => {
         expect(settled1).toBeUndefined();
 
         fragment.settle();
-        expect(settled1).toEqual({ connected: false });
+        expect(settled1).toEqual({ connected: false, withinFragment: 'added' });
         expect(supply1.isOff).toBe(true);
 
         let settled2: DrekContentStatus | undefined;
@@ -194,7 +208,7 @@ describe('DrekFragment', () => {
         expect(settled2).toBeUndefined();
 
         fragment.settle();
-        expect(settled2).toEqual({ connected: false });
+        expect(settled2).toEqual({ connected: false, withinFragment: 'added' });
         expect(supply2.isOff).toBe(true);
       });
       it('sends a status one time when rendered', () => {

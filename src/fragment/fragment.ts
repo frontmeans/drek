@@ -112,11 +112,23 @@ export namespace DrekFragment {
       | TStatus;
 
   /**
-   * Initial rendered fragment content status.
+   * A status of rendered fragment content.
+   *
+   * This status is replaced by the target one
    */
   export interface OwnStatus extends DrekContentStatus {
 
     readonly connected: false;
+
+    /**
+     * A status of the content within a fragment.
+     *
+     * Can be one of:
+     *
+     * - `'added'` - when the content is added to the fragment, but not yet rendered.
+     * - `'rendered'` - while the content is being rendered, but not yet placed to {@link DrekFragment.target target}.
+     */
+    readonly withinFragment: 'added' | 'rendered';
 
   }
 

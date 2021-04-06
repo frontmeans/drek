@@ -142,7 +142,7 @@ describe('drekContextOf', () => {
         expect(whenSettled).not.toHaveBeenCalled();
 
         fragment.settle();
-        expect(whenSettled).toHaveBeenCalledWith({ connected: false });
+        expect(whenSettled).toHaveBeenCalledWith({ connected: false, withinFragment: 'added' });
         expect(settlementSupply.isOff).toBe(true);
       });
     });

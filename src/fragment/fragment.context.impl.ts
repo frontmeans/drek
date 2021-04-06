@@ -52,7 +52,7 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
 
   readonly scheduler: DrekFragmentRenderScheduler<TStatus>;
   readonly readStatus: AfterEvent<DrekFragment.Status<TStatus>>;
-  private readonly _status = trackValue<DrekFragment.Status<TStatus>>([{ connected: false }]);
+  private readonly _status = trackValue<DrekFragment.Status<TStatus>>([{ connected: false, withinFragment: 'added' }]);
   private readonly _state: DrekContext$State;
   private readonly _settled = new EventEmitter<DrekFragment.Status<TStatus>>();
   private _lift: DrekContext;
@@ -112,7 +112,11 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   }
 
   _render(): this {
+    // Make the `.lift()` method return the target context.
     this._lift = this._target.context;
+
+    // Signal the rendering started.
+    this._status.it = [{ connected: false, withinFragment: 'rendered' }];
 
     const schedule = this._state._scheduler();
 
@@ -122,10 +126,11 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
       // Await for all scheduled shots to render.
       context.postpone(() => {
         this._target.context.scheduler()(() => {
-
           // Place the rendered content within target's scheduler.
+
           const placement = this._target.placeContent(this._content);
 
+          // Reset the inner context.
           this._content[DrekContext__symbol] = this._fragment[DrekFragment$Context__symbol] = new DrekFragment$Context(
               this._fragment,
               this._target,
