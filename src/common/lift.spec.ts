@@ -12,10 +12,10 @@ describe('drekLift', () => {
 
     fragment.content.appendChild(element);
 
-    const lifted = drekLift(element);
+    expect(drekLift(element)).toBe(element);
 
-    expect(lifted).toBe(fragment.innerContext);
-    expect(context.lift()).toBe(lifted);
+    expect(drekContextOf(element)).toBe(fragment.innerContext);
+    expect(context.lift()).toBe(fragment.innerContext);
   });
   it('does nothing when the node has no rendering context attached', () => {
 
@@ -24,6 +24,7 @@ describe('drekLift', () => {
 
     fragment.content.appendChild(element);
 
-    expect(drekLift(element)).toBeUndefined();
+    expect(drekLift(element)).toBe(element);
+    expect(drekContextOf(element)).toBe(fragment.innerContext);
   });
 });

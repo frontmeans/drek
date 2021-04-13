@@ -1,4 +1,3 @@
-import { DrekContext } from '../context';
 import { DrekContext$Holder, DrekContext__symbol } from '../context.impl';
 
 /**
@@ -12,10 +11,11 @@ import { DrekContext$Holder, DrekContext__symbol } from '../context.impl';
  *
  * @param node - A DOM node with rendering context to lift.
  *
- * @returns Either a rendering context of the new root node, or the one of the `node` itself, if present.
+ * @returns The `node` itself.
  */
-export function drekLift(node: Node): DrekContext | undefined;
+export function drekLift<TNode extends Node>(node: TNode): TNode;
 
-export function drekLift(node: DrekContext$Holder<Node>): DrekContext | undefined {
-  return node[DrekContext__symbol]?.lift();
+export function drekLift<TNode extends Node>(node: DrekContext$Holder<TNode>): TNode {
+  node[DrekContext__symbol]?.lift();
+  return node;
 }
