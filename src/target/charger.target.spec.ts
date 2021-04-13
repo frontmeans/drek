@@ -54,7 +54,7 @@ describe('drekCharger', () => {
     target = drekCharger(
         drekReplacer(out),
         {
-          charge(content) {
+          charge(content, target) {
 
             const fragment = document.createDocumentFragment();
 
@@ -62,7 +62,7 @@ describe('drekCharger', () => {
             fragment.appendChild(content);
             fragment.appendChild(document.createComment('content end'));
 
-            return fragment
+            return target.placeContent(fragment);
           },
         },
     );

@@ -6,7 +6,7 @@ import { DrekPlacement } from '../placement';
 import { DrekTarget } from './target';
 
 /**
- * Creates a rendering target that charges rendered content prior to passing it to another target.
+ * Creates a rendering target that charges rendered content prior to placing it to another target.
  *
  * @typeParam TStatus - A tuple type reflecting a content {@link DrekContentStatus placement status}.
  * @param target - Rendering target of charged content.
@@ -24,7 +24,7 @@ export function drekCharger<TStatus extends [DrekContentStatus] = [DrekContentSt
   return {
     context: target.context,
     placeContent(content: Node): DrekPlacement {
-      return target.placeContent(charger.charge(content));
+      return charger.charge(content, target);
     },
   }
 }
@@ -60,11 +60,13 @@ export namespace DrekCharger {
     /**
      * Charges rendered content by representing it as another DOM node.
      *
-     * @param content - Rendered content to charge into DOM node.
+     * @typeParam TStatus - A tuple type reflecting a content {@link DrekContentStatus placement status}.
+     * @param content - Rendered content to charge.
+     * @param target - Rendering target to place the charged content to.
      *
-     * @returns A DOM node charged with rendered content.
+     * @returns Charged content placement status.
      */
-    charge(content: Node): Node;
+    charge<TStatus extends [DrekContentStatus]>(content: Node, target: DrekTarget<TStatus>): DrekPlacement<TStatus>;
 
   }
 
@@ -107,24 +109,28 @@ function DrekCharger$elementWrapper(
 ): DrekCharger.Custom {
 
   const tagName = html__naming.name(name, nsAlias);
-  let renderTag = (content: Node): Node => {
+  let renderTag = <TStatus extends [DrekContentStatus]>(
+      content: Node,
+      target: DrekTarget<TStatus>,
+  ): DrekPlacement<TStatus> => {
 
     const element = document.createElement(tagName);
+    let placement: DrekPlacement<TStatus>;
 
     element.style.display = 'contents';
 
-    renderTag = content => {
+    renderTag = (content, _target) => {
       removeNodeContent(element);
       element.append(content);
-      return element;
+      return placement;
     };
 
     element.append(content);
 
-    return element;
+    return placement = target.placeContent(element)
   };
 
   return {
-    charge: content => renderTag(content),
+    charge: (content, target) => renderTag(content, target),
   };
 }
