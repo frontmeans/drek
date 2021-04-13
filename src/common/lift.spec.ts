@@ -1,0 +1,29 @@
+import { drekContextOf } from '../context-of';
+import { DrekFragment } from '../fragment';
+import { drekAppender } from '../target';
+import { drekLift } from './lift';
+
+describe('drekLift', () => {
+  it('lifts node rendering context', () => {
+
+    const element = document.createElement('test-element');
+    const context = drekContextOf(element);
+    const fragment = new DrekFragment(drekAppender(document.body));
+
+    fragment.content.appendChild(element);
+
+    const lifted = drekLift(element);
+
+    expect(lifted).toBe(fragment.innerContext);
+    expect(context.lift()).toBe(lifted);
+  });
+  it('does nothing when the node has no rendering context attached', () => {
+
+    const element = document.createElement('test-element');
+    const fragment = new DrekFragment(drekAppender(document.body));
+
+    fragment.content.appendChild(element);
+
+    expect(drekLift(element)).toBeUndefined();
+  });
+});
