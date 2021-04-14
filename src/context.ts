@@ -7,7 +7,38 @@ import { DrekPlacement } from './placement';
 /**
  * Document rendering context.
  *
- * Can be obtained by {@link drekContextOf} function, or provided by {@link DrekFragment rendered fragment}.
+ * Can be obtained by {@link drekContextOf} function, or {@link DrekFragment.innerContext provided} by rendered
+ * fragment.
+ *
+ * There are three kinds of rendering contexts:
+ *
+ * 1. Document rendering context.
+ *
+ *    Such context is always available in document and returned by {@link drekContextOf} function for any DOM node
+ *    connected to the document.
+ *
+ * 2. Fragment content rendering context.
+ *
+ *    It is created for each rendered fragment and is available via {@link DrekFragment.innerContext} property.
+ *    The {@link drekContextOf} function returns this context for fragment's {@link DrekContext.content content},
+ *    as well as for each DOM node added to it.
+ *
+ * 3. Unrooted rendering context.
+ *
+ *    When a DOM node is neither connected to a document, nor part of a rendered fragment's {@link DrekFragment.content
+ *    content}, the {@link drekContextOf} function creates an unrooted context for the [root node] of that node.
+ *
+ *    Unrooted context tracks a {@link whenConnected document connection} and {@link whenSettled settlement}
+ *    semi-automatically. A {@link lift} method can be used to forcibly update them.
+ *
+ *    Semi-automatic tracking means that each time an unrooted context {@link drekContextOf created}, it is registered
+ *    for automatic lifting. The lifting happens either asynchronously, or synchronously right before the
+ *    {@link drekBuild} function exit.
+ *
+ *    Alternatively, a {@link drekLift} function can be used to lift a context of the [root node] after adding it to
+ *    another one.
+ *
+ * [root node]: https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode
  *
  * @typeParam TStatus - A type of the tuple containing a context content status as its first element.
  */
@@ -50,12 +81,11 @@ export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekCon
   /**
    * Tries to lift this rendering context to enclosing one.
    *
-   * This is only meaningful for context attached to disconnected DOM node by {@link drekContextOf} function.
+   * Tries to find a new root node. If the new root differs from current one, then {@link drekContextOf finds} a context
+   * of that new root and connects the status of this context to the found one. After successful lifting the context
+   * becomes a proxy accessor of the context it is lifted to, so the latter can be used instead.
    *
-   * Tries to find new root node. If the new root differs from current one, then {@link drekContextOf finds} a context
-   * of that new root and connects the status of this context to the found one.
-   *
-   * This has no effect for document rendering context and for {@link DrekFragment rendered fragments}.
+   * This has effect for unrooted contexts only.
    *
    * @returns Either a rendering context of the new root node, or this one.
    */

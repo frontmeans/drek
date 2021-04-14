@@ -69,6 +69,27 @@ describe('drekContextOf', () => {
       expect(context.document).toBe(docContext.document);
       expect(context.nsAlias).toBe(docContext.nsAlias);
     });
+    it('is lifted automatically', async () => {
+
+      const element1 = doc.createElement('test-element-1');
+      const context1 = drekContextOf(element1);
+      const element2 = doc.createElement('test-element-2');
+      const context2 = drekContextOf(element2);
+
+      doc.body.append(element1, element2);
+
+      const whenConnected1 = jest.fn();
+      const whenConnected2 = jest.fn();
+
+      context1.whenConnected(whenConnected1);
+      context2.whenConnected(whenConnected2);
+      expect(whenConnected1).not.toHaveBeenCalled();
+      expect(whenConnected2).not.toHaveBeenCalled();
+
+      await Promise.resolve();
+      expect(whenConnected1).toHaveBeenCalledWith({ connected: true });
+      expect(whenConnected2).toHaveBeenCalledWith({ connected: true });
+    });
 
     describe('scheduler', () => {
 

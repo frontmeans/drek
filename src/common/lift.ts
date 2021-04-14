@@ -5,7 +5,7 @@ import { DrekContext$Holder, DrekContext__symbol } from '../context.impl';
  *
  * It may be useful to call this method e.g. on a custom element after appending it to {@link DrekFragment fragment}.
  * The former may access its rendering context in constructor. Calling this method would lift that context to fragment's
- * one, so the custom element would be notified on {@link DrekContext.whenSettled settlement}.
+ * one, so the custom element would be notified on its {@link DrekContext.whenSettled settlement}.
  *
  * Does nothing if the given node has no rendering context attached to it.
  *
