@@ -1,3 +1,4 @@
+import { isCommentNode } from '@frontmeans/dom-primitives';
 import { drekAppender } from './appender.target';
 import { drekCharger } from './charger.target';
 import { drekReplacer } from './replacer.target';
@@ -15,40 +16,36 @@ describe('drekCharger', () => {
     content = document.createTextNode('rendered content');
   });
 
-  it('wraps content into predefined element by default', () => {
+  it('encloses content into random comments', () => {
     target.placeContent(content);
 
-    const wrapper = out.querySelector('drek-content') as HTMLElement;
+    const [start, placed, end] = Array.from(out.childNodes)
 
-    expect(wrapper).toBeDefined();
-    expect(wrapper.style.display).toBe('contents');
-    expect(Array.from(wrapper.childNodes)).toEqual([content]);
+    expect(isCommentNode(start)).toBe(true);
+    expect(isCommentNode(end)).toBe(true);
+    expect(placed).toBe(content);
   });
-  it('wraps content into predefined element only once', () => {
+  it('encloses content into comments only once', () => {
     target = drekCharger(drekAppender(out), null);
     target.placeContent(content);
+
+    const [start, , end] = Array.from(out.childNodes);
 
     const content2 = document.createElement('test-element2');
 
     target.placeContent(content2);
 
-    const allWrappers = out.querySelectorAll('drek-content');
-
-    expect(allWrappers.length).toBe(1);
-
-    const wrapped = allWrappers[0];
-
-    expect(Array.from(wrapped.childNodes)).toEqual([content2]);
+    expect(Array.from(out.childNodes)).toEqual([start, content2, end]);
   });
-  it('wraps content into element with custom tag name', () => {
+  it('encloses content with custom comments', () => {
     target = drekCharger(drekAppender(out), 'test-content');
     target.placeContent(content);
 
-    const wrapper = out.querySelector('test-content') as HTMLElement;
+    const [start, placed, end] = Array.from(out.childNodes)
 
-    expect(wrapper).toBeDefined();
-    expect(wrapper.style.display).toBe('contents');
-    expect(Array.from(wrapper.childNodes)).toEqual([content]);
+    expect(start.textContent).toBe(' [[ test-content [[ ');
+    expect(end.textContent).toBe(' ]] test-content ]] ');
+    expect(placed).toBe(content);
   });
   it('uses custom charger', () => {
     target = drekCharger(
@@ -78,10 +75,10 @@ describe('drekCharger', () => {
     target = drekCharger(drekAppender(out), () => 'test-content');
     target.placeContent(content);
 
-    const wrapper = out.querySelector('test-content') as HTMLElement;
+    const [start, placed, end] = Array.from(out.childNodes)
 
-    expect(wrapper).toBeDefined();
-    expect(wrapper.style.display).toBe('contents');
-    expect(Array.from(wrapper.childNodes)).toEqual([content]);
+    expect(start.textContent).toBe(' [[ test-content [[ ');
+    expect(end.textContent).toBe(' ]] test-content ]] ');
+    expect(placed).toBe(content);
   });
 });
