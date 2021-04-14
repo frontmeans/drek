@@ -1,7 +1,4 @@
-import { removeNodeContent } from '@frontmeans/dom-primitives';
-import { html__naming, isQualifiedName, QualifiedName } from '@frontmeans/namespace-aliaser';
 import { DrekContentStatus } from '../content-status';
-import { Drek__NS } from '../drek.ns';
 import { DrekPlacement } from '../placement';
 import { DrekTarget } from './target';
 
@@ -36,17 +33,15 @@ export namespace DrekCharger {
    *
    * Can be one of:
    *
-   * - A qualified name of DOM element that wraps the rendered content. This element would be created with
-   *   `display: contents;` style.
+   * - An arbitrary string containing a text for enclosing comments.
    * - A {@link Custom custom charger}.
    * - A {@link Factory charger factory} function.
-   * - `null`/`undefined` to wrap the rendered contents into DOM element with `display: contents;` style and predefined
-   *   tag name (`content` in {@link Drek__NS Drek namespace}).
+   * - `null`/`undefined` to enclose the rendered contents in comments with random text.
    *
    *  @typeParam TStatus - A tuple type reflecting a content {@link DrekContentStatus placement status}.
    */
   export type Spec<TStatus extends [DrekContentStatus] = [DrekContentStatus]> =
-      | QualifiedName
+      | string
       | Custom
       | Factory<TStatus>
       | null
@@ -85,8 +80,6 @@ export namespace DrekCharger {
 
 }
 
-const DrekCharger$defaultTagName: QualifiedName = ['content', Drek__NS];
-
 function DrekCharger$custom<TStatus extends [DrekContentStatus]>(
     target: DrekTarget<TStatus>,
     spec: DrekCharger.Spec<TStatus>,
@@ -94,43 +87,50 @@ function DrekCharger$custom<TStatus extends [DrekContentStatus]>(
   if (typeof spec === 'function') {
     return DrekCharger$custom(target, spec(target));
   }
-  if (isQualifiedName(spec)) {
-    return DrekCharger$elementWrapper(target, spec);
+  if (typeof spec === 'string') {
+    return DrekCharger$commentWrapper(target, spec);
   }
   if (spec) {
     return spec;
   }
-  return DrekCharger$elementWrapper(target, DrekCharger$defaultTagName);
+
+  return DrekCharger$commentWrapper(target, Math.random().toString(32).substr(2));
 }
 
-function DrekCharger$elementWrapper(
-    { context: { document, nsAlias } }: DrekTarget,
-    name: QualifiedName,
+function DrekCharger$commentWrapper(
+    { context: { document } }: DrekTarget,
+    rem: string,
 ): DrekCharger.Custom {
 
-  const tagName = html__naming.name(name, nsAlias);
-  let renderTag = <TStatus extends [DrekContentStatus]>(
+  let wrapContent = <TStatus extends [DrekContentStatus]>(
       content: Node,
       target: DrekTarget<TStatus>,
   ): DrekPlacement<TStatus> => {
 
-    const element = document.createElement(tagName);
+    const start = document.createComment(` [[ ${rem} [[ `);
+    const end = document.createComment(` ]] ${rem} ]] `)
     let placement: DrekPlacement<TStatus>;
 
-    element.style.display = 'contents';
+    wrapContent = (content, _target) => {
 
-    renderTag = (content, _target) => {
-      removeNodeContent(element);
-      element.append(content);
+      const range = document.createRange();
+
+      range.setStartAfter(start);
+      range.setEndBefore(end);
+      range.deleteContents();
+      range.insertNode(content);
+
       return placement;
     };
 
-    element.append(content);
+    const fragment = document.createDocumentFragment();
 
-    return placement = target.placeContent(element)
+    fragment.append(start, content, end);
+
+    return placement = target.placeContent(fragment)
   };
 
   return {
-    charge: (content, target) => renderTag(content, target),
+    charge: (content, target) => wrapContent(content, target),
   };
 }
