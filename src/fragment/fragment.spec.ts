@@ -248,5 +248,31 @@ describe('DrekFragment', () => {
 
       expect(fragment.innerContext).not.toBe(prevContext);
     });
+    it('sends `whenRendered` event once', () => {
+
+      const scheduler = newManualRenderScheduler();
+
+      targetContext = deriveDrekContext(
+          drekContextOf(doc),
+          {
+            nsAlias: targetNsAlias,
+            scheduler: scheduler,
+          },
+      );
+      target = drekReplacer(doc.body, targetContext);
+      fragment = new DrekFragment(target);
+
+      const whenRendered = jest.fn();
+      const supply = fragment.whenRendered(whenRendered);
+
+      expect(whenRendered).not.toHaveBeenCalled();
+
+      fragment.render();
+      expect(whenRendered).not.toHaveBeenCalled();
+
+      scheduler.render();
+      expect(whenRendered).toHaveBeenCalledWith(targetContext);
+      expect(supply.isOff).toBe(true);
+    });
   });
 });

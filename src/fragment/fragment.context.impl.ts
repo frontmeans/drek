@@ -7,9 +7,11 @@ import {
   RenderScheduler,
 } from '@frontmeans/render-scheduler';
 import { AfterEvent, afterThe, EventEmitter, onceOn, OnEvent, trackValue, translateAfter_ } from '@proc7ts/fun-events';
+import { valueProvider } from '@proc7ts/primitives';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
 import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from '../context.impl';
+import { DrekPlacement } from '../placement';
 import { DrekTarget } from '../target';
 import { DrekFragment } from './fragment';
 import { DrekFragmentRenderExecution, DrekFragmentRenderScheduler } from './fragment-scheduler';
@@ -59,6 +61,7 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   private readonly _settled = new EventEmitter<DrekFragment.Status<TStatus>>();
   private _lift: DrekContext;
   private _whenSettled?: OnEvent<DrekFragment.Status<TStatus>>;
+  private readonly _rendered = new EventEmitter<[DrekPlacement<TStatus>]>();
 
   private constructor(
       readonly _fragment: DrekFragment<TStatus>,
@@ -143,10 +146,19 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
 
           // Derive the status from the target context.
           this._status.by(placement, (...status) => afterThe(status));
+
+          // Send `whenRendered` event.
+          this._rendered.send(placement);
         });
       });
     });
     return this;
+  }
+
+  _whenRendered(): OnEvent<[DrekPlacement<TStatus>]> {
+    return (this._whenRendered = valueProvider(this._rendered.on.do(
+        onceOn,
+    )))();
   }
 
   private _createSchedule(

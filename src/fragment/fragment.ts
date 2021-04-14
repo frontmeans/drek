@@ -1,5 +1,6 @@
 import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { RenderScheduler } from '@frontmeans/render-scheduler';
+import { OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
 import { DrekPlacement } from '../placement';
@@ -46,6 +47,18 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    */
   get content(): DocumentFragment {
     return this[DrekFragment$Context__symbol]._content;
+  }
+
+  /**
+   * An `OnEvent` sender of fragment rendering event.
+   *
+   * Sends a fragment content {@link DrekTarget.placeContent placement} to {@link target} when the fragment is actually
+   * {@link render rendered}.
+   *
+   * Cuts off the event supply after sending the first event.
+   */
+  get whenRendered(): OnEvent<[DrekPlacement<DrekFragment.Status<TStatus>>]> {
+    return this[DrekFragment$Context__symbol]._whenRendered();
   }
 
   /**
