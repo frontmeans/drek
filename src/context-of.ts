@@ -1,11 +1,5 @@
-import { isDocumentNode } from '@frontmeans/dom-primitives';
-import { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
-import { RenderScheduler } from '@frontmeans/render-scheduler';
-import { AfterEvent, EventEmitter, OnEvent, trackValue } from '@proc7ts/fun-events';
-import { DrekContentStatus } from './content-status';
 import { DrekContext } from './context';
-import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from './context.impl';
-import { DrekContext$ofDocument } from './context.of-document.impl';
+import { DrekContext$ofRootNode } from './context.of-root-node.impl';
 
 /**
  * Obtains a updatable a rendering context of the given document.
@@ -21,9 +15,10 @@ export function drekContextOf(document: Document): DrekContext.Updatable;
  *
  * If the node is connected to document, then the rendering context of that document is returned. Otherwise, if the node
  * belongs to the {@link DrekFragment.content content} of the rendered fragment, then the context
- * {@link DrekFragment.innerContext provided} by that fragment is returned. Otherwise, a new context is created
- * and attached to the node root. The latter does not track a document connection automatically.
- * A {@link DrekContext.lift} method can be used to track the connection status manually.
+ * {@link DrekFragment.innerContext provided} by that fragment is returned. Otherwise, an unrooted context is created
+ * and attached to the [root node] of the target `node`.
+ *
+ * [root node]: https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode
  *
  * @param node - Target node.
  *
@@ -37,82 +32,11 @@ export function drekContextOf(node: Node): DrekContext {
     const root = node.getRootNode({ composed: true });
 
     if (root === node) {
-      return DrekContext$ofRoot(node);
+      return DrekContext$ofRootNode(node);
     }
 
     node = root;
   }
 }
 
-function DrekContext$ofRoot(root: DrekContext$Holder<Node>): DrekContext {
-  return isDocumentNode(root) ? DrekContext$ofDocument(root) : DrekContext$ofRootNode(root);
-}
 
-function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekContext {
-
-  const existing = root[DrekContext__symbol];
-
-  if (existing) {
-    return existing.lift();
-  }
-
-  const status = trackValue<DrekContentStatus>({ connected: false });
-  const settled = new EventEmitter<[DrekContentStatus]>();
-  let derivedCtx: DrekContext = DrekContext$ofDocument(
-      root.ownerDocument! /* Not a document, so `ownerDocument` is set */,
-  );
-  const scheduler = new DrekContext$State(derivedCtx);
-  let lift = (ctx: DrekContext): DrekContext => {
-
-    const newRoot = root.getRootNode({ composed: true });
-
-    if (newRoot === root) {
-      return ctx;
-    }
-
-    const lifted = DrekContext$ofRoot(newRoot);
-
-    root[DrekContext__symbol] = undefined;
-    scheduler.set(lifted);
-    lifted.whenSettled(status => settled.send(status)).cuts(settled);
-    status.by(lifted);
-    lift = _ctx => lifted;
-    derivedCtx = lifted;
-
-    return lifted;
-  };
-
-  class DrekContext$OfRootNode extends DrekContext {
-
-    get window(): Window {
-      return derivedCtx.window;
-    }
-
-    get document(): Document {
-      return derivedCtx.document;
-    }
-
-    get nsAlias(): NamespaceAliaser {
-      return derivedCtx.nsAlias;
-    }
-
-    get scheduler(): RenderScheduler {
-      return scheduler.scheduler;
-    }
-
-    get readStatus(): AfterEvent<[DrekContentStatus]> {
-      return status.read;
-    }
-
-    get whenSettled(): OnEvent<[DrekContentStatus]> {
-      return settled.on;
-    }
-
-    lift(): DrekContext {
-      return lift(this);
-    }
-
-  }
-
-  return root[DrekContext__symbol] = new DrekContext$OfRootNode();
-}
