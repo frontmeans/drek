@@ -71,7 +71,7 @@ export function drekCssClassesOf(element: DrekCssClasses$Holder): DrekCssClasses
 class DrekCssClasses$ implements DrekCssClasses {
 
   private readonly _context: DrekContext;
-  private readonly _counters = new Map<string, DrekCssClasses$Counter>();
+  private readonly _uses = new Map<string, DrekCssClasses$Use>();
 
   constructor(private readonly _element: Element) {
     this._context = drekContextOf(_element);
@@ -98,42 +98,58 @@ class DrekCssClasses$ implements DrekCssClasses {
 
     const name = css__naming.name(className, nsAlias);
     const schedule = scheduler({ node: this._element });
+    const use = this._use(name);
 
-    let counter = this._counters.get(name);
-    let delta: number;
+    const render = (): void => {
+      if (use.n) {
+        if (!use.s) {
+          this._element.classList.add(name);
+          use.s = 1;
+        }
+      } else {
+        if (use.s && !use.i) { // Do not remove the class if it present initially.
+          this._element.classList.remove(name);
+          use.s = 0;
+        }
+        this._uses.delete(name);
+      }
+    };
 
-    if (!counter) {
-      counter = {
-        n: delta = this._element.classList.contains(name) ? -1 : 1,
-        s: 0,
-      };
-      this._counters.set(name, counter);
-    } else if (counter.n > 0) {
-      delta = 1;
-      ++counter.n;
-    } else {
-      delta = -1;
-      --counter.n;
+    if (use.n === 1) {
+      schedule(render);
     }
 
-    schedule(() => {
-      if (!supply.isOff) {
-        this._element.classList.add(name);
-        counter!.s = 1;
-      }
-    });
-
     return supply.whenOff(() => {
-      if (!(counter!.n -= delta)) {
-        this._counters.delete(name);
-        if (counter!.s && delta > 0) {
-          // Do not remove the class if it is not added or present initially.
-          schedule(() => {
-            this._element.classList.remove(name);
-          });
-        }
+      if (!--use.n) {
+        schedule(render);
       }
     });
+  }
+
+  private _use(name: string): DrekCssClasses$Use {
+
+    let use = this._uses.get(name);
+
+    if (use) {
+      ++use.n;
+    } else {
+      if (this._element.classList.contains(name)) {
+        use = {
+          i: 1,
+          n: 1,
+          s: 1,
+        };
+      } else {
+        use = {
+          i: 0,
+          n: 1,
+          s: 0,
+        };
+      }
+      this._uses.set(name, use);
+    }
+
+    return use;
   }
 
   has(className: QualifiedName): boolean {
@@ -143,8 +159,11 @@ class DrekCssClasses$ implements DrekCssClasses {
   private _has({ nsAlias }: DrekContext, className: QualifiedName): boolean {
 
     const name = css__naming.name(className, nsAlias);
+    const use = this._uses.get(name);
 
-    return this._counters.has(name) || this._element.classList.contains(name);
+    return use
+        ? !!use.n || !!use.i
+        : this._element.classList.contains(name);
   }
 
   renderIn(context: DrekContext): DrekCssClasses {
@@ -159,7 +178,8 @@ class DrekCssClasses$ implements DrekCssClasses {
 
 }
 
-interface DrekCssClasses$Counter {
-  n: number;  // number of suppliers
-  s: 0 | 1;   // actually set
+interface DrekCssClasses$Use {
+  readonly i: 0 | 1; // initially set
+  n: number;         // number of uses
+  s: 0 | 1;          // actually set
 }
