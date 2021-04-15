@@ -5,7 +5,7 @@ import { DrekPlacement } from '../placement';
 /**
  * Rendering target.
  *
- * Represents a part of the DOM tree to place the rendered contents to.
+ * Represents a part of the DOM tree to place the rendered content to.
  *
  * @typeParam TStatus - A tuple type reflecting a content {@link DrekContentStatus placement status}.
  */

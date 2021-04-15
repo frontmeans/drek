@@ -2,7 +2,7 @@ import { DrekContext } from './context';
 import { DrekContext$ofRootNode } from './context.of-root-node.impl';
 
 /**
- * Obtains a updatable a rendering context of the given document.
+ * Obtains an updatable rendering context of the given document.
  *
  * @param document - Target document.
  *

@@ -3,8 +3,11 @@
   "version": "1.0.0-dev.6",
   "description": "Document render kit",
   "keywords": [
+    "custom-elements",
+    "document-fragment",
     "dom",
-    "raf"
+    "dom-render",
+    "dom-settlement"
   ],
   "homepage": "https://github.com/frontmeans/drek",
   "repository": {
