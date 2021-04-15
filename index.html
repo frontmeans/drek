@@ -74,35 +74,148 @@
 				<ul>
 					<li>Provides a <a href="https://www.npmjs.com/package/@frontmeans/render-scheduler">render scheduler</a> suitable for performant DOM manipulations.</li>
 					<li>Provides a <a href="https://www.npmjs.com/package/@frontmeans/namespace-aliaser">namespace aliaser</a>.</li>
-					<li>Provides a settlement phase of rendering. A DOM node (e.g. custom element) may use to perform custom actions before
+					<li>Provides a <a href="#settlement-phase">settlement</a> phase of rendering. A DOM node (e.g. custom element) may use to perform custom actions before
 					it is added to the document.</li>
 					<li>Notifies when node added (connected) to document.</li>
 				</ul>
-				<p>The rendering context of particular DOM node may be obtained using [drekContextOf] function.</p>
+				<p>The rendering context of particular DOM node may be obtained using <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a> function.</p>
 				<p>There are three kinds of rendering contexts:</p>
 				<ol>
 					<li><p>Document rendering context.</p>
-						<p>Such context is always available in document and returned by [drekContextOf] function for any DOM node connected
+						<p>Such context is always available in document and returned by <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a> function for any DOM node connected
 						to the document.</p>
 					</li>
 					<li><p>Fragment content rendering context.</p>
-						<p>It is created for each [rendered fragment] and is available via <code>DrekFragment.innerContext</code> property.
-						The [drekContextOf] function returns this context for fragment&#39;s content, as well as for each DOM node added to it.</p>
+						<p>It is created for each [rendered fragment] and is available via [DrekFragment.innerContext] property.
+						The <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a> function returns this context for fragment&#39;s content, as well as for each DOM node added to it.</p>
 					</li>
 					<li><p>Unrooted rendering context.</p>
-						<p>When a DOM node is neither connected to a document, nor part of a [rendered fragment]&#39;s content, the [drekContextOf]
-						function creates an unrooted context for the [root node] of that node.</p>
-						<p>Unrooted context tracks a document connection and settlement semi-automatically. A <code>DrekContext.lift</code> method can be
+						<p>When a DOM node is neither connected to a document, nor part of a [rendered fragment]&#39;s content, the <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a>
+						function creates an unrooted context for the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode">root node</a> of that node.</p>
+						<p>Unrooted context tracks a document connection and settlement semi-automatically. A <a href="https://frontmeans.github.io/drek/classes/drekcontext.html#lift">DrekContext.lift</a> method can be
 						used to forcibly update them.</p>
 						<p>Semi-automatic tracking means that each time an unrooted context created, it is registered for automatic lifting.
-						The lifting happens either asynchronously, or synchronously right before the [drekBuild] function exit.</p>
-						<p>Alternatively, a <a href="modules.html#dreklift">drekLift</a> function can be used to lift a context of the [root node] after adding it to
-						another one.</p>
+						The lifting happens either asynchronously, or synchronously right before the <a href="https://frontmeans.github.io/drek/modules.html#drekbuild">drekBuild</a> function exit.</p>
+						<p>Alternatively, a <a href="https://frontmeans.github.io/drek/modules.html#dreklift">drekLift</a> function can be used to lift a context of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode">root node</a> after adding it to another one.</p>
 					</li>
 				</ol>
-				<p>[drekBuild]:
-					[drekContextOf]: <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">https://frontmeans.github.io/drek/modules.html#drekcontextof</a>
-				[root node]: <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode">https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode</a></p>
+				<a href="#rendered-fragment" id="rendered-fragment" style="color: inherit; text-decoration: none;">
+					<h2>Rendered Fragment</h2>
+				</a>
+				<p>A [DrekFragment] is a fragment of DOM tree, which content is to be placed to the document once rendered.</p>
+				<p>The content of rendered fragment is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment">DocumentFragment</a>.</p>
+				<p>The rendered fragment provides a separate <a href="#rendering-context">rendering context</a> for its content nodes. The latter informs content nodes
+				when they are added to document. It also establishes a <a href="#settlement-phase">settlement</a> phase for them.</p>
+				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">drekAppender</span><span style="color: #000000">, </span><span style="color: #001080">drekContextOf</span><span style="color: #000000">, </span><span style="color: #001080">DrekFragment</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@frontmeans/drek&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #008000">// A fragment appended to document body once rendered.</span>
+<span style="color: #008000">// Another rendering target can be specified. E.g. it may be another fragment.</span>
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">fragment</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DrekTarget</span><span style="color: #000000">(</span><span style="color: #795E26">drekAppender</span><span style="color: #000000">(</span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #001080">body</span><span style="color: #000000">));</span>
+
+<span style="color: #008000">// Render content.</span>
+<span style="color: #795E26">render</span><span style="color: #000000">(</span><span style="color: #001080">fragment</span><span style="color: #000000">.</span><span style="color: #001080">content</span><span style="color: #000000">);</span>
+
+<span style="color: #001080">fragment</span><span style="color: #000000">.</span><span style="color: #795E26">whenRendered</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// This is called when content is fully rendered and added to the target.  </span>
+<span style="color: #000000">});</span>
+
+<span style="color: #008000">// Await for content to be rendered, then add it to the target.</span>
+<span style="color: #001080">fragment</span><span style="color: #000000">.</span><span style="color: #795E26">render</span><span style="color: #000000">();</span>
+
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">render</span><span style="color: #000000">(</span><span style="color: #001080">content</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">): </span><span style="color: #267F99">void</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// Render some content.</span>
+<span style="color: #000000">  </span><span style="color: #008000">// The renderer don&#039;t have to be aware of the rendering target.</span>
+<span style="color: #000000">  </span><span style="color: #008000">// It can either render directly to the document or add to document fragment.</span>
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">context</span><span style="color: #000000"> = </span><span style="color: #795E26">drekContextOf</span><span style="color: #000000">(</span><span style="color: #001080">content</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span>
+<span style="color: #000000">  </span><span style="color: #008000">// Schedule DOM manipulations.</span>
+<span style="color: #000000">  </span><span style="color: #008000">// The scheduler utilizes `requestAnimationFrame` when adding to the document directly,</span>
+<span style="color: #000000">  </span><span style="color: #008000">// but when adding to the fragment the rendering is immediate.</span>
+<span style="color: #000000">  </span><span style="color: #001080">context</span><span style="color: #000000">.</span><span style="color: #795E26">scheduler</span><span style="color: #000000">()(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #001080">content</span><span style="color: #000000">.</span><span style="color: #795E26">append</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;rendered content&#039;</span><span style="color: #000000">);  </span>
+<span style="color: #000000">  });</span>
+<span style="color: #000000">  </span>
+<span style="color: #000000">  </span><span style="color: #001080">context</span><span style="color: #000000">.</span><span style="color: #795E26">whenConnected</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span><span style="color: #008000">// This is called when content nodes added to the document.</span>
+<span style="color: #000000">    </span><span style="color: #008000">// If the rendering target is another fragment, this will be called only when the target fragment&#039;s content,</span>
+<span style="color: #000000">    </span><span style="color: #008000">// in turn, added to the document.</span>
+<span style="color: #000000">  });</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#settlement-phase" id="settlement-phase" style="color: inherit; text-decoration: none;">
+					<h2>Settlement Phase</h2>
+				</a>
+				<p>A settlement phase is designed primarily for custom elements.</p>
+				<p>A custom element rendering consists of two main phases:</p>
+				<ol>
+					<li>Element construction (either during upgrade or by <a href="https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement">document.createElement</a> call).</li>
+					<li>Element connection to document with <a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#using_the_lifecycle_callbacks">connectedCallback</a>.</li>
+				</ol>
+				<p>An element constructor can not manipulate DOM tree. So typically, the DOM manipulations happen inside
+					[connectionCallback]. This, however, is a source of potential performance issues, as [connectionCallback] is called
+					only after the element is added to document, while custom element rendering may be slow. E.g. when a custom element
+				renders nested ones.</p>
+				<p>The better approach would be to render custom elements to <a href="https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment">DocumentFragment</a> and then add the fully rendered fragment
+				to the document.</p>
+				<p>This requires an additional <em>settlement</em> callback that is available via rendering context. An event is sent by
+					<a href="https://frontmeans.github.io/drek/classes/drekfragment.html#settle">DrekFragment.settle</a> method. A custom element may receive this event via <a href="https://frontmeans.github.io/drek/classes/drekcontext.html#whensettled">DrekContext.whenSettled</a> method and start
+				rendering right away, before it is added to the document.</p>
+				<p>Here is a usage example.</p>
+				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">drekAppender</span><span style="color: #000000">, </span><span style="color: #001080">drekContextOf</span><span style="color: #000000">, </span><span style="color: #001080">DrekFragment</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@frontmeans/drek&#039;</span><span style="color: #000000">;</span>
+
+<span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">fragment</span><span style="color: #000000"> = </span><span style="color: #0000FF">new</span><span style="color: #000000"> </span><span style="color: #795E26">DrekTarget</span><span style="color: #000000">(</span><span style="color: #795E26">drekAppender</span><span style="color: #000000">(</span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #001080">body</span><span style="color: #000000">));</span>
+
+<span style="color: #008000">// Render content.</span>
+<span style="color: #795E26">render</span><span style="color: #000000">(</span><span style="color: #001080">fragment</span><span style="color: #000000">.</span><span style="color: #001080">content</span><span style="color: #000000">);</span>
+
+<span style="color: #008000">// Settle content.</span>
+<span style="color: #001080">fragment</span><span style="color: #000000">.</span><span style="color: #795E26">settle</span><span style="color: #000000">();</span>
+
+<span style="color: #008000">// Await for content to be rendered, then add it to the target.</span>
+<span style="color: #008000">// This also settles the content</span>
+<span style="color: #001080">fragment</span><span style="color: #000000">.</span><span style="color: #795E26">render</span><span style="color: #000000">();</span>
+
+<span style="color: #0000FF">function</span><span style="color: #000000"> </span><span style="color: #795E26">render</span><span style="color: #000000">(</span><span style="color: #001080">content</span><span style="color: #000000">: </span><span style="color: #267F99">Node</span><span style="color: #000000">): </span><span style="color: #267F99">void</span><span style="color: #000000"> {</span>
+<span style="color: #000000">  </span><span style="color: #008000">// ...render some content.</span>
+
+<span style="color: #000000">  </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">context</span><span style="color: #000000"> = </span><span style="color: #795E26">drekContextOf</span><span style="color: #000000">(</span><span style="color: #001080">content</span><span style="color: #000000">);</span>
+<span style="color: #000000">  </span>
+<span style="color: #000000">  </span><span style="color: #001080">context</span><span style="color: #000000">.</span><span style="color: #795E26">scheduler</span><span style="color: #000000">()(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">    </span>
+<span style="color: #000000">    </span><span style="color: #0000FF">const</span><span style="color: #000000"> </span><span style="color: #0070C1">indicator</span><span style="color: #000000"> = </span><span style="color: #001080">content</span><span style="color: #000000">.</span><span style="color: #795E26">appendChild</span><span style="color: #000000">(</span><span style="color: #001080">document</span><span style="color: #000000">.</span><span style="color: #795E26">createElement</span><span style="color: #000000">(</span><span style="color: #A31515">&#039;div&#039;</span><span style="color: #000000">));</span>
+
+<span style="color: #000000">    </span><span style="color: #001080">context</span><span style="color: #000000">.</span><span style="color: #795E26">whenSettled</span><span style="color: #000000">(() </span><span style="color: #0000FF">=&gt;</span><span style="color: #000000"> {</span>
+<span style="color: #000000">      </span><span style="color: #008000">// This is called after `fragment.settle()` call.</span>
+<span style="color: #000000">      </span><span style="color: #008000">// If the `fragment.settle()` is not called, then this is called when the content is added to the document,</span>
+<span style="color: #000000">      </span><span style="color: #008000">// just like a `context.whenConnected()` callback.</span>
+<span style="color: #000000">      </span><span style="color: #001080">indicator</span><span style="color: #000000">.</span><span style="color: #001080">innerText</span><span style="color: #000000"> = </span><span style="color: #A31515">`Settled at </span><span style="color: #0000FF">${</span><span style="color: #0000FF">new</span><span style="color: #000000FF"> </span><span style="color: #267F99">Date</span><span style="color: #000000FF">().</span><span style="color: #795E26">toISOString</span><span style="color: #000000FF">()</span><span style="color: #0000FF">}</span><span style="color: #A31515">`</span><span style="color: #000000">;</span>
+<span style="color: #000000">    });</span>
+<span style="color: #000000">  });</span>
+<span style="color: #000000">}</span>
+</code></pre>
+				<a href="#rendering-target" id="rendering-target" style="color: inherit; text-decoration: none;">
+					<h2>Rendering Target</h2>
+				</a>
+				<p>A rendering target (<a href="https://frontmeans.github.io/drek/interfaces/drektarget.html">DrekTarget</a>) represents a part of the DOM tree to place the rendered content to.</p>
+				<p>There are several convenient target implementations available:</p>
+				<ul>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekappender">drekAppender</a> - Creates a rendering target that appends content to parent node.</p>
+					</li>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekcharger">drekCharger</a> - Creates a rendering target that charges rendered content prior to placing it to another target.</p>
+						<p>By default, encloses the rendered content into comments. The ongoing content updates replace the nodes between
+						comments thus making the updated content occupy the same place.</p>
+					</li>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekinserter">drekInserter</a> - Creates a rendering target that inserts content to parent node at particular position.</p>
+					</li>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekreplacer">drekReplacer</a> - Creates a rendering target that replaces content of the given node.</p>
+					</li>
+				</ul>
+				<a href="#miscellaneous" id="miscellaneous" style="color: inherit; text-decoration: none;">
+					<h2>Miscellaneous</h2>
+				</a>
+				<p>A <a href="https://frontmeans.github.io/drek/interfaces/drekcssclasses.html">DrekCssClasses</a> is an accessor to CSS classes of some element. With it, element&#39;s CSS classes can be manipulated
+					concurrently in a safe manner. E.g. multiple parties may add and remove CSS classes to the same element, even if the
+				class names are the same.</p>
 			</div>
 		</div>
 		<div class="col-4 col-menu menu-sticky-wrap menu-highlight">
