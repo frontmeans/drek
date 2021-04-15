@@ -96,9 +96,12 @@
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#derivedrekcontext" class="tsd-kind-icon">derive<wbr>Drek<wbr>Context</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#drekappender" class="tsd-kind-icon">drek<wbr>Appender</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#drekbuild" class="tsd-kind-icon">drek<wbr>Build</a></li>
 								<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#drekcharger" class="tsd-kind-icon">drek<wbr>Charger</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#drekcontextof" class="tsd-kind-icon">drek<wbr>Context<wbr>Of</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#drekcssclassesof" class="tsd-kind-icon">drek<wbr>Css<wbr>Classes<wbr>Of</a></li>
+								<li class="tsd-kind-function"><a href="modules.html#drekinserter" class="tsd-kind-icon">drek<wbr>Inserter</a></li>
+								<li class="tsd-kind-function tsd-has-type-parameter"><a href="modules.html#dreklift" class="tsd-kind-icon">drek<wbr>Lift</a></li>
 								<li class="tsd-kind-function"><a href="modules.html#drekreplacer" class="tsd-kind-icon">drek<wbr>Replacer</a></li>
 							</ul>
 						</section>
@@ -113,7 +116,7 @@
 					<div class="tsd-signature tsd-kind-icon">Drek__NS<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">NamespaceDef</span><span class="tsd-signature-symbol"> = ...</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/drek.ns.ts#L6">drek.ns.ts:6</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/drek.ns.ts#L6">drek.ns.ts:6</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -135,7 +138,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/common/derive-context.ts#L17">common/derive-context.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/common/derive-context.ts#L17">common/derive-context.ts:17</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -182,7 +185,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/appender.target.ts#L13">target/appender.target.ts:13</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/target/appender.target.ts#L13">target/appender.target.ts:13</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -211,6 +214,68 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
+					<a name="drekbuild" class="tsd-anchor"></a>
+					<h3>drek<wbr>Build</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">drek<wbr>Build&lt;TResult&gt;<span class="tsd-signature-symbol">(</span>builder<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TResult</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResult</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/common/build.ts#L18">common/build.ts:18</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Executes a DOM builder function and then <a href="classes/drekcontext.html#lift">lifts</a> all unrooted rendering contexts created by
+									it.</p>
+								</div>
+								<p>This helps to track a <a href="classes/drekcontext.html#whenconnected">document connection</a> or <a href="classes/drekcontext.html#whensettled">settlement</a> of any unrooted rendering contexts that created before its node added to document or
+								<a href="classes/drekfragment.html">rendered fragment</a>. This may happen e.g. when the rendering context <a href="modules.html#drekcontextof">accessed</a> from inside a custom element constructor when calling <code>document.createElement(&#39;custom-element&#39;)</code>.</p>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TResult</h4>
+									<div class="tsd-comment tsd-typography">
+										<p>DOM builder result type.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>builder: <span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><span class="tsd-signature-type">TResult</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A DOM builder function to call.</p>
+									</div>
+									<ul class="tsd-parameters">
+										<li class="tsd-parameter-signature">
+											<ul class="tsd-signatures tsd-kind-type-literal">
+												<li class="tsd-signature tsd-kind-icon"><span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TResult</span></li>
+											</ul>
+											<ul class="tsd-descriptions">
+												<li class="tsd-description">
+													<h4 class="tsd-parameters-title">Parameters</h4>
+													<ul class="tsd-parameters">
+														<li>
+															<h5>this: <span class="tsd-signature-type">void</span></h5>
+														</li>
+													</ul>
+													<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TResult</span></h4>
+												</li>
+											</ul>
+										</li>
+									</ul>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TResult</span></h4>
+							<p>The value returned from DOM <code>builder</code> function.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
 					<a name="drekcharger" class="tsd-anchor"></a>
 					<h3>drek<wbr>Charger</h3>
 					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
@@ -220,12 +285,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/charger.target.ts#L17">target/charger.target.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/target/charger.target.ts#L14">target/charger.target.ts:14</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Creates a rendering target that charges rendered content prior to passing it to another target.</p>
+									<p>Creates a rendering target that charges rendered content prior to placing it to another target.</p>
 								</div>
 							</div>
 							<h4 class="tsd-type-parameters-title">Type parameters</h4>
@@ -268,12 +333,12 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/context-of.ts#L17">context-of.ts:17</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/context-of.ts#L11">context-of.ts:11</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
 								<div class="lead">
-									<p>Obtains a updatable a rendering context of the given document.</p>
+									<p>Obtains an updatable rendering context of the given document.</p>
 								</div>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
@@ -291,7 +356,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/context-of.ts#L32">context-of.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/context-of.ts#L27">context-of.ts:27</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -300,9 +365,8 @@
 								</div>
 								<p>If the node is connected to document, then the rendering context of that document is returned. Otherwise, if the node
 									belongs to the <a href="classes/drekfragment.html#content">content</a> of the rendered fragment, then the context
-									<a href="classes/drekfragment.html#innercontext">provided</a> by that fragment is returned. Otherwise, a new context is created
-									and attached to the node root. The latter does not track a document connection automatically.
-								A <a href="classes/drekcontext.html#lift">DrekContext.lift</a> method can be used to track the connection status manually.</p>
+									<a href="classes/drekfragment.html#innercontext">provided</a> by that fragment is returned. Otherwise, an unrooted context is created
+								and attached to the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode">root node</a> of the target <code>node</code>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -328,7 +392,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/common/css-classes.ts#L64">common/css-classes.ts:64</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/common/css-classes.ts#L64">common/css-classes.ts:64</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -351,6 +415,93 @@
 					</ul>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-function">
+					<a name="drekinserter" class="tsd-anchor"></a>
+					<h3>drek<wbr>Inserter</h3>
+					<ul class="tsd-signatures tsd-kind-function">
+						<li class="tsd-signature tsd-kind-icon">drek<wbr>Inserter<span class="tsd-signature-symbol">(</span>parent<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span>, before<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span>, context<span class="tsd-signature-symbol">?: </span><a href="classes/drekcontext.html" class="tsd-signature-type" data-tsd-kind="Class">DrekContext</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="interfaces/drektarget.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekTarget</a></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/target/inserter.target.ts#L15">target/inserter.target.ts:15</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Creates a rendering target that inserts content to parent node at particular position.</p>
+								</div>
+							</div>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>parent: <span class="tsd-signature-type">Node</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A node to insert content to.</p>
+									</div>
+								</li>
+								<li>
+									<h5>before: <span class="tsd-signature-type">Node</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A child node of <code>parent</code> to insert the content before, or <code>null</code> to append it as the last child
+										of <code>parent</code> node.</p>
+									</div>
+								</li>
+								<li>
+									<h5>context: <a href="classes/drekcontext.html" class="tsd-signature-type" data-tsd-kind="Class">DrekContext</a><span class="tsd-signature-symbol"> = ...</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>Custom rendering context. Defaults to <code>parent</code> node context.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <a href="interfaces/drektarget.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekTarget</a></h4>
+							<p>Rendering target.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function tsd-has-type-parameter">
+					<a name="dreklift" class="tsd-anchor"></a>
+					<h3>drek<wbr>Lift</h3>
+					<ul class="tsd-signatures tsd-kind-function tsd-has-type-parameter">
+						<li class="tsd-signature tsd-kind-icon">drek<wbr>Lift&lt;TNode&gt;<span class="tsd-signature-symbol">(</span>node<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TNode</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">TNode</span></li>
+					</ul>
+					<ul class="tsd-descriptions">
+						<li class="tsd-description">
+							<aside class="tsd-sources">
+								<ul>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/common/lift.ts#L16">common/lift.ts:16</a></li>
+								</ul>
+							</aside>
+							<div class="tsd-comment tsd-typography">
+								<div class="lead">
+									<p>Tries to <a href="classes/drekcontext.html#lift">lift</a> the rendering context of the given DOM <code>node</code> to enclosing one.</p>
+								</div>
+								<p>It may be useful to call this method e.g. on a custom element after appending it to <a href="classes/drekfragment.html">fragment</a>.
+									The former may access its rendering context in constructor. Calling this method would lift that context to fragment&#39;s
+								one, so the custom element would be notified on its <a href="classes/drekcontext.html#whensettled">settlement</a>.</p>
+								<p>Does nothing if the given node has no rendering context attached to it.</p>
+							</div>
+							<h4 class="tsd-type-parameters-title">Type parameters</h4>
+							<ul class="tsd-type-parameters">
+								<li>
+									<h4>TNode<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span></h4>
+								</li>
+							</ul>
+							<h4 class="tsd-parameters-title">Parameters</h4>
+							<ul class="tsd-parameters">
+								<li>
+									<h5>node: <span class="tsd-signature-type">TNode</span></h5>
+									<div class="tsd-comment tsd-typography">
+										<p>A DOM node with rendering context to lift.</p>
+									</div>
+								</li>
+							</ul>
+							<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">TNode</span></h4>
+							<p>The <code>node</code> itself.</p>
+						</li>
+					</ul>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-function">
 					<a name="drekreplacer" class="tsd-anchor"></a>
 					<h3>drek<wbr>Replacer</h3>
 					<ul class="tsd-signatures tsd-kind-function">
@@ -360,7 +511,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/replacer.target.ts#L14">target/replacer.target.ts:14</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/target/replacer.target.ts#L14">target/replacer.target.ts:14</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -437,6 +588,9 @@
 						<a href="modules.html#drekappender" class="tsd-kind-icon">drek<wbr>Appender</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="modules.html#drekbuild" class="tsd-kind-icon">drek<wbr>Build</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
 						<a href="modules.html#drekcharger" class="tsd-kind-icon">drek<wbr>Charger</a>
 					</li>
 					<li class=" tsd-kind-function">
@@ -444,6 +598,12 @@
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#drekcssclassesof" class="tsd-kind-icon">drek<wbr>Css<wbr>Classes<wbr>Of</a>
+					</li>
+					<li class=" tsd-kind-function">
+						<a href="modules.html#drekinserter" class="tsd-kind-icon">drek<wbr>Inserter</a>
+					</li>
+					<li class=" tsd-kind-function tsd-has-type-parameter">
+						<a href="modules.html#dreklift" class="tsd-kind-icon">drek<wbr>Lift</a>
 					</li>
 					<li class=" tsd-kind-function">
 						<a href="modules.html#drekreplacer" class="tsd-kind-icon">drek<wbr>Replacer</a>

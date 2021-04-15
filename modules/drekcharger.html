@@ -93,7 +93,7 @@
 					<div class="tsd-signature tsd-kind-icon">Factory&lt;TStatus&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-symbol">(</span>this<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">void</span>, target<span class="tsd-signature-symbol">: </span><a href="../interfaces/drektarget.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekTarget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol"> =&gt; </span><a href="drekcharger.html#spec" class="tsd-signature-type" data-tsd-kind="Type alias">Spec</a></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/charger.target.ts#L76">target/charger.target.ts:76</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/target/charger.target.ts#L73">target/charger.target.ts:73</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -142,10 +142,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter">
 					<a name="spec" class="tsd-anchor"></a>
 					<h3>Spec</h3>
-					<div class="tsd-signature tsd-kind-icon">Spec&lt;TStatus&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">QualifiedName</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/drekcharger.custom.html" class="tsd-signature-type" data-tsd-kind="Interface">Custom</a><span class="tsd-signature-symbol"> | </span><a href="drekcharger.html#factory" class="tsd-signature-type" data-tsd-kind="Type alias">Factory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
+					<div class="tsd-signature tsd-kind-icon">Spec&lt;TStatus&gt;<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">string</span><span class="tsd-signature-symbol"> | </span><a href="../interfaces/drekcharger.custom.html" class="tsd-signature-type" data-tsd-kind="Interface">Custom</a><span class="tsd-signature-symbol"> | </span><a href="drekcharger.html#factory" class="tsd-signature-type" data-tsd-kind="Type alias">Factory</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">null</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">undefined</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/ce7cf05/src/target/charger.target.ts#L48">target/charger.target.ts:48</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/c432c35/src/target/charger.target.ts#L43">target/charger.target.ts:43</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -154,12 +154,10 @@
 						</div>
 						<p>Can be one of:</p>
 						<ul>
-							<li>A qualified name of DOM element that wraps the rendered content. This element would be created with
-							<code>display: contents;</code> style.</li>
+							<li>An arbitrary string containing a text for enclosing comments.</li>
 							<li>A <a href="../interfaces/drekcharger.custom.html">custom charger</a>.</li>
 							<li>A <a href="drekcharger.html#factory">charger factory</a> function.</li>
-							<li><code>null</code>/<code>undefined</code> to wrap the rendered contents into DOM element with <code>display: contents;</code> style and predefined
-							tag name (<code>content</code> in <a href="../modules.html#drek__ns">Drek namespace</a>).</li>
+							<li><code>null</code>/<code>undefined</code> to enclose the rendered contents in comments with random text.</li>
 						</ul>
 					</div>
 					<h4 class="tsd-type-parameters-title">Type parameters</h4>
