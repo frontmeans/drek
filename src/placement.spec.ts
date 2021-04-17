@@ -21,6 +21,8 @@ describe('DrekPlacement', () => {
 
       readStatus = contentStatus.read;
 
+      fragment = undefined;
+
     }
 
     placement = new TestPlacement();

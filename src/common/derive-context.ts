@@ -4,6 +4,7 @@ import { AfterEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from '../content-status';
 import { DrekContext } from '../context';
 import { DrekContext$State } from '../context.impl';
+import { DrekFragment } from '../fragment';
 
 /**
  * Creates a rendering context based on another one.
@@ -47,6 +48,10 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
   };
 
   class DrekContext$Derived extends DrekContext<TStatus> {
+
+    get fragment(): DrekFragment | undefined {
+      return base.fragment;
+    }
 
     get window(): Window {
       return base.window;

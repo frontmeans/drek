@@ -20,6 +20,7 @@ export function drekCharger<TStatus extends [DrekContentStatus] = [DrekContentSt
 
   return {
     context: target.context,
+    host: target.host,
     placeContent(content: Node): DrekPlacement {
       return charger.charge(content, target);
     },

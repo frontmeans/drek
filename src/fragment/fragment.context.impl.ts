@@ -59,6 +59,7 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   private readonly _status = trackValue<DrekFragment.Status<TStatus>>([{ connected: false, withinFragment: 'added' }]);
   private readonly _state: DrekContext$State;
   private readonly _settled = new EventEmitter<DrekFragment.Status<TStatus>>();
+  private _getFragment: () => DrekFragment | undefined;
   private _lift: DrekContext;
   private _whenSettled?: OnEvent<DrekFragment.Status<TStatus>>;
   private readonly _rendered = new EventEmitter<[DrekPlacement<TStatus>]>();
@@ -71,6 +72,7 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
       scheduler: RenderScheduler,
   ) {
     super();
+    this._getFragment = () => _fragment as DrekFragment<any>;
     this._lift = this;
     this.readStatus = this._status.read.do(
         translateAfter_((send, status) => send(...status)),
@@ -84,6 +86,10 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
       // Send a settlement event one last time.
       this._settled.send(...status);
     });
+  }
+
+  get fragment(): DrekFragment<any> | undefined {
+    return this._getFragment();
   }
 
   get window(): Window {
@@ -132,6 +138,9 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
           // Place the rendered content within target's scheduler.
 
           const placement = this._target.placeContent(this._content);
+
+          // Update target fragment.
+          this._getFragment = () => placement.fragment;
 
           // Reset the inner context.
           this._content[DrekContext__symbol] = this._fragment[DrekFragment$Context__symbol] = new DrekFragment$Context(

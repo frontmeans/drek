@@ -37,6 +37,10 @@ export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): 
 
   class DrekContext$OfDocument extends DrekContext implements DrekContext.Updatable {
 
+    get fragment(): undefined {
+      return;
+    }
+
     get window(): Window {
       return view;
     }

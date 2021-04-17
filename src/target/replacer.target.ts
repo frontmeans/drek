@@ -4,19 +4,20 @@ import { drekContextOf } from '../context-of';
 import { DrekTarget } from './target';
 
 /**
- * Creates a rendering target that replaces content of the given node.
+ * Creates a rendering target that replaces content of the `host` node.
  *
- * @param parent - A node to replace content of.
- * @param context - Custom rendering context. Defaults to `parent` node context.
+ * @param host - A node to replace the content of.
+ * @param context - Custom rendering context. Defaults to `host` node context.
  *
  * @returns Rendering target.
  */
-export function drekReplacer(parent: Node, context: DrekContext = drekContextOf(parent)): DrekTarget {
+export function drekReplacer(host: Node, context: DrekContext = drekContextOf(host)): DrekTarget {
   return {
     context,
+    host,
     placeContent(content: Node) {
-      removeNodeContent(parent);
-      parent.appendChild(content);
+      removeNodeContent(host);
+      host.appendChild(content);
       return context;
     },
   };

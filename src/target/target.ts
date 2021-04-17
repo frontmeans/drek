@@ -17,6 +17,11 @@ export interface DrekTarget<TStatus extends [DrekContentStatus] = [DrekContentSt
   readonly context: DrekContext;
 
   /**
+   * A DOM node that serves as a host of {@link placeContent placed content}.
+   */
+  readonly host: Node;
+
+  /**
    * Places rendered content to this target.
    *
    * It is up to the implementation to decide how the content is placed. E.g. some implementations append the content,

@@ -1,5 +1,6 @@
 import { AfterEvent, AfterEvent__symbol, EventKeeper, OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
+import { DrekFragment } from './fragment';
 import { DrekPlacement$Status, DrekPlacement$Status__symbol } from './placement.status.impl';
 
 /**
@@ -23,6 +24,11 @@ export abstract class DrekPlacement<TStatus extends [DrekContentStatus] = [DrekC
   constructor() {
     this[DrekPlacement$Status__symbol] = new DrekPlacement$Status(this);
   }
+
+  /**
+   * A {@link DrekFragment fragment} the content is placed to, if any.
+   */
+  abstract readonly fragment: DrekFragment | undefined;
 
   /**
    * An alias of {@link readStatus}.

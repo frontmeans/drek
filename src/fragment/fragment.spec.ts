@@ -70,12 +70,45 @@ describe('DrekFragment', () => {
     it('is used as rendering context for its content', () => {
       expect(drekContextOf(fragment.content)).toBe(fragment.innerContext);
     });
-
     it('is used as rendering context for nested elements', () => {
 
       const span = fragment.content.appendChild(document.createElement('span'));
 
       expect(drekContextOf(span)).toBe(fragment.innerContext);
+    });
+
+    describe('fragment', () => {
+      it('refers the fragment', () => {
+        expect(fragment.innerContext.fragment).toBe(fragment);
+      });
+      it('becomes `undefined` when rendered to document', () => {
+
+        const context = fragment.innerContext;
+
+        fragment.render();
+
+        expect(context.fragment).toBeUndefined();
+      });
+      it('updates to target fragment when rendered', async () => {
+
+        const fragment2 = await new Promise<DrekFragment>(resolve => {
+          fragment.innerContext.scheduler()(
+              ({ content }) => resolve(new DrekFragment(drekAppender(content))),
+          );
+        });
+
+        const innerContext = fragment2.innerContext;
+
+        expect(innerContext.fragment).toBe(fragment2);
+
+        fragment2.render();
+        expect(innerContext.fragment).toBe(fragment);
+        expect(fragment2.innerContext.fragment).toBe(fragment2);
+
+        fragment.render();
+        expect(innerContext.fragment).toBeUndefined();
+        expect(fragment2.innerContext.fragment).toBe(fragment2);
+      });
     });
 
     describe('window', () => {
