@@ -109,10 +109,8 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   }
 
   _settle(): void {
-    this._state._scheduler()(context => {
-      context.postpone(() => {
-        this._settled.send(...this._status.it);
-      });
+    this._state._scheduler()(_ => {
+      this._settled.send(...this._status.it);
     });
   }
 
@@ -127,9 +125,9 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
 
     this._state.set(this._target.context);
 
-    schedule(context => {
+    schedule(({ postpone }) => {
       // Await for all scheduled shots to render.
-      context.postpone(() => {
+      postpone(() => {
         this._target.context.scheduler()(() => {
           // Place the rendered content within target's scheduler.
 
