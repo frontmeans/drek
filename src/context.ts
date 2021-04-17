@@ -2,6 +2,7 @@ import type { NamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import type { RenderScheduler } from '@frontmeans/render-scheduler';
 import { OnEvent } from '@proc7ts/fun-events';
 import { DrekContentStatus } from './content-status';
+import { DrekFragment } from './fragment';
 import { DrekPlacement } from './placement';
 
 /**
@@ -44,6 +45,11 @@ import { DrekPlacement } from './placement';
  */
 export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekContentStatus]>
     extends DrekPlacement<TStatus> {
+
+  /**
+   * A rendered {@link DrekFragment fragment} this context is provided by, if any.
+   */
+  abstract readonly fragment: DrekFragment | undefined;
 
   /**
    * The window this context belongs to.

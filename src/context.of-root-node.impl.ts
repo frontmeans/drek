@@ -7,6 +7,7 @@ import { DrekContext } from './context';
 import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from './context.impl';
 import { DrekContext$ofDocument } from './context.of-document.impl';
 import { DrekContext$register } from './context.registrar.impl';
+import { DrekFragment } from './fragment';
 
 /**
  * @internal
@@ -29,6 +30,7 @@ function DrekContext$unrooted(root: DrekContext$Holder<Node>): DrekContext {
       root.ownerDocument! /* Not a document, so `ownerDocument` is set */,
   );
   const scheduler = new DrekContext$State(derivedCtx);
+  let getFragment = (): DrekFragment | undefined => derivedCtx.fragment;
   let lift = (ctx: DrekContext): DrekContext => {
 
     const newRoot = root.getRootNode({ composed: true });
@@ -40,6 +42,7 @@ function DrekContext$unrooted(root: DrekContext$Holder<Node>): DrekContext {
     const lifted = DrekContext$ofRootNode(newRoot);
 
     root[DrekContext__symbol] = undefined;
+    getFragment = () => lifted.fragment;
     scheduler.set(lifted);
     lifted.whenSettled(status => settled.send(status)).cuts(settled);
     status.by(lifted);
@@ -50,6 +53,10 @@ function DrekContext$unrooted(root: DrekContext$Holder<Node>): DrekContext {
   };
 
   class DrekContext$Unrooted extends DrekContext {
+
+    get fragment(): DrekFragment | undefined {
+      return getFragment();
+    }
 
     get window(): Window {
       return derivedCtx.window;
