@@ -115,7 +115,7 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   }
 
   _settle(): void {
-    this._state._scheduler()(_ => {
+    this.scheduler()(_ => {
       this._settled.send(...this._status.it);
     });
   }
@@ -169,15 +169,13 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   }
 
   private _createSchedule(
-      initialOptions: RenderScheduleOptions = {},
-      scheduler: RenderScheduler = this._state.scheduler,
+      options: RenderScheduleOptions = {},
   ): RenderSchedule<DrekFragmentRenderExecution<TStatus>> {
 
-    const options: RenderScheduleOptions = {
-      ...initialOptions,
+    const schedule = this._state.scheduler({
+      ...options,
       window: this.window,
-    };
-    const schedule = scheduler(options);
+    });
 
     return shot => schedule(execution => shot(this._createExecution(execution)));
   }
