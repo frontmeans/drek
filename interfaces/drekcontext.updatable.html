@@ -96,6 +96,7 @@
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="drekcontext.updatable.html#document" class="tsd-kind-icon">document</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="drekcontext.updatable.html#fragment" class="tsd-kind-icon">fragment</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="drekcontext.updatable.html#nsalias" class="tsd-kind-icon">ns<wbr>Alias</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="drekcontext.updatable.html#readstatus" class="tsd-kind-icon">read<wbr>Status</a></li>
 								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-inherited"><a href="drekcontext.updatable.html#scheduler" class="tsd-kind-icon">scheduler</a></li>
@@ -130,12 +131,28 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#document">document</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/context.ts#L56">context.ts:56</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L62">context.ts:62</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
 							<p>The document this context belongs to.</p>
+						</div>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+					<a name="fragment" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> <span class="tsd-flag ts-flagAbstract">Abstract</span> fragment</h3>
+					<div class="tsd-signature tsd-kind-icon">fragment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">undefined</span><span class="tsd-signature-symbol"> | </span><a href="../classes/drekfragment.html" class="tsd-signature-type" data-tsd-kind="Class">DrekFragment</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><a href="drekcontentstatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<aside class="tsd-sources">
+						<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#fragment">fragment</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L52">context.ts:52</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A rendered <a href="../classes/drekfragment.html">fragment</a> this context is provided by, if any.</p>
 						</div>
 					</div>
 				</section>
@@ -146,7 +163,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#nsalias">nsAlias</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/context.ts#L61">context.ts:61</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L67">context.ts:67</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -162,7 +179,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#readstatus">readStatus</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/placement.ts#L16">placement.ts:16</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/placement.ts#L17">placement.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -174,11 +191,11 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 					<a name="scheduler" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> <span class="tsd-flag ts-flagAbstract">Abstract</span> scheduler</h3>
-					<div class="tsd-signature tsd-kind-icon">scheduler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RenderScheduler</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RenderExecution</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">scheduler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RenderScheduler</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RenderExecution</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">RenderScheduleOptions</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#scheduler">scheduler</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/context.ts#L66">context.ts:66</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L72">context.ts:72</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -194,7 +211,7 @@
 					<aside class="tsd-sources">
 						<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#window">window</a></p>
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/context.ts#L51">context.ts:51</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L57">context.ts:57</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -216,7 +233,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/placement.ts#L42">placement.ts:42</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/placement.ts#L48">placement.ts:48</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -240,7 +257,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/placement.ts#L54">placement.ts:54</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/placement.ts#L60">placement.ts:60</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -265,7 +282,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/context.ts#L77">context.ts:77</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L83">context.ts:83</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -294,7 +311,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#_afterevent__symbol_">[AfterEvent__symbol]</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/placement.ts#L32">placement.ts:32</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/placement.ts#L38">placement.ts:38</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -318,7 +335,7 @@
 							<aside class="tsd-sources">
 								<p>Inherited from <a href="../classes/drekcontext.html">DrekContext</a>.<a href="../classes/drekcontext.html#lift">lift</a></p>
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/context.ts#L92">context.ts:92</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L98">context.ts:98</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -345,7 +362,7 @@
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/3c84d09/src/context.ts#L110">context.ts:110</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/eabecdd/src/context.ts#L116">context.ts:116</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -395,6 +412,9 @@
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="drekcontext.updatable.html#document" class="tsd-kind-icon">document</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
+								<a href="drekcontext.updatable.html#fragment" class="tsd-kind-icon">fragment</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-inherited">
 								<a href="drekcontext.updatable.html#nsalias" class="tsd-kind-icon">ns<wbr>Alias</a>
