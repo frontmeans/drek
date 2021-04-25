@@ -30,7 +30,6 @@ module.exports = {
       },
     ],
   ],
-  testEnvironment: 'jest-environment-jsdom-sixteen',
   globals: {
     'ts-jest': {
       tsconfig: 'tsconfig.spec.json',
