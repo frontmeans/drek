@@ -34,7 +34,7 @@
     "@frontmeans/dom-primitives": "^1.0.0",
     "@frontmeans/namespace-aliaser": "^2.3.0",
     "@frontmeans/render-scheduler": "^1.6.0",
-    "@proc7ts/primitives": "^2.0.0",
+    "@proc7ts/primitives": "^2.1.0",
     "@proc7ts/supply": "^1.0.0"
   },
   "devDependencies": {
