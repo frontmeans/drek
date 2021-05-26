@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from '@jest/globals';
 import { afterSupplied, trackValue, ValueTracker } from '@proc7ts/fun-events';
 import { noop } from '@proc7ts/primitives';
 import { DrekContentStatus } from './content-status';
@@ -29,8 +30,8 @@ describe('DrekPlacement', () => {
   });
 
   describe('[AfterEvent__symbol]', () => {
-    it('returns the value of `readStatus`', () => {
-      expect(afterSupplied(placement)).toBe(placement.readStatus);
+    it('returns the value of `readStatus`', async () => {
+      await expect(afterSupplied(placement)).toBe(placement.readStatus);
     });
   });
 
@@ -51,8 +52,8 @@ describe('DrekPlacement', () => {
       contentStatus.it = { connected: true, custom: 'reconnected' };
       expect(status).toEqual(contentStatus.it);
     });
-    it('is cached', () => {
-      expect(placement.onceConnected).toBe(placement.onceConnected);
+    it('is cached', async () => {
+      await expect(placement.onceConnected).toBe(placement.onceConnected);
     });
     it('does not cut off supply', () => {
 
@@ -78,8 +79,8 @@ describe('DrekPlacement', () => {
       contentStatus.it = { connected: true, custom: 'connected' };
       expect(status).toEqual(contentStatus.it);
     });
-    it('is cached', () => {
-      expect(placement.whenConnected).toBe(placement.whenConnected);
+    it('is cached', async () => {
+      await expect(placement.whenConnected).toBe(placement.whenConnected);
     });
     it('cuts off supply after sending status', () => {
 

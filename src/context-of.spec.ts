@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { immediateRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
 import { DrekContext } from './context';

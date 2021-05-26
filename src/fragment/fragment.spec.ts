@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { NamespaceAliaser, NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
@@ -261,13 +262,13 @@ describe('DrekFragment', () => {
         expect(settled).toEqual({ connected: true });
         expect(supply.isOff).toBe(true);
       });
-      it('is the same as `whenConnected` once rendered', () => {
+      it('is the same as `whenConnected` once rendered', async () => {
 
         const context = fragment.innerContext;
 
         fragment.render();
 
-        expect(context.whenSettled).toBe(context.whenConnected);
+        await expect(context.whenSettled).toBe(context.whenConnected);
       });
     });
   });

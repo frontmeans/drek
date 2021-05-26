@@ -1,3 +1,4 @@
+import { beforeEach, describe, expect, it } from '@jest/globals';
 import { isCommentNode } from '@frontmeans/dom-primitives';
 import { drekAppender } from './appender.target';
 import { drekCharger } from './charger.target';

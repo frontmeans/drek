@@ -1,3 +1,4 @@
+import { afterEach, beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { newNamespaceAliaser, XHTML__NS } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, setRenderScheduler } from '@frontmeans/render-scheduler';
 import { noop } from '@proc7ts/primitives';
@@ -89,8 +90,8 @@ describe('DrekContext', () => {
     it('always reports connected status', async () => {
       expect(await context.onceConnected).toEqual({ connected: true });
     });
-    it('is cached', () => {
-      expect(context.onceConnected).toBe(context.onceConnected);
+    it('is cached', async () => {
+      await expect(context.onceConnected).toBe(context.onceConnected);
     });
     it('does not cut off supply', () => {
 
@@ -122,8 +123,8 @@ describe('DrekContext', () => {
       context = drekContextOf(doc);
     });
 
-    it('is the same as `whenConnected`', () => {
-      expect(context.whenSettled).toBe(context.whenConnected);
+    it('is the same as `whenConnected`', async () => {
+      await expect(context.whenSettled).toBe(context.whenConnected);
     });
   });
 });
