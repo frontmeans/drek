@@ -3,6 +3,8 @@ Document Render Kit
 
 [![NPM][npm-image]][npm-url]
 [![Build Status][build-status-img]][build-status-link]
+[![Code Quality][quality-img]][quality-link]
+[![Coverage][coverage-img]][coverage-link]
 [![GitHub Project][github-image]][github-url]
 [![API Documentation][api-docs-image]][api-docs-url]
 
@@ -12,6 +14,10 @@ A kit of conventional tools for coordinated DOM manipulation.
 [npm-url]: https://www.npmjs.com/package/@frontmeans/drek
 [build-status-img]: https://github.com/frontmeans/drek/workflows/Build/badge.svg
 [build-status-link]: https://github.com/frontmeans/drek/actions?query=workflow%3ABuild
+[quality-img]: https://app.codacy.com/project/badge/Grade/da61788730574f64a9faec3dcdea612a
+[quality-link]: https://www.codacy.com/gh/frontmeans/drek/dashboard?utm_source=github.com&utm_medium=referral&utm_content=frontmeans/drek&utm_campaign=Badge_Grade
+[coverage-img]: https://app.codacy.com/project/badge/Coverage/da61788730574f64a9faec3dcdea612a
+[coverage-link]: https://www.codacy.com/gh/frontmeans/drek/dashboard?utm_source=github.com&utm_medium=referral&utm_content=frontmeans/drek&utm_campaign=Badge_Coverage
 [github-image]: https://img.shields.io/static/v1?logo=github&label=GitHub&message=project&color=informational
 [github-url]: https://github.com/frontmeans/drek
 [api-docs-image]: https://img.shields.io/static/v1?logo=typescript&label=API&message=docs&color=informational
