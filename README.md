@@ -65,13 +65,16 @@ There are three kinds of rendering contexts:
 [drekBuild]: https://frontmeans.github.io/drek/modules.html#drekbuild
 [drekLift]: https://frontmeans.github.io/drek/modules.html#dreklift
 [drekContextOf]: https://frontmeans.github.io/drek/modules.html#drekcontextof
-[DrekContext.innerContext]: https://frontmeans.github.io/drek/classes/drekcontext.html#innercontext
+[DrekFragment]: https://frontmeans.github.io/drek/classes/drekfragment.html
+[DrekFragment.innerContext]: https://frontmeans.github.io/drek/classes/drekfragment.html#innercontext
 [DrekContext.lift]: https://frontmeans.github.io/drek/classes/drekcontext.html#lift
 [root node]: https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode
 
 
 Rendered Fragment
 -----------------
+
+[rendered fragment]: #rendered-fragment
 
 A [DrekFragment] is a fragment of DOM tree, which content is to be placed to the document once rendered.
 
@@ -134,7 +137,7 @@ A custom element rendering consists of two main phases:
 2. Element connection to document with [connectedCallback].
 
 An element constructor can not manipulate DOM tree. So typically, the DOM manipulations happen inside
-[connectionCallback]. This, however, is a source of potential performance issues, as [connectionCallback] is called
+[connectedCallback]. This, however, is a source of potential performance issues, as [connectedCallback] is called
 only after the element is added to document, while custom element rendering may be slow. E.g. when a custom element
 renders nested ones.
 
