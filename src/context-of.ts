@@ -38,5 +38,3 @@ export function drekContextOf(node: Node): DrekContext {
     node = root;
   }
 }
-
-
