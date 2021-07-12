@@ -55,7 +55,7 @@
 					<a href="../modules.html">Document Render Kit</a>
 				</li>
 				<li>
-					<a href="drektarget.html">DrekTarget</a>
+					<a href="DrekTarget.html">DrekTarget</a>
 				</li>
 			</ul>
 			<h1>Interface DrekTarget&lt;TStatus&gt;</h1>
@@ -77,10 +77,10 @@
 				<h3>Type parameters</h3>
 				<ul class="tsd-type-parameters">
 					<li>
-						<h4>TStatus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="drekcontentstatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span> = <span class="tsd-signature-symbol">[</span><a href="drekcontentstatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span></h4>
+						<h4>TStatus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="DrekContentStatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span> = <span class="tsd-signature-symbol">[</span><a href="DrekContentStatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span></h4>
 						<div class="tsd-comment tsd-typography">
 							<div class="lead">
-								<p>A tuple type reflecting a content <a href="drekcontentstatus.html">placement status</a>.</p>
+								<p>A tuple type reflecting a content <a href="DrekContentStatus.html">placement status</a>.</p>
 							</div>
 						</div>
 					</li>
@@ -101,14 +101,14 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="drektarget.html#context" class="tsd-kind-icon">context</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="drektarget.html#host" class="tsd-kind-icon">host</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="DrekTarget.html#context" class="tsd-kind-icon">context</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="DrekTarget.html#host" class="tsd-kind-icon">host</a></li>
 							</ul>
 						</section>
 						<section class="tsd-index-section ">
 							<h3>Methods</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="drektarget.html#placecontent" class="tsd-kind-icon">place<wbr>Content</a></li>
+								<li class="tsd-kind-method tsd-parent-kind-interface"><a href="DrekTarget.html#placeContent" class="tsd-kind-icon">place<wbr>Content</a></li>
 							</ul>
 						</section>
 					</div>
@@ -119,10 +119,10 @@
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
 					<a name="context" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> context</h3>
-					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <a href="../classes/drekcontext.html" class="tsd-signature-type" data-tsd-kind="Class">DrekContext</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><a href="drekcontentstatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
+					<div class="tsd-signature tsd-kind-icon">context<span class="tsd-signature-symbol">:</span> <a href="../classes/DrekContext.html" class="tsd-signature-type" data-tsd-kind="Class">DrekContext</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-symbol">[</span><a href="DrekContentStatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/b7ec84f/src/target/target.ts#L17">target/target.ts:17</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/4178ae0/src/target/target.ts#L17">target/target.ts:17</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
@@ -137,12 +137,12 @@
 					<div class="tsd-signature tsd-kind-icon">host<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">Node</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/b7ec84f/src/target/target.ts#L22">target/target.ts:22</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/4178ae0/src/target/target.ts#L22">target/target.ts:22</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>A DOM node that serves as a host of <a href="drektarget.html#placecontent">placed content</a>.</p>
+							<p>A DOM node that serves as a host of <a href="DrekTarget.html#placeContent">placed content</a>.</p>
 						</div>
 					</div>
 				</section>
@@ -150,16 +150,16 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Methods</h2>
 				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface">
-					<a name="placecontent" class="tsd-anchor"></a>
+					<a name="placeContent" class="tsd-anchor"></a>
 					<h3>place<wbr>Content</h3>
 					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface">
-						<li class="tsd-signature tsd-kind-icon">place<wbr>Content<span class="tsd-signature-symbol">(</span>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/drekplacement.html" class="tsd-signature-type" data-tsd-kind="Class">DrekPlacement</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span></li>
+						<li class="tsd-signature tsd-kind-icon">place<wbr>Content<span class="tsd-signature-symbol">(</span>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/DrekPlacement.html" class="tsd-signature-type" data-tsd-kind="Class">DrekPlacement</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span></li>
 					</ul>
 					<ul class="tsd-descriptions">
 						<li class="tsd-description">
 							<aside class="tsd-sources">
 								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/b7ec84f/src/target/target.ts#L37">target/target.ts:37</a></li>
+									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/4178ae0/src/target/target.ts#L37">target/target.ts:37</a></li>
 								</ul>
 							</aside>
 							<div class="tsd-comment tsd-typography">
@@ -169,7 +169,7 @@
 								<p>It is up to the implementation to decide how the content is placed. E.g. some implementations append the content,
 								while the others replace it.</p>
 								<p>It is expected that this operation is performed within a render scheduler the user chooses, probably the one of
-								rendering <a href="drektarget.html#context">context</a>.</p>
+								rendering <a href="DrekTarget.html#context">context</a>.</p>
 							</div>
 							<h4 class="tsd-parameters-title">Parameters</h4>
 							<ul class="tsd-parameters">
@@ -180,7 +180,7 @@
 									</div>
 								</li>
 							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/drekplacement.html" class="tsd-signature-type" data-tsd-kind="Class">DrekPlacement</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span></h4>
+							<h4 class="tsd-returns-title">Returns <a href="../classes/DrekPlacement.html" class="tsd-signature-type" data-tsd-kind="Class">DrekPlacement</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span></h4>
 							<p>Rendered content placement status.</p>
 						</li>
 					</ul>
@@ -198,70 +198,76 @@
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/drekcontext.html" class="tsd-kind-icon">Drek<wbr>Context</a>
+						<a href="../classes/DrekContext.html" class="tsd-kind-icon">Drek<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/drekfragment.html" class="tsd-kind-icon">Drek<wbr>Fragment</a>
+						<a href="../classes/DrekFragment.html" class="tsd-kind-icon">Drek<wbr>Fragment</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="../classes/drekplacement.html" class="tsd-kind-icon">Drek<wbr>Placement</a>
+						<a href="../classes/DrekPlacement.html" class="tsd-kind-icon">Drek<wbr>Placement</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="drekcontentstatus.html" class="tsd-kind-icon">Drek<wbr>Content<wbr>Status</a>
+						<a href="DocumentRenderKit.html" class="tsd-kind-icon">Document<wbr>Render<wbr>Kit</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="drekcssclasses.html" class="tsd-kind-icon">Drek<wbr>Css<wbr>Classes</a>
+						<a href="DrekContentStatus.html" class="tsd-kind-icon">Drek<wbr>Content<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="DrekCssClasses.html" class="tsd-kind-icon">Drek<wbr>Css<wbr>Classes</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-has-type-parameter">
-						<a href="drektarget.html" class="tsd-kind-icon">Drek<wbr>Target</a>
+						<a href="DrekTarget.html" class="tsd-kind-icon">Drek<wbr>Target</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="drektarget.html#context" class="tsd-kind-icon">context</a>
+								<a href="DrekTarget.html#context" class="tsd-kind-icon">context</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="drektarget.html#host" class="tsd-kind-icon">host</a>
+								<a href="DrekTarget.html#host" class="tsd-kind-icon">host</a>
 							</li>
 							<li class=" tsd-kind-method tsd-parent-kind-interface">
-								<a href="drektarget.html#placecontent" class="tsd-kind-icon">place<wbr>Content</a>
+								<a href="DrekTarget.html#placeContent" class="tsd-kind-icon">place<wbr>Content</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-variable">
-						<a href="../modules.html#drek__ns" class="tsd-kind-icon">Drek__NS</a>
+						<a href="../modules.html#DocumentRenderKit" class="tsd-kind-icon">Document<wbr>Render<wbr>Kit</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="../modules.html#Drek__NS" class="tsd-kind-icon">Drek__NS</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../modules.html#derivedrekcontext" class="tsd-kind-icon">derive<wbr>Drek<wbr>Context</a>
+						<a href="../modules.html#deriveDrekContext" class="tsd-kind-icon">derive<wbr>Drek<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../modules.html#drekappender" class="tsd-kind-icon">drek<wbr>Appender</a>
+						<a href="../modules.html#drekAppender" class="tsd-kind-icon">drek<wbr>Appender</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../modules.html#drekbuild" class="tsd-kind-icon">drek<wbr>Build</a>
+						<a href="../modules.html#drekBuild" class="tsd-kind-icon">drek<wbr>Build</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../modules.html#drekcharger" class="tsd-kind-icon">drek<wbr>Charger</a>
+						<a href="../modules.html#drekCharger" class="tsd-kind-icon">drek<wbr>Charger</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../modules.html#drekcontextof" class="tsd-kind-icon">drek<wbr>Context<wbr>Of</a>
+						<a href="../modules.html#drekContextOf" class="tsd-kind-icon">drek<wbr>Context<wbr>Of</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../modules.html#drekcssclassesof" class="tsd-kind-icon">drek<wbr>Css<wbr>Classes<wbr>Of</a>
+						<a href="../modules.html#drekCssClassesOf" class="tsd-kind-icon">drek<wbr>Css<wbr>Classes<wbr>Of</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../modules.html#drekhost" class="tsd-kind-icon">drek<wbr>Host</a>
+						<a href="../modules.html#drekHost" class="tsd-kind-icon">drek<wbr>Host</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../modules.html#drekinserter" class="tsd-kind-icon">drek<wbr>Inserter</a>
+						<a href="../modules.html#drekInserter" class="tsd-kind-icon">drek<wbr>Inserter</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="../modules.html#dreklift" class="tsd-kind-icon">drek<wbr>Lift</a>
+						<a href="../modules.html#drekLift" class="tsd-kind-icon">drek<wbr>Lift</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="../modules.html#drekreplacer" class="tsd-kind-icon">drek<wbr>Replacer</a>
+						<a href="../modules.html#drekReplacer" class="tsd-kind-icon">drek<wbr>Replacer</a>
 					</li>
 				</ul>
 			</nav>

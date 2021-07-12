@@ -80,31 +80,31 @@
 					it is added to the document.</li>
 					<li>Notifies when node added (connected) to document.</li>
 				</ul>
-				<p>The rendering context of particular DOM node may be obtained using <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a> function.</p>
+				<p>The rendering context of particular DOM node may be obtained using <a href="https://frontmeans.github.io/drek/modules.html#drekContextOf">drekContextOf</a> function.</p>
 				<p>There are three kinds of rendering contexts:</p>
 				<ol>
 					<li><p>Document rendering context.</p>
-						<p>Such context is always available in document and returned by <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a> function for any DOM node connected
+						<p>Such context is always available in document and returned by <a href="https://frontmeans.github.io/drek/modules.html#drekContextOf">drekContextOf</a> function for any DOM node connected
 						to the document.</p>
 					</li>
 					<li><p>Fragment content rendering context.</p>
-						<p>It is created for each <a href="#rendered-fragment">rendered fragment</a> and is available via <a href="https://frontmeans.github.io/drek/classes/drekfragment.html#innercontext">DrekFragment.innerContext</a> property.
-						The <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a> function returns this context for fragment&#39;s content, as well as for each DOM node added to it.</p>
+						<p>It is created for each <a href="#rendered-fragment">rendered fragment</a> and is available via <a href="https://frontmeans.github.io/drek/classes/drekFragment.html#innerContext">DrekFragment.innerContext</a> property.
+						The <a href="https://frontmeans.github.io/drek/modules.html#drekContextOf">drekContextOf</a> function returns this context for fragment&#39;s content, as well as for each DOM node added to it.</p>
 					</li>
 					<li><p>Unrooted rendering context.</p>
-						<p>When a DOM node is neither connected to a document, nor part of a <a href="#rendered-fragment">rendered fragment</a>&#39;s content, the <a href="https://frontmeans.github.io/drek/modules.html#drekcontextof">drekContextOf</a>
+						<p>When a DOM node is neither connected to a document, nor part of a <a href="#rendered-fragment">rendered fragment</a>&#39;s content, the <a href="https://frontmeans.github.io/drek/modules.html#drekContextOf">drekContextOf</a>
 						function creates an unrooted context for the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode">root node</a> of that node.</p>
-						<p>Unrooted context tracks a document connection and settlement semi-automatically. A <a href="https://frontmeans.github.io/drek/classes/drekcontext.html#lift">DrekContext.lift</a> method can be
+						<p>Unrooted context tracks a document connection and settlement semi-automatically. A <a href="https://frontmeans.github.io/drek/classes/DrekContext.html#lift">DrekContext.lift</a> method can be
 						used to forcibly update them.</p>
 						<p>Semi-automatic tracking means that each time an unrooted context created, it is registered for automatic lifting.
-						The lifting happens either asynchronously, or synchronously right before the <a href="https://frontmeans.github.io/drek/modules.html#drekbuild">drekBuild</a> function exit.</p>
-						<p>Alternatively, a <a href="https://frontmeans.github.io/drek/modules.html#dreklift">drekLift</a> function can be used to lift a context of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode">root node</a> after adding it to another one.</p>
+						The lifting happens either asynchronously, or synchronously right before the <a href="https://frontmeans.github.io/drek/modules.html#drekBuild">drekBuild</a> function exit.</p>
+						<p>Alternatively, a <a href="https://frontmeans.github.io/drek/modules.html#drekLift">drekLift</a> function can be used to lift a context of the <a href="https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode">root node</a> after adding it to another one.</p>
 					</li>
 				</ol>
 				<a href="#rendered-fragment" id="rendered-fragment" style="color: inherit; text-decoration: none;">
 					<h2>Rendered Fragment</h2>
 				</a>
-				<p>A <a href="https://frontmeans.github.io/drek/classes/drekfragment.html">DrekFragment</a> is a fragment of DOM tree, which content is to be placed to the document once rendered.</p>
+				<p>A <a href="https://frontmeans.github.io/drek/classes/drekFragment.html">DrekFragment</a> is a fragment of DOM tree, which content is to be placed to the document once rendered.</p>
 				<p>The content of rendered fragment is a <a href="https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment">DocumentFragment</a>.</p>
 				<p>The rendered fragment provides a separate <a href="#rendering-context">rendering context</a> for its content nodes. The latter informs content nodes
 				when they are added to document. It also establishes a <a href="#settlement-phase">settlement</a> phase for them.</p>
@@ -160,7 +160,7 @@
 				<p>The better approach would be to render custom elements to <a href="https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment">DocumentFragment</a> and then add the fully rendered fragment
 				to the document.</p>
 				<p>This requires an additional <em>settlement</em> callback that is available via rendering context. An event is sent by
-					<a href="https://frontmeans.github.io/drek/classes/drekfragment.html#settle">DrekFragment.settle</a> method. A custom element may receive this event via <a href="https://frontmeans.github.io/drek/classes/drekcontext.html#whensettled">DrekContext.whenSettled</a> method and start
+					<a href="https://frontmeans.github.io/drek/classes/DrekFragment.html#settle">DrekFragment.settle</a> method. A custom element may receive this event via <a href="https://frontmeans.github.io/drek/classes/DrekContext.html#whenSettled">DrekContext.whenSettled</a> method and start
 				rendering right away, before it is added to the document.</p>
 				<p>Here is a usage example.</p>
 				<pre><code class="language-typescript"><span style="color: #AF00DB">import</span><span style="color: #000000"> { </span><span style="color: #001080">drekAppender</span><span style="color: #000000">, </span><span style="color: #001080">drekContextOf</span><span style="color: #000000">, </span><span style="color: #001080">DrekFragment</span><span style="color: #000000"> } </span><span style="color: #AF00DB">from</span><span style="color: #000000"> </span><span style="color: #A31515">&#039;@frontmeans/drek&#039;</span><span style="color: #000000">;</span>
@@ -198,24 +198,24 @@
 				<a href="#rendering-target" id="rendering-target" style="color: inherit; text-decoration: none;">
 					<h2>Rendering Target</h2>
 				</a>
-				<p>A rendering target (<a href="https://frontmeans.github.io/drek/interfaces/drektarget.html">DrekTarget</a>) represents a part of the DOM tree to place the rendered content to.</p>
+				<p>A rendering target (<a href="https://frontmeans.github.io/drek/interfaces/DrekTarget.html">DrekTarget</a>) represents a part of the DOM tree to place the rendered content to.</p>
 				<p>There are several convenient target implementations available:</p>
 				<ul>
-					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekappender">drekAppender</a> - Creates a rendering target that appends content to parent node.</p>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekAppender">drekAppender</a> - Creates a rendering target that appends content to parent node.</p>
 					</li>
-					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekcharger">drekCharger</a> - Creates a rendering target that charges rendered content prior to placing it to another target.</p>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekCharger">drekCharger</a> - Creates a rendering target that charges rendered content prior to placing it to another target.</p>
 						<p>By default, encloses the rendered content into comments. The ongoing content updates replace the nodes between
 						comments thus making the updated content occupy the same place.</p>
 					</li>
-					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekinserter">drekInserter</a> - Creates a rendering target that inserts content to parent node at particular position.</p>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekInserter">drekInserter</a> - Creates a rendering target that inserts content to parent node at particular position.</p>
 					</li>
-					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekreplacer">drekReplacer</a> - Creates a rendering target that replaces content of the given node.</p>
+					<li><p><a href="https://frontmeans.github.io/drek/modules.html#drekReplacer">drekReplacer</a> - Creates a rendering target that replaces content of the given node.</p>
 					</li>
 				</ul>
 				<a href="#miscellaneous" id="miscellaneous" style="color: inherit; text-decoration: none;">
 					<h2>Miscellaneous</h2>
 				</a>
-				<p>A <a href="https://frontmeans.github.io/drek/interfaces/drekcssclasses.html">DrekCssClasses</a> is an accessor to CSS classes of some element. With it, element&#39;s CSS classes can be manipulated
+				<p>A <a href="https://frontmeans.github.io/drek/interfaces/DrekCssClasses.html">DrekCssClasses</a> is an accessor to CSS classes of some element. With it, element&#39;s CSS classes can be manipulated
 					concurrently in a safe manner. E.g. multiple parties may add and remove CSS classes to the same element, even if the
 				class names are the same.</p>
 			</div>
@@ -227,68 +227,74 @@
 						<a href="modules.html">Exports</a>
 					</li>
 					<li class=" tsd-kind-namespace">
-						<a href="modules/drekcharger.html">Drek<wbr>Charger</a>
+						<a href="modules/DrekCharger.html">Drek<wbr>Charger</a>
 					</li>
 					<li class=" tsd-kind-namespace">
-						<a href="modules/drekcontext.html">Drek<wbr>Context</a>
+						<a href="modules/DrekContext.html">Drek<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-namespace">
-						<a href="modules/drekfragment.html">Drek<wbr>Fragment</a>
+						<a href="modules/DrekFragment.html">Drek<wbr>Fragment</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="classes/drekcontext.html" class="tsd-kind-icon">Drek<wbr>Context</a>
+						<a href="classes/DrekContext.html" class="tsd-kind-icon">Drek<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="classes/drekfragment.html" class="tsd-kind-icon">Drek<wbr>Fragment</a>
+						<a href="classes/DrekFragment.html" class="tsd-kind-icon">Drek<wbr>Fragment</a>
 					</li>
 					<li class=" tsd-kind-class tsd-has-type-parameter">
-						<a href="classes/drekplacement.html" class="tsd-kind-icon">Drek<wbr>Placement</a>
+						<a href="classes/DrekPlacement.html" class="tsd-kind-icon">Drek<wbr>Placement</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/drekcontentstatus.html" class="tsd-kind-icon">Drek<wbr>Content<wbr>Status</a>
+						<a href="interfaces/DocumentRenderKit.html" class="tsd-kind-icon">Document<wbr>Render<wbr>Kit</a>
 					</li>
 					<li class=" tsd-kind-interface">
-						<a href="interfaces/drekcssclasses.html" class="tsd-kind-icon">Drek<wbr>Css<wbr>Classes</a>
+						<a href="interfaces/DrekContentStatus.html" class="tsd-kind-icon">Drek<wbr>Content<wbr>Status</a>
+					</li>
+					<li class=" tsd-kind-interface">
+						<a href="interfaces/DrekCssClasses.html" class="tsd-kind-icon">Drek<wbr>Css<wbr>Classes</a>
 					</li>
 					<li class=" tsd-kind-interface tsd-has-type-parameter">
-						<a href="interfaces/drektarget.html" class="tsd-kind-icon">Drek<wbr>Target</a>
+						<a href="interfaces/DrekTarget.html" class="tsd-kind-icon">Drek<wbr>Target</a>
 					</li>
 					<li class=" tsd-kind-variable">
-						<a href="modules.html#drek__ns" class="tsd-kind-icon">Drek__NS</a>
+						<a href="modules.html#DocumentRenderKit" class="tsd-kind-icon">Document<wbr>Render<wbr>Kit</a>
+					</li>
+					<li class=" tsd-kind-variable">
+						<a href="modules.html#Drek__NS" class="tsd-kind-icon">Drek__NS</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="modules.html#derivedrekcontext" class="tsd-kind-icon">derive<wbr>Drek<wbr>Context</a>
+						<a href="modules.html#deriveDrekContext" class="tsd-kind-icon">derive<wbr>Drek<wbr>Context</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#drekappender" class="tsd-kind-icon">drek<wbr>Appender</a>
+						<a href="modules.html#drekAppender" class="tsd-kind-icon">drek<wbr>Appender</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="modules.html#drekbuild" class="tsd-kind-icon">drek<wbr>Build</a>
+						<a href="modules.html#drekBuild" class="tsd-kind-icon">drek<wbr>Build</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="modules.html#drekcharger" class="tsd-kind-icon">drek<wbr>Charger</a>
+						<a href="modules.html#drekCharger" class="tsd-kind-icon">drek<wbr>Charger</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#drekcontextof" class="tsd-kind-icon">drek<wbr>Context<wbr>Of</a>
+						<a href="modules.html#drekContextOf" class="tsd-kind-icon">drek<wbr>Context<wbr>Of</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#drekcssclassesof" class="tsd-kind-icon">drek<wbr>Css<wbr>Classes<wbr>Of</a>
+						<a href="modules.html#drekCssClassesOf" class="tsd-kind-icon">drek<wbr>Css<wbr>Classes<wbr>Of</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#drekhost" class="tsd-kind-icon">drek<wbr>Host</a>
+						<a href="modules.html#drekHost" class="tsd-kind-icon">drek<wbr>Host</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#drekinserter" class="tsd-kind-icon">drek<wbr>Inserter</a>
+						<a href="modules.html#drekInserter" class="tsd-kind-icon">drek<wbr>Inserter</a>
 					</li>
 					<li class=" tsd-kind-function tsd-has-type-parameter">
-						<a href="modules.html#dreklift" class="tsd-kind-icon">drek<wbr>Lift</a>
+						<a href="modules.html#drekLift" class="tsd-kind-icon">drek<wbr>Lift</a>
 					</li>
 					<li class=" tsd-kind-function">
-						<a href="modules.html#drekreplacer" class="tsd-kind-icon">drek<wbr>Replacer</a>
+						<a href="modules.html#drekReplacer" class="tsd-kind-icon">drek<wbr>Replacer</a>
 					</li>
 				</ul>
 			</nav>

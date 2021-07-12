@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Custom | Document Render Kit</title>
+	<title>OwnStatus | Document Render Kit</title>
 	<meta name="description" content="Documentation for Document Render Kit">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,13 +55,13 @@
 					<a href="../modules.html">Document Render Kit</a>
 				</li>
 				<li>
-					<a href="../modules/drekcharger.html">DrekCharger</a>
+					<a href="../modules/DrekFragment.html">DrekFragment</a>
 				</li>
 				<li>
-					<a href="drekcharger.custom.html">Custom</a>
+					<a href="DrekFragment.OwnStatus.html">OwnStatus</a>
 				</li>
 			</ul>
-			<h1>Interface Custom</h1>
+			<h1>Interface OwnStatus</h1>
 		</div>
 	</div>
 </header>
@@ -71,15 +71,21 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Custom rendered content charger.</p>
+						<p>A status of rendered fragment content.</p>
 					</div>
+					<p>This status is replaced by the target one</p>
 				</div>
 			</section>
 			<section class="tsd-panel tsd-hierarchy">
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Custom</span>
+						<a href="DrekContentStatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a>
+						<ul class="tsd-hierarchy">
+							<li>
+								<span class="target">OwnStatus</span>
+							</li>
+						</ul>
 					</li>
 				</ul>
 			</section>
@@ -88,62 +94,54 @@
 				<section class="tsd-panel tsd-index-panel">
 					<div class="tsd-index-content">
 						<section class="tsd-index-section ">
-							<h3>Methods</h3>
+							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter"><a href="drekcharger.custom.html#charge" class="tsd-kind-icon">charge</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="DrekFragment.OwnStatus.html#connected" class="tsd-kind-icon">connected</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite"><a href="DrekFragment.OwnStatus.html#withinFragment" class="tsd-kind-icon">within<wbr>Fragment</a></li>
 							</ul>
 						</section>
 					</div>
 				</section>
 			</section>
 			<section class="tsd-panel-group tsd-member-group ">
-				<h2>Methods</h2>
-				<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
-					<a name="charge" class="tsd-anchor"></a>
-					<h3>charge</h3>
-					<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
-						<li class="tsd-signature tsd-kind-icon">charge&lt;TStatus&gt;<span class="tsd-signature-symbol">(</span>content<span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">Node</span>, target<span class="tsd-signature-symbol">: </span><a href="drektarget.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekTarget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><a href="../classes/drekplacement.html" class="tsd-signature-type" data-tsd-kind="Class">DrekPlacement</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span></li>
-					</ul>
-					<ul class="tsd-descriptions">
-						<li class="tsd-description">
-							<aside class="tsd-sources">
-								<ul>
-									<li>Defined in <a href="https://github.com/frontmeans/drek/blob/b7ec84f/src/target/charger.target.ts#L65">target/charger.target.ts:65</a></li>
-								</ul>
-							</aside>
-							<div class="tsd-comment tsd-typography">
-								<div class="lead">
-									<p>Charges rendered content by representing it as another DOM node.</p>
-								</div>
-							</div>
-							<h4 class="tsd-type-parameters-title">Type parameters</h4>
-							<ul class="tsd-type-parameters">
-								<li>
-									<h4>TStatus<span class="tsd-signature-symbol">: </span><span class="tsd-signature-symbol">[</span><a href="drekcontentstatus.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekContentStatus</a><span class="tsd-signature-symbol">]</span></h4>
-									<div class="tsd-comment tsd-typography">
-										<p>A tuple type reflecting a content <a href="drekcontentstatus.html">placement status</a>.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-parameters-title">Parameters</h4>
-							<ul class="tsd-parameters">
-								<li>
-									<h5>content: <span class="tsd-signature-type">Node</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Rendered content to charge.</p>
-									</div>
-								</li>
-								<li>
-									<h5>target: <a href="drektarget.html" class="tsd-signature-type" data-tsd-kind="Interface">DrekTarget</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span></h5>
-									<div class="tsd-comment tsd-typography">
-										<p>Rendering target to place the charged content to.</p>
-									</div>
-								</li>
-							</ul>
-							<h4 class="tsd-returns-title">Returns <a href="../classes/drekplacement.html" class="tsd-signature-type" data-tsd-kind="Class">DrekPlacement</a><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">TStatus</span><span class="tsd-signature-symbol">&gt;</span></h4>
-							<p>Charged content placement status.</p>
-						</li>
-					</ul>
+				<h2>Properties</h2>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+					<a name="connected" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> connected</h3>
+					<div class="tsd-signature tsd-kind-icon">connected<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">false</span></div>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="DrekContentStatus.html">DrekContentStatus</a>.<a href="DrekContentStatus.html#connected">connected</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/4178ae0/src/fragment/fragment.ts#L134">fragment/fragment.ts:134</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>Whether the content connected to the document.</p>
+						</div>
+						<p>This is always <code>true</code> for document content, but may be <code>false</code> e.g. until a fragment is <a href="../classes/DrekFragment.html#render">rendered</a>.</p>
+					</div>
+				</section>
+				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+					<a name="withinFragment" class="tsd-anchor"></a>
+					<h3><span class="tsd-flag ts-flagReadonly">Readonly</span> within<wbr>Fragment</h3>
+					<div class="tsd-signature tsd-kind-icon">within<wbr>Fragment<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">&quot;added&quot;</span><span class="tsd-signature-symbol"> | </span><span class="tsd-signature-type">&quot;rendered&quot;</span></div>
+					<aside class="tsd-sources">
+						<p>Overrides <a href="DrekContentStatus.html">DrekContentStatus</a>.<a href="DrekContentStatus.html#withinFragment">withinFragment</a></p>
+						<ul>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/4178ae0/src/fragment/fragment.ts#L144">fragment/fragment.ts:144</a></li>
+						</ul>
+					</aside>
+					<div class="tsd-comment tsd-typography">
+						<div class="lead">
+							<p>A status of the content within a fragment.</p>
+						</div>
+						<p>Can be one of:</p>
+						<ul>
+							<li><code>&#39;added&#39;</code> - when the content is added to the fragment, but not yet rendered.</li>
+							<li><code>&#39;rendered&#39;</code> - while the content is being rendered, but not yet placed to <a href="../classes/DrekFragment.html#target">target</a>.</li>
+						</ul>
+					</div>
 				</section>
 			</section>
 		</div>
@@ -153,36 +151,42 @@
 					<li class=" ">
 						<a href="../modules.html">Exports</a>
 					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="../modules/DrekCharger.html">Drek<wbr>Charger</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="../modules/DrekContext.html">Drek<wbr>Context</a>
+					</li>
 					<li class="current tsd-kind-namespace">
-						<a href="../modules/drekcharger.html">Drek<wbr>Charger</a>
-					</li>
-					<li class=" tsd-kind-namespace">
-						<a href="../modules/drekcontext.html">Drek<wbr>Context</a>
-					</li>
-					<li class=" tsd-kind-namespace">
-						<a href="../modules/drekfragment.html">Drek<wbr>Fragment</a>
+						<a href="../modules/DrekFragment.html">Drek<wbr>Fragment</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
+						<a href="DrekFragment.InnerContext.html" class="tsd-kind-icon">Inner<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="DrekFragment.Options.html" class="tsd-kind-icon">Options</a>
+					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="drekcharger.custom.html" class="tsd-kind-icon">Custom</a>
+						<a href="DrekFragment.OwnStatus.html" class="tsd-kind-icon">Own<wbr>Status</a>
 						<ul>
-							<li class=" tsd-kind-method tsd-parent-kind-interface tsd-has-type-parameter">
-								<a href="drekcharger.custom.html#charge" class="tsd-kind-icon">charge</a>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+								<a href="DrekFragment.OwnStatus.html#connected" class="tsd-kind-icon">connected</a>
+							</li>
+							<li class=" tsd-kind-property tsd-parent-kind-interface tsd-is-overwrite">
+								<a href="DrekFragment.OwnStatus.html#withinFragment" class="tsd-kind-icon">within<wbr>Fragment</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
 					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="../modules/drekcharger.html#factory" class="tsd-kind-icon">Factory</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="../modules/drekcharger.html#spec" class="tsd-kind-icon">Spec</a>
+						<a href="../modules/DrekFragment.html#Status" class="tsd-kind-icon">Status</a>
 					</li>
 				</ul>
 			</nav>

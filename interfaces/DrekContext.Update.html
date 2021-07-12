@@ -3,7 +3,7 @@
 <head>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-	<title>Options | Document Render Kit</title>
+	<title>Update | Document Render Kit</title>
 	<meta name="description" content="Documentation for Document Render Kit">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="../assets/css/main.css">
@@ -55,13 +55,13 @@
 					<a href="../modules.html">Document Render Kit</a>
 				</li>
 				<li>
-					<a href="../modules/drekfragment.html">DrekFragment</a>
+					<a href="../modules/DrekContext.html">DrekContext</a>
 				</li>
 				<li>
-					<a href="drekfragment.options.html">Options</a>
+					<a href="DrekContext.Update.html">Update</a>
 				</li>
 			</ul>
-			<h1>Interface Options</h1>
+			<h1>Interface Update</h1>
 		</div>
 	</div>
 </header>
@@ -71,7 +71,7 @@
 			<section class="tsd-panel tsd-comment">
 				<div class="tsd-comment tsd-typography">
 					<div class="lead">
-						<p>Rendered fragment construction options.</p>
+						<p>An update to rendering context.</p>
 					</div>
 				</div>
 			</section>
@@ -79,7 +79,7 @@
 				<h3>Hierarchy</h3>
 				<ul class="tsd-hierarchy">
 					<li>
-						<span class="target">Options</span>
+						<span class="target">Update</span>
 					</li>
 				</ul>
 			</section>
@@ -90,9 +90,8 @@
 						<section class="tsd-index-section ">
 							<h3>Properties</h3>
 							<ul class="tsd-index-list">
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="drekfragment.options.html#content" class="tsd-kind-icon">content</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="drekfragment.options.html#nsalias" class="tsd-kind-icon">ns<wbr>Alias</a></li>
-								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="drekfragment.options.html#scheduler" class="tsd-kind-icon">scheduler</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="DrekContext.Update.html#nsAlias" class="tsd-kind-icon">ns<wbr>Alias</a></li>
+								<li class="tsd-kind-property tsd-parent-kind-interface"><a href="DrekContext.Update.html#scheduler" class="tsd-kind-icon">scheduler</a></li>
 							</ul>
 						</section>
 					</div>
@@ -101,35 +100,19 @@
 			<section class="tsd-panel-group tsd-member-group ">
 				<h2>Properties</h2>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="content" class="tsd-anchor"></a>
-					<h3><span class="tsd-flag ts-flagOptional">Optional</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> content</h3>
-					<div class="tsd-signature tsd-kind-icon">content<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">DocumentFragment</span></div>
-					<aside class="tsd-sources">
-						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/b7ec84f/src/fragment/fragment.ts#L172">fragment/fragment.ts:172</a></li>
-						</ul>
-					</aside>
-					<div class="tsd-comment tsd-typography">
-						<div class="lead">
-							<p>The content of constructed fragment.</p>
-						</div>
-						<p>A new document fragment will be created when omitted.</p>
-					</div>
-				</section>
-				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
-					<a name="nsalias" class="tsd-anchor"></a>
+					<a name="nsAlias" class="tsd-anchor"></a>
 					<h3><span class="tsd-flag ts-flagOptional">Optional</span> <span class="tsd-flag ts-flagReadonly">Readonly</span> ns<wbr>Alias</h3>
 					<div class="tsd-signature tsd-kind-icon">ns<wbr>Alias<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">NamespaceAliaser</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/b7ec84f/src/fragment/fragment.ts#L158">fragment/fragment.ts:158</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/4178ae0/src/context.ts#L130">context.ts:130</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Namespace aliaser to use by content nodes.</p>
+							<p>Namespace aliaser to use.</p>
 						</div>
-						<p>The one from the {@link DrekFragment.target.context target context} is used when omitted.</p>
+						<p>The aliaser is not updated when omitted.</p>
 					</div>
 				</section>
 				<section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-interface">
@@ -138,14 +121,14 @@
 					<div class="tsd-signature tsd-kind-icon">scheduler<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">RenderScheduler</span><span class="tsd-signature-symbol">&lt;</span><span class="tsd-signature-type">RenderExecution</span><span class="tsd-signature-symbol">, </span><span class="tsd-signature-type">RenderScheduleOptions</span><span class="tsd-signature-symbol">&gt;</span></div>
 					<aside class="tsd-sources">
 						<ul>
-							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/b7ec84f/src/fragment/fragment.ts#L165">fragment/fragment.ts:165</a></li>
+							<li>Defined in <a href="https://github.com/frontmeans/drek/blob/4178ae0/src/context.ts#L137">context.ts:137</a></li>
 						</ul>
 					</aside>
 					<div class="tsd-comment tsd-typography">
 						<div class="lead">
-							<p>Render scheduler to use by content nodes.</p>
+							<p>Render scheduler to use.</p>
 						</div>
-						<p>A <code>queuedRenderScheduler</code> is used when omitted.</p>
+						<p>The scheduler is not updated when omitted.</p>
 					</div>
 				</section>
 			</section>
@@ -157,45 +140,36 @@
 						<a href="../modules.html">Exports</a>
 					</li>
 					<li class=" tsd-kind-namespace">
-						<a href="../modules/drekcharger.html">Drek<wbr>Charger</a>
-					</li>
-					<li class=" tsd-kind-namespace">
-						<a href="../modules/drekcontext.html">Drek<wbr>Context</a>
+						<a href="../modules/DrekCharger.html">Drek<wbr>Charger</a>
 					</li>
 					<li class="current tsd-kind-namespace">
-						<a href="../modules/drekfragment.html">Drek<wbr>Fragment</a>
+						<a href="../modules/DrekContext.html">Drek<wbr>Context</a>
+					</li>
+					<li class=" tsd-kind-namespace">
+						<a href="../modules/DrekFragment.html">Drek<wbr>Fragment</a>
 					</li>
 				</ul>
 			</nav>
 			<nav class="tsd-navigation secondary menu-sticky">
 				<ul class="before-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="drekfragment.innercontext.html" class="tsd-kind-icon">Inner<wbr>Context</a>
+					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
+						<a href="DrekContext.Updatable.html" class="tsd-kind-icon">Updatable</a>
 					</li>
 				</ul>
 				<ul class="current">
 					<li class="current tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="drekfragment.options.html" class="tsd-kind-icon">Options</a>
+						<a href="DrekContext.Update.html" class="tsd-kind-icon">Update</a>
 						<ul>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="drekfragment.options.html#content" class="tsd-kind-icon">content</a>
+								<a href="DrekContext.Update.html#nsAlias" class="tsd-kind-icon">ns<wbr>Alias</a>
 							</li>
 							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="drekfragment.options.html#nsalias" class="tsd-kind-icon">ns<wbr>Alias</a>
-							</li>
-							<li class=" tsd-kind-property tsd-parent-kind-interface">
-								<a href="drekfragment.options.html#scheduler" class="tsd-kind-icon">scheduler</a>
+								<a href="DrekContext.Update.html#scheduler" class="tsd-kind-icon">scheduler</a>
 							</li>
 						</ul>
 					</li>
 				</ul>
 				<ul class="after-current">
-					<li class=" tsd-kind-interface tsd-parent-kind-namespace">
-						<a href="drekfragment.ownstatus.html" class="tsd-kind-icon">Own<wbr>Status</a>
-					</li>
-					<li class=" tsd-kind-type-alias tsd-parent-kind-namespace tsd-has-type-parameter">
-						<a href="../modules/drekfragment.html#status" class="tsd-kind-icon">Status</a>
-					</li>
 				</ul>
 			</nav>
 		</div>
