@@ -155,21 +155,21 @@ export namespace DrekFragment {
      *
      * The one from the {@link DrekFragment.target.context target context} is used when omitted.
      */
-    readonly nsAlias?: NamespaceAliaser;
+    readonly nsAlias?: NamespaceAliaser | undefined;
 
     /**
      * Render scheduler to use by content nodes.
      *
      * A `queuedRenderScheduler` is used when omitted.
      */
-    readonly scheduler?: RenderScheduler;
+    readonly scheduler?: RenderScheduler | undefined;
 
     /**
      * The content of constructed fragment.
      *
      * A new document fragment will be created when omitted.
      */
-    readonly content?: DocumentFragment;
+    readonly content?: DocumentFragment | undefined;
 
   }
 

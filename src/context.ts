@@ -127,14 +127,14 @@ export namespace DrekContext {
      *
      * The aliaser is not updated when omitted.
      */
-    readonly nsAlias?: NamespaceAliaser;
+    readonly nsAlias?: NamespaceAliaser | undefined;
 
     /**
      * Render scheduler to use.
      *
      * The scheduler is not updated when omitted.
      */
-    readonly scheduler?: RenderScheduler;
+    readonly scheduler?: RenderScheduler | undefined;
 
   }
 

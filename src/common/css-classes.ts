@@ -51,7 +51,7 @@ export interface DrekCssClasses {
 const DrekCssClasses__symbol = (/*#__PURE__*/ Symbol('DrekCssClasses'));
 
 interface DrekCssClasses$Holder extends Element {
-  [DrekCssClasses__symbol]?: DrekCssClasses$;
+  [DrekCssClasses__symbol]?: DrekCssClasses$ | undefined;
 }
 
 /**

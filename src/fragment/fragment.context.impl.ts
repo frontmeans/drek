@@ -61,7 +61,7 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
   private readonly _settled = new EventEmitter<DrekFragment.Status<TStatus>>();
   private _getFragment: () => DrekFragment | undefined;
   private _lift: DrekContext;
-  private _whenSettled?: OnEvent<DrekFragment.Status<TStatus>>;
+  private _whenSettled?: OnEvent<DrekFragment.Status<TStatus>> | undefined;
   private readonly _rendered = new EventEmitter<[DrekPlacement<TStatus>]>();
 
   private constructor(
@@ -198,6 +198,6 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
 
 interface DrekFragment$Options extends DrekFragment.Options {
 
-  readonly content?: DrekContext$Holder<DocumentFragment>;
+  readonly content?: DrekContext$Holder<DocumentFragment> | undefined;
 
 }

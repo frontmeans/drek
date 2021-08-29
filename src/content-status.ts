@@ -11,6 +11,6 @@ export interface DrekContentStatus {
    */
   readonly connected: boolean;
 
-  readonly withinFragment?: unknown;
+  readonly withinFragment?: unknown | undefined;
 
 }

@@ -12,7 +12,7 @@ export const DrekContext__symbol = (/*#__PURE__*/ Symbol('DrekContext'));
  */
 export type DrekContext$Holder<T> = T & {
 
-  [DrekContext__symbol]?: DrekContext;
+  [DrekContext__symbol]?: DrekContext | undefined;
 
 };
 
