@@ -26,6 +26,7 @@ export function DrekContext$setRegistrar(registrar: DrekContext$Registrar): () =
   return priorRegistrar === DrekContext$autoRegister
       ? () => {
         DrekContext$registrar = priorRegistrar;
+
         return DrekContext$dontRegister;
       }
       : () => DrekContext$registrar = priorRegistrar;

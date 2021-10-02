@@ -72,6 +72,7 @@ export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): 
         }: DrekContext.Update,
     ): this {
       state.set({ nsAlias, scheduler });
+
       return this;
     }
 

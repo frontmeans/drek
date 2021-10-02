@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { NamespaceAliaser, NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { noop } from '@proc7ts/primitives';
 import { deriveDrekContext } from '../common';
 import { DrekContentStatus } from '../content-status';
@@ -247,6 +247,7 @@ describe('DrekFragment', () => {
 
         let settled2: DrekContentStatus | undefined;
         const supply2 = fragment.innerContext.whenSettled(s => settled2 = s);
+
         expect(settled2).toBeUndefined();
 
         fragment.settle();

@@ -159,6 +159,7 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
         });
       });
     });
+
     return this;
   }
 

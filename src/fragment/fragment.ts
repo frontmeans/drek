@@ -80,6 +80,7 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
    */
   settle(): this {
     this[DrekFragment$Context__symbol]._settle();
+
     return this;
   }
 

@@ -17,5 +17,6 @@ export function drekLift<TNode extends Node>(node: TNode): TNode;
 
 export function drekLift<TNode extends Node>(node: DrekContext$Holder<TNode>): TNode {
   node[DrekContext__symbol]?.lift();
+
   return node;
 }

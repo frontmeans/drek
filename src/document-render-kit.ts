@@ -57,6 +57,7 @@ function DocumentRenderKit$byDefault(target: CxEntry.Target<DocumentRenderKit>):
   return {
     contextOf(node: Node): DrekContext {
       initDoc(nodeDocument(node));
+
       return drekContextOf(node);
     },
   };

@@ -42,6 +42,7 @@ export class DrekContext$State {
           scheduler = this._scheduler;
           schedule = scheduler(options);
         }
+
         return schedule(shot);
       };
     };
