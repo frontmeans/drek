@@ -263,13 +263,13 @@ describe('DrekFragment', () => {
         expect(settled).toEqual({ connected: true });
         expect(supply.isOff).toBe(true);
       });
-      it('is the same as `whenConnected` once rendered', async () => {
+      it('is the same as `whenConnected` once rendered', () => {
 
         const context = fragment.innerContext;
 
         fragment.render();
 
-        await expect(context.whenSettled).toBe(context.whenConnected);
+        expect(context.whenSettled).toBe(context.whenConnected);
       });
     });
   });

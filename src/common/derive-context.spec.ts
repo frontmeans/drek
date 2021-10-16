@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
 import { immediateRenderScheduler } from '@frontmeans/render-scheduler';
+import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { DrekContext } from '../context';
 import { drekContextOf } from '../context-of';
 import { deriveDrekContext } from './derive-context';
@@ -33,7 +33,7 @@ describe('deriveDrekContext', () => {
     context.nsAlias(ns);
     expect(nsAlias).toHaveBeenCalledWith(ns);
   });
-  it('updates namespace aliaser', async () => {
+  it('updates namespace aliaser', () => {
 
     const nsAlias = jest.fn(newNamespaceAliaser());
     const derived = deriveDrekContext(base, { nsAlias });
@@ -43,7 +43,7 @@ describe('deriveDrekContext', () => {
     expect(nsAlias).toHaveBeenCalledWith(ns);
     expect(derived.window).toBe(base.window);
     expect(derived.document).toBe(base.document);
-    await expect(derived.readStatus).toBe(base.readStatus);
+    expect(derived.readStatus).toBe(base.readStatus);
   });
   it('derives render scheduler', () => {
 
@@ -56,7 +56,7 @@ describe('deriveDrekContext', () => {
     context.scheduler();
     expect(scheduler).toHaveBeenCalledTimes(1);
   });
-  it('updates render scheduler', async () => {
+  it('updates render scheduler', () => {
 
     const scheduler = jest.fn(immediateRenderScheduler);
     const derived = deriveDrekContext(base, { scheduler });
@@ -65,7 +65,7 @@ describe('deriveDrekContext', () => {
     expect(scheduler).toHaveBeenCalledTimes(1);
     expect(derived.window).toBe(base.window);
     expect(derived.document).toBe(base.document);
-    await expect(derived.readStatus).toBe(base.readStatus);
+    expect(derived.readStatus).toBe(base.readStatus);
   });
   it('returns the base context without update', () => {
     expect(deriveDrekContext(base)).toBe(base);
