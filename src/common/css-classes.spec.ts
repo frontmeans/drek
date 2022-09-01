@@ -11,7 +11,6 @@ import { DrekCssClasses, drekCssClassesOf } from './css-classes';
 import { deriveDrekContext } from './derive-context';
 
 describe('drekCssClassesOf', () => {
-
   let fragment: DrekFragment;
   let scheduler: ManualRenderScheduler;
 
@@ -40,7 +39,6 @@ describe('drekCssClassesOf', () => {
       expect(element.classList).toContain('test');
     });
     it('removes CSS class when the last supply cut off', () => {
-
       const supply1 = css.add('test');
       const supply2 = css.add('test');
 
@@ -104,7 +102,6 @@ describe('drekCssClassesOf', () => {
       expect(css.has('test')).toBe(true);
     });
     it('returns `false` when the class removed', () => {
-
       const supply = css.add('test');
 
       scheduler.render();
@@ -125,11 +122,9 @@ describe('drekCssClassesOf', () => {
 
   describe('renderIn', () => {
     it('renders in custom context', () => {
-
-      const updatedCss = css.renderIn(deriveDrekContext(
-          fragment.innerContext,
-          { scheduler: immediateRenderScheduler },
-      ));
+      const updatedCss = css.renderIn(
+        deriveDrekContext(fragment.innerContext, { scheduler: immediateRenderScheduler }),
+      );
       const supply = updatedCss.add('test');
 
       expect(css.has('test')).toBe(true);
@@ -142,11 +137,9 @@ describe('drekCssClassesOf', () => {
       expect(element.classList).not.toContain('test');
     });
     it('returns original instance if context did not change', () => {
-
-      const updatedCss = css.renderIn(deriveDrekContext(
-          fragment.innerContext,
-          { scheduler: immediateRenderScheduler },
-      ));
+      const updatedCss = css.renderIn(
+        deriveDrekContext(fragment.innerContext, { scheduler: immediateRenderScheduler }),
+      );
 
       expect(updatedCss.renderIn(fragment.innerContext)).toBe(css);
     });

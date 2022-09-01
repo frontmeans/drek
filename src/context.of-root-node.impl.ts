@@ -17,7 +17,6 @@ export function DrekContext$ofRootNode(root: DrekContext$Holder<Node>): DrekCont
 }
 
 function DrekContext$unrooted(root: DrekContext$Holder<Node>): DrekContext {
-
   const existing = root[DrekContext__symbol];
 
   if (existing) {
@@ -27,12 +26,11 @@ function DrekContext$unrooted(root: DrekContext$Holder<Node>): DrekContext {
   const status = trackValue<DrekContentStatus>({ connected: false });
   const settled = new EventEmitter<[DrekContentStatus]>();
   let derivedCtx: DrekContext = DrekContext$ofDocument(
-      root.ownerDocument! /* Not a document, so `ownerDocument` is set */,
+    root.ownerDocument! /* Not a document, so `ownerDocument` is set */,
   );
   const scheduler = new DrekContext$State(derivedCtx);
   let getFragment = (): DrekFragment | undefined => derivedCtx.fragment;
   let lift = (ctx: DrekContext): DrekContext => {
-
     const newRoot = root.getRootNode({ composed: true });
 
     if (newRoot === root) {
@@ -86,9 +84,9 @@ function DrekContext$unrooted(root: DrekContext$Holder<Node>): DrekContext {
       return lift(this);
     }
 
-  }
+}
 
-  const context = root[DrekContext__symbol] = new DrekContext$Unrooted();
+  const context = (root[DrekContext__symbol] = new DrekContext$Unrooted());
 
   DrekContext$register(context);
 

@@ -28,7 +28,6 @@ export function drekContextOf(node: Node): DrekContext;
 
 export function drekContextOf(node: Node): DrekContext {
   for (;;) {
-
     const root = node.getRootNode({ composed: true });
 
     if (root === node) {

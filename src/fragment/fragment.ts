@@ -99,14 +99,13 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
 }
 
 export namespace DrekFragment {
-
   /**
    * Rendering context provided by fragment to its content nodes.
    *
    * @typeParam TStatus - A type of the tuple containing a rendered content status as its first element.
    */
-  export interface InnerContext<TStatus extends [DrekContentStatus]> extends DrekContext<Status<TStatus>> {
-
+  export interface InnerContext<TStatus extends [DrekContentStatus]>
+    extends DrekContext<Status<TStatus>> {
     readonly scheduler: DrekFragmentRenderScheduler<TStatus>;
 
     /**
@@ -115,15 +114,12 @@ export namespace DrekFragment {
      * @returns The {@link target} context when the fragment is rendered, or `this` instance otherwise.
      */
     lift(): DrekContext;
-
   }
 
   /**
    * A status of rendered fragment content.
    */
-  export type Status<TStatus extends [DrekContentStatus]> =
-      | [OwnStatus]
-      | TStatus;
+  export type Status<TStatus extends [DrekContentStatus]> = [OwnStatus] | TStatus;
 
   /**
    * A status of rendered fragment content.
@@ -131,7 +127,6 @@ export namespace DrekFragment {
    * This status is replaced by the target one
    */
   export interface OwnStatus extends DrekContentStatus {
-
     readonly connected: false;
 
     /**
@@ -143,14 +138,12 @@ export namespace DrekFragment {
      * - `'rendered'` - while the content is being rendered, but not yet placed to {@link DrekFragment.target target}.
      */
     readonly withinFragment: 'added' | 'rendered';
-
   }
 
   /**
    * Rendered fragment construction options.
    */
   export interface Options {
-
     /**
      * Namespace aliaser to use by content nodes.
      *
@@ -171,7 +164,5 @@ export namespace DrekFragment {
      * A new document fragment will be created when omitted.
      */
     readonly content?: DocumentFragment | undefined;
-
   }
-
 }

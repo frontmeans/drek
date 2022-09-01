@@ -12,7 +12,6 @@ import { DrekContext$Holder, DrekContext__symbol } from '../context.impl';
  * @returns Either parent element of the given node, or `undefined` when not found.
  */
 export function drekHost(node: Node): Element | undefined {
-
   const host = nodeHost(node);
 
   if (host) {
@@ -22,7 +21,5 @@ export function drekHost(node: Node): Element | undefined {
   const parent: DrekContext$Holder<Node> = node.parentNode || node;
   const renderHost = parent[DrekContext__symbol]?.fragment?.target.host;
 
-  return !renderHost || isElementNode(renderHost)
-      ? renderHost
-      : drekHost(renderHost);
+  return !renderHost || isElementNode(renderHost) ? renderHost : drekHost(renderHost);
 }

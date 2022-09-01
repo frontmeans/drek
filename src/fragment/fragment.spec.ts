@@ -1,5 +1,9 @@
 import { NamespaceAliaser, NamespaceDef, newNamespaceAliaser } from '@frontmeans/namespace-aliaser';
-import { newManualRenderScheduler, queuedRenderScheduler, RenderScheduler } from '@frontmeans/render-scheduler';
+import {
+  newManualRenderScheduler,
+  queuedRenderScheduler,
+  RenderScheduler,
+} from '@frontmeans/render-scheduler';
 import { beforeEach, describe, expect, it, jest } from '@jest/globals';
 import { noop } from '@proc7ts/primitives';
 import { deriveDrekContext } from '../common';
@@ -10,7 +14,6 @@ import { drekAppender, drekReplacer, DrekTarget } from '../target';
 import { DrekFragment } from './fragment';
 
 describe('DrekFragment', () => {
-
   let doc: Document;
 
   beforeEach(() => {
@@ -26,20 +29,16 @@ describe('DrekFragment', () => {
   beforeEach(() => {
     targetNsAlias = jest.fn(newNamespaceAliaser());
     targetScheduler = jest.fn(queuedRenderScheduler);
-    targetContext = deriveDrekContext(
-        drekContextOf(doc),
-        {
-          nsAlias: targetNsAlias,
-          scheduler: targetScheduler,
-        },
-    );
+    targetContext = deriveDrekContext(drekContextOf(doc), {
+      nsAlias: targetNsAlias,
+      scheduler: targetScheduler,
+    });
     target = drekReplacer(doc.body, targetContext);
     fragment = new DrekFragment(target);
   });
 
   describe('content', () => {
     it('can be specified explicitly', () => {
-
       const customContent = doc.createDocumentFragment();
 
       fragment = new DrekFragment(target, { content: customContent });
@@ -48,16 +47,17 @@ describe('DrekFragment', () => {
       expect(drekContextOf(customContent)).toBe(fragment.innerContext);
     });
     it('should be standalone', () => {
-
       const element = document.createElement('test-element');
       const shadowRoot = element.attachShadow({ mode: 'open' });
 
-      expect(() => new DrekFragment(target, { content: shadowRoot }))
-          .toThrow('Not a standalone DocumentFragment');
+      expect(() => new DrekFragment(target, { content: shadowRoot })).toThrow(
+        'Not a standalone DocumentFragment',
+      );
     });
     it('can not be reused by another fragment', () => {
-      expect(() => new DrekFragment(target, { content: fragment.content }))
-          .toThrow('Can not render content of another fragment');
+      expect(() => new DrekFragment(target, { content: fragment.content })).toThrow(
+        'Can not render content of another fragment',
+      );
     });
   });
 
@@ -72,7 +72,6 @@ describe('DrekFragment', () => {
       expect(drekContextOf(fragment.content)).toBe(fragment.innerContext);
     });
     it('is used as rendering context for nested elements', () => {
-
       const span = fragment.content.appendChild(document.createElement('span'));
 
       expect(drekContextOf(span)).toBe(fragment.innerContext);
@@ -83,7 +82,6 @@ describe('DrekFragment', () => {
         expect(fragment.innerContext.fragment).toBe(fragment);
       });
       it('becomes `undefined` when rendered to document', () => {
-
         const context = fragment.innerContext;
 
         fragment.render();
@@ -91,11 +89,8 @@ describe('DrekFragment', () => {
         expect(context.fragment).toBeUndefined();
       });
       it('updates to target fragment when rendered', async () => {
-
         const fragment2 = await new Promise<DrekFragment>(resolve => {
-          fragment.innerContext.scheduler()(
-              ({ content }) => resolve(new DrekFragment(drekAppender(content))),
-          );
+          fragment.innerContext.scheduler()(({ content }) => resolve(new DrekFragment(drekAppender(content))));
         });
 
         const innerContext = fragment2.innerContext;
@@ -126,14 +121,12 @@ describe('DrekFragment', () => {
 
     describe('nsAlias', () => {
       it('is derived from target by default', () => {
-
         const ns = new NamespaceDef('uri:test:ns');
 
         fragment.innerContext.nsAlias(ns);
         expect(targetNsAlias).toHaveBeenCalledWith(ns);
       });
       it('can be specified explicitly', () => {
-
         const nsAlias = jest.fn(newNamespaceAliaser());
 
         fragment = new DrekFragment(target, { nsAlias });
@@ -148,7 +141,6 @@ describe('DrekFragment', () => {
 
     describe('scheduler', () => {
       it('can be specified explicitly', async () => {
-
         const scheduler = newManualRenderScheduler();
 
         fragment = new DrekFragment(target, { scheduler });
@@ -190,17 +182,15 @@ describe('DrekFragment', () => {
 
     describe('readStatus', () => {
       it('sends `connected` status once rendered to document', () => {
-
         let status!: DrekContentStatus;
 
-        fragment.innerContext.readStatus(s => status = s);
+        fragment.innerContext.readStatus(s => (status = s));
         expect(status).toEqual({ connected: false, withinFragment: 'added' });
 
         fragment.render();
         expect(status).toEqual({ connected: true });
       });
       it('sends `rendered` status while rendering', () => {
-
         const statuses: DrekContentStatus[] = [];
 
         fragment.innerContext.readStatus(s => statuses.push(s));
@@ -214,16 +204,13 @@ describe('DrekFragment', () => {
         ]);
       });
       it('sends `connected` status once render target fragment is rendered', async () => {
-
         const fragment2 = await new Promise<DrekFragment>(resolve => {
-          fragment.innerContext.scheduler()(
-              ({ content }) => resolve(new DrekFragment(drekAppender(content))),
-          );
+          fragment.innerContext.scheduler()(({ content }) => resolve(new DrekFragment(drekAppender(content))));
         });
 
         let status!: DrekContentStatus;
 
-        fragment.innerContext.readStatus(s => status = s);
+        fragment.innerContext.readStatus(s => (status = s));
 
         fragment2.render();
         expect(status).toEqual({ connected: false, withinFragment: 'added' });
@@ -235,9 +222,8 @@ describe('DrekFragment', () => {
 
     describe('whenSettled', () => {
       it('sends a status one time when `settle()` called', () => {
-
         let settled1: DrekContentStatus | undefined;
-        const supply1 = fragment.innerContext.whenSettled(s => settled1 = s);
+        const supply1 = fragment.innerContext.whenSettled(s => (settled1 = s));
 
         expect(settled1).toBeUndefined();
 
@@ -246,7 +232,7 @@ describe('DrekFragment', () => {
         expect(supply1.isOff).toBe(true);
 
         let settled2: DrekContentStatus | undefined;
-        const supply2 = fragment.innerContext.whenSettled(s => settled2 = s);
+        const supply2 = fragment.innerContext.whenSettled(s => (settled2 = s));
 
         expect(settled2).toBeUndefined();
 
@@ -255,16 +241,14 @@ describe('DrekFragment', () => {
         expect(supply2.isOff).toBe(true);
       });
       it('sends a status one time when rendered', () => {
-
         let settled: DrekContentStatus | undefined;
-        const supply = fragment.innerContext.whenSettled(s => settled = s);
+        const supply = fragment.innerContext.whenSettled(s => (settled = s));
 
         fragment.render();
         expect(settled).toEqual({ connected: true });
         expect(supply.isOff).toBe(true);
       });
       it('is the same as `whenConnected` once rendered', () => {
-
         const context = fragment.innerContext;
 
         fragment.render();
@@ -276,7 +260,6 @@ describe('DrekFragment', () => {
 
   describe('render', () => {
     it('updates inner context', () => {
-
       const prevContext = fragment.innerContext;
 
       fragment.render();
@@ -284,16 +267,12 @@ describe('DrekFragment', () => {
       expect(fragment.innerContext).not.toBe(prevContext);
     });
     it('sends `whenRendered` event once', () => {
-
       const scheduler = newManualRenderScheduler();
 
-      targetContext = deriveDrekContext(
-          drekContextOf(doc),
-          {
-            nsAlias: targetNsAlias,
-            scheduler: scheduler,
-          },
-      );
+      targetContext = deriveDrekContext(drekContextOf(doc), {
+        nsAlias: targetNsAlias,
+        scheduler: scheduler,
+      });
       target = drekReplacer(doc.body, targetContext);
       fragment = new DrekFragment(target);
 

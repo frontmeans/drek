@@ -9,7 +9,6 @@ import { drekContextOf } from './context-of';
  * Document render kit instance.
  */
 export interface DocumentRenderKit {
-
   /**
    * Obtains a rendering context of the given DOM node.
    *
@@ -21,7 +20,6 @@ export interface DocumentRenderKit {
    * @returns Target node rendering context.
    */
   contextOf(node: Node): DrekContext;
-
 }
 
 /**
@@ -32,17 +30,16 @@ export interface DocumentRenderKit {
  * Constructs global render kit instance by default.
  */
 export const DocumentRenderKit: CxEntry<DocumentRenderKit> = {
-  perContext: (/*#__PURE__*/ cxDefaultScoped(
-      CxGlobals,
-      (/*#__PURE__*/ cxSingle({
-        byDefault: DocumentRenderKit$byDefault,
-      })),
-  )),
+  perContext: /*#__PURE__*/ cxDefaultScoped(
+    CxGlobals,
+    /*#__PURE__*/ cxSingle({
+      byDefault: DocumentRenderKit$byDefault,
+    }),
+  ),
   toString: () => '[DocumentRenderKit]',
 };
 
 function DocumentRenderKit$byDefault(target: CxEntry.Target<DocumentRenderKit>): DocumentRenderKit {
-
   const docs = new WeakMap<Document, 1>();
   const initDoc = (doc: Document): void => {
     if (!docs.get(doc)) {

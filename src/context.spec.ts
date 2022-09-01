@@ -7,7 +7,6 @@ import { drekContextOf } from './context-of';
 import { DrekContext$Holder, DrekContext__symbol } from './context.impl';
 
 describe('DrekContext', () => {
-
   let doc: Document;
 
   beforeEach(() => {
@@ -16,7 +15,6 @@ describe('DrekContext', () => {
 
   describe('nsAlias', () => {
     it('can be specified', () => {
-
       const customNsAlias = jest.fn(newNamespaceAliaser());
       const { nsAlias } = drekContextOf(doc).update({ nsAlias: customNsAlias });
 
@@ -25,7 +23,6 @@ describe('DrekContext', () => {
       expect(customNsAlias).toHaveBeenCalledWith(XHTML__NS);
     });
     it('can be updated', () => {
-
       const { nsAlias } = drekContextOf(doc);
       const customNsAlias = jest.fn(newNamespaceAliaser());
 
@@ -43,7 +40,6 @@ describe('DrekContext', () => {
     });
 
     it('specifies schedule window', () => {
-
       const scheduler = jest.fn(newManualRenderScheduler());
 
       setRenderScheduler(scheduler);
@@ -55,7 +51,6 @@ describe('DrekContext', () => {
       expect(scheduler).toHaveBeenCalledWith({ window, node: span });
     });
     it('can be specified', () => {
-
       const customScheduler = jest.fn(newManualRenderScheduler());
       const { scheduler } = drekContextOf(doc).update({ scheduler: customScheduler });
       const node = doc.createElement('span');
@@ -65,7 +60,6 @@ describe('DrekContext', () => {
       expect(customScheduler).toHaveBeenCalledWith({ window, node });
     });
     it('can be updated', () => {
-
       const { scheduler } = drekContextOf(doc);
       const customScheduler = jest.fn(newManualRenderScheduler());
 
@@ -80,7 +74,6 @@ describe('DrekContext', () => {
   });
 
   describe('onceConnected', () => {
-
     let context: DrekContext;
 
     beforeEach(() => {
@@ -94,7 +87,6 @@ describe('DrekContext', () => {
       expect(context.onceConnected).toBe(context.onceConnected);
     });
     it('does not cut off supply', () => {
-
       const supply = context.onceConnected(noop).supply;
 
       expect(supply.isOff).toBe(false);
@@ -103,7 +95,6 @@ describe('DrekContext', () => {
   });
 
   describe('whenConnected', () => {
-
     let context: DrekContext;
 
     beforeEach(() => {
@@ -116,7 +107,6 @@ describe('DrekContext', () => {
   });
 
   describe('whenSettled', () => {
-
     let context: DrekContext;
 
     beforeEach(() => {

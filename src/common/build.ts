@@ -16,18 +16,15 @@ import { DrekContext$setRegistrar } from '../context.registrar.impl';
  * @returns The value returned from DOM `builder` function.
  */
 export function drekBuild<TResult>(builder: (this: void) => TResult): TResult {
-
   const registered: DrekContext[] = [];
   const resetRegistrar = DrekContext$setRegistrar(context => registered.push(context));
 
   try {
     return builder();
   } finally {
-
     const registrar = resetRegistrar();
 
     for (const context of registered) {
-
       const lifted = context.lift();
 
       if (lifted === context) {

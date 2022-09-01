@@ -18,6 +18,7 @@ export function drekReplacer(host: Node, context: DrekContext = drekContextOf(ho
     placeContent(content: Node) {
       removeNodeContent(host);
       host.appendChild(content);
+
       return context;
     },
   };

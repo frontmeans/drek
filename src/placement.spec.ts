@@ -5,11 +5,8 @@ import { DrekContentStatus } from './content-status';
 import { DrekPlacement } from './placement';
 
 describe('DrekPlacement', () => {
-
   interface TestStatus extends DrekContentStatus {
-
     readonly custom: string;
-
   }
 
   let contentStatus: ValueTracker<TestStatus>;
@@ -24,7 +21,7 @@ describe('DrekPlacement', () => {
 
       fragment = undefined;
 
-    }
+}
 
     placement = new TestPlacement();
   });
@@ -37,10 +34,9 @@ describe('DrekPlacement', () => {
 
   describe('onceConnected', () => {
     it('reports status when connected', () => {
-
       let status: DrekContentStatus | undefined;
 
-      placement.onceConnected(s => status = s);
+      placement.onceConnected(s => (status = s));
       expect(status).toBeUndefined();
 
       contentStatus.it = { connected: false, custom: 'disconnected' };
@@ -56,7 +52,6 @@ describe('DrekPlacement', () => {
       expect(placement.onceConnected).toBe(placement.onceConnected);
     });
     it('does not cut off supply', () => {
-
       const supply = placement.onceConnected(noop).supply;
 
       contentStatus.it = { connected: true, custom: 'connected' };
@@ -67,10 +62,9 @@ describe('DrekPlacement', () => {
 
   describe('whenConnected', () => {
     it('reports status when connected', () => {
-
       let status: DrekContentStatus | undefined;
 
-      placement.whenConnected(s => status = s);
+      placement.whenConnected(s => (status = s));
       expect(status).toBeUndefined();
 
       contentStatus.it = { connected: false, custom: 'disconnected' };
@@ -83,7 +77,6 @@ describe('DrekPlacement', () => {
       expect(placement.whenConnected).toBe(placement.whenConnected);
     });
     it('cuts off supply after sending status', () => {
-
       const supply = placement.whenConnected(noop).supply;
 
       contentStatus.it = { connected: true, custom: 'connected' };

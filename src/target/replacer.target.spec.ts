@@ -5,7 +5,6 @@ import { drekReplacer } from './replacer.target';
 
 describe('drekReplacer', () => {
   it('appends node to parent target', () => {
-
     const host = document.createElement('div');
     const initial = host.appendChild(document.createElement('span'));
     const target = drekReplacer(host);
@@ -18,7 +17,6 @@ describe('drekReplacer', () => {
     expect(host.children).not.toContain(initial);
   });
   it('uses explicit context', () => {
-
     const context: DrekContext = {} as any;
     const host = document.createElement('div');
     const target = drekReplacer(host, context);

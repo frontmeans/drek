@@ -6,7 +6,6 @@ import { drekContextOf } from '../context-of';
 import { deriveDrekContext } from './derive-context';
 
 describe('deriveDrekContext', () => {
-
   let doc: Document;
   let element: Element;
 
@@ -22,7 +21,6 @@ describe('deriveDrekContext', () => {
   });
 
   it('derives namespace aliaser', () => {
-
     const nsAlias = jest.fn(newNamespaceAliaser());
 
     drekContextOf(doc).update({ nsAlias });
@@ -34,7 +32,6 @@ describe('deriveDrekContext', () => {
     expect(nsAlias).toHaveBeenCalledWith(ns);
   });
   it('updates namespace aliaser', () => {
-
     const nsAlias = jest.fn(newNamespaceAliaser());
     const derived = deriveDrekContext(base, { nsAlias });
     const ns = new NamespaceDef('http://test');
@@ -46,7 +43,6 @@ describe('deriveDrekContext', () => {
     expect(derived.readStatus).toBe(base.readStatus);
   });
   it('derives render scheduler', () => {
-
     const scheduler = jest.fn(immediateRenderScheduler);
 
     drekContextOf(doc).update({ scheduler });
@@ -57,7 +53,6 @@ describe('deriveDrekContext', () => {
     expect(scheduler).toHaveBeenCalledTimes(1);
   });
   it('updates render scheduler', () => {
-
     const scheduler = jest.fn(immediateRenderScheduler);
     const derived = deriveDrekContext(base, { scheduler });
 
@@ -70,11 +65,12 @@ describe('deriveDrekContext', () => {
   it('returns the base context without update', () => {
     expect(deriveDrekContext(base)).toBe(base);
     expect(deriveDrekContext(base, {})).toBe(base);
-    expect(deriveDrekContext(base, { nsAlias: base.nsAlias, scheduler: base.scheduler })).toBe(base);
+    expect(deriveDrekContext(base, { nsAlias: base.nsAlias, scheduler: base.scheduler })).toBe(
+      base,
+    );
   });
 
   describe('lift', () => {
-
     let context: DrekContext;
 
     beforeEach(() => {

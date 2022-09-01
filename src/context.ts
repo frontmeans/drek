@@ -43,8 +43,9 @@ import { DrekPlacement } from './placement';
  *
  * @typeParam TStatus - A type of the tuple containing a context content status as its first element.
  */
-export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekContentStatus]>
-    extends DrekPlacement<TStatus> {
+export abstract class DrekContext<
+  TStatus extends [DrekContentStatus] = [DrekContentStatus],
+> extends DrekPlacement<TStatus> {
 
   /**
    * A rendered {@link DrekFragment fragment} this context is provided by, if any.
@@ -100,12 +101,10 @@ export abstract class DrekContext<TStatus extends [DrekContentStatus] = [DrekCon
 }
 
 export namespace DrekContext {
-
   /**
    * Updatable document rendering context.
    */
   export interface Updatable extends DrekContext {
-
     /**
      * Updates this context.
      *
@@ -114,14 +113,12 @@ export namespace DrekContext {
      * @returns `this` instance.
      */
     update(update?: Update): this;
-
   }
 
   /**
    * An update to rendering context.
    */
   export interface Update {
-
     /**
      * Namespace aliaser to use.
      *
@@ -135,7 +132,5 @@ export namespace DrekContext {
      * The scheduler is not updated when omitted.
      */
     readonly scheduler?: RenderScheduler | undefined;
-
   }
-
 }

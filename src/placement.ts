@@ -9,7 +9,7 @@ import { DrekPlacement$Status, DrekPlacement$Status__symbol } from './placement.
  * @typeParam TStatus - A type of the tuple containing a rendered content status as its first element.
  */
 export abstract class DrekPlacement<TStatus extends [DrekContentStatus] = [DrekContentStatus]>
-    implements EventKeeper<TStatus> {
+  implements EventKeeper<TStatus> {
 
   /**
    * An `AfterEvent` keeper of content placement status.

@@ -7,7 +7,6 @@ import { DrekFragment } from './fragment';
 import { drekAppender } from './target';
 
 describe('drekContextOf', () => {
-
   let doc: Document;
   let docContext: DrekContext;
 
@@ -39,7 +38,6 @@ describe('drekContextOf', () => {
   });
 
   describe('of connected element', () => {
-
     let element: Element;
 
     beforeEach(() => {
@@ -52,7 +50,6 @@ describe('drekContextOf', () => {
   });
 
   describe('of disconnected element', () => {
-
     let root: Element;
     let element: Element;
     let context: DrekContext;
@@ -76,7 +73,6 @@ describe('drekContextOf', () => {
       expect(context.nsAlias).toBe(docContext.nsAlias);
     });
     it('is lifted automatically', async () => {
-
       const element1 = doc.createElement('test-element-1');
       const context1 = drekContextOf(element1);
       const element2 = doc.createElement('test-element-2');
@@ -102,7 +98,6 @@ describe('drekContextOf', () => {
         expect(context.fragment).toBeUndefined();
       });
       it('is updated when lifted', () => {
-
         const fragment = new DrekFragment(drekAppender(doc.body));
 
         fragment.content.appendChild(root);
@@ -113,7 +108,6 @@ describe('drekContextOf', () => {
     });
 
     describe('scheduler', () => {
-
       let mockScheduler: RenderScheduler;
 
       beforeEach(() => {
@@ -126,7 +120,6 @@ describe('drekContextOf', () => {
         expect(mockScheduler).toHaveBeenCalledTimes(1);
       });
       it('is updated when lifted', () => {
-
         const fragmentScheduler = jest.fn(immediateRenderScheduler);
         const fragment = new DrekFragment(drekAppender(doc.body), { scheduler: fragmentScheduler });
 
@@ -137,7 +130,6 @@ describe('drekContextOf', () => {
         expect(fragmentScheduler).toHaveBeenCalledTimes(1);
       });
       it('renders in new scheduler when lifted', () => {
-
         const schedule = context.scheduler();
 
         schedule(noop);
@@ -160,7 +152,6 @@ describe('drekContextOf', () => {
         expect(context.lift()).toBe(context);
       });
       it('lifts to enclosing context', () => {
-
         const fragment = new DrekFragment(drekAppender(doc.body));
 
         fragment.content.appendChild(root);
@@ -172,7 +163,6 @@ describe('drekContextOf', () => {
 
     describe('whenSettled', () => {
       it('reports settlement when lifted', () => {
-
         const fragment = new DrekFragment(drekAppender(doc.body));
 
         fragment.content.appendChild(root);
@@ -189,5 +179,4 @@ describe('drekContextOf', () => {
       });
     });
   });
-
 });

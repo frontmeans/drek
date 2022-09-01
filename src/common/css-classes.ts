@@ -9,7 +9,6 @@ import { drekContextOf } from '../context-of';
  * Can be obtained by {@link drekCssClassesOf} function.
  */
 export interface DrekCssClasses {
-
   /**
    * Adds CSS class to target element.
    *
@@ -45,10 +44,9 @@ export interface DrekCssClasses {
    * @returns Either new CSS classes accessor instance, or `this` one if context is the same.
    */
   renderIn(context: DrekContext): DrekCssClasses;
-
 }
 
-const DrekCssClasses__symbol = (/*#__PURE__*/ Symbol('DrekCssClasses'));
+const DrekCssClasses__symbol = /*#__PURE__*/ Symbol('DrekCssClasses');
 
 interface DrekCssClasses$Holder extends Element {
   [DrekCssClasses__symbol]?: DrekCssClasses$ | undefined;
@@ -64,8 +62,10 @@ interface DrekCssClasses$Holder extends Element {
 export function drekCssClassesOf(element: Element): DrekCssClasses;
 
 export function drekCssClassesOf(element: DrekCssClasses$Holder): DrekCssClasses {
-  return element[DrekCssClasses__symbol]
-      || (element[DrekCssClasses__symbol] = new DrekCssClasses$(element));
+  return (
+    element[DrekCssClasses__symbol]
+    || (element[DrekCssClasses__symbol] = new DrekCssClasses$(element))
+  );
 }
 
 class DrekCssClasses$ implements DrekCssClasses {
@@ -82,14 +82,10 @@ class DrekCssClasses$ implements DrekCssClasses {
   }
 
   private _add(
-      {
-        nsAlias,
-        scheduler,
-      }: DrekContext,
-      className: QualifiedName,
-      user?: SupplyPeer,
+    { nsAlias, scheduler }: DrekContext,
+    className: QualifiedName,
+    user?: SupplyPeer,
   ): Supply {
-
     const supply = user ? user.supply : new Supply();
 
     if (supply.isOff) {
@@ -107,7 +103,8 @@ class DrekCssClasses$ implements DrekCssClasses {
           use.s = 1;
         }
       } else {
-        if (use.s && !use.i) { // Do not remove the class if it present initially.
+        if (use.s && !use.i) {
+          // Do not remove the class if it present initially.
           this._element.classList.remove(name);
           use.s = 0;
         }
@@ -127,7 +124,6 @@ class DrekCssClasses$ implements DrekCssClasses {
   }
 
   private _use(name: string): DrekCssClasses$Use {
-
     let use = this._uses.get(name);
 
     if (use) {
@@ -157,29 +153,26 @@ class DrekCssClasses$ implements DrekCssClasses {
   }
 
   private _has({ nsAlias }: DrekContext, className: QualifiedName): boolean {
-
     const name = css__naming.name(className, nsAlias);
     const use = this._uses.get(name);
 
-    return use
-        ? !!use.n || !!use.i
-        : this._element.classList.contains(name);
+    return use ? !!use.n || !!use.i : this._element.classList.contains(name);
   }
 
   renderIn(context: DrekContext): DrekCssClasses {
     return context !== this._context
-        ? {
+      ? {
           add: className => this._add(context, className),
           has: className => this._has(context, className),
           renderIn: newContext => this.renderIn(newContext),
         }
-        : this;
+      : this;
   }
 
 }
 
 interface DrekCssClasses$Use {
   readonly i: 0 | 1; // initially set
-  n: number;         // number of uses
-  s: 0 | 1;          // actually set
+  n: number; // number of uses
+  s: 0 | 1; // actually set
 }

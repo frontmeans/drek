@@ -5,10 +5,9 @@ import { drekInserter } from './inserter.target';
 
 describe('drekInserter', () => {
   it('inserts content to host node before the given node', () => {
-
     const host = document.createElement('div');
-    const child1 = host.appendChild(document.createComment('start'))
-    const child2 = host.appendChild(document.createComment('end'))
+    const child1 = host.appendChild(document.createComment('start'));
+    const child2 = host.appendChild(document.createComment('end'));
     const target = drekInserter(host, child2);
     const node = document.createElement('test');
 
@@ -18,10 +17,9 @@ describe('drekInserter', () => {
     expect(Array.from(host.childNodes)).toEqual([child1, node, child2]);
   });
   it('appends content to host node when `before` is `null`', () => {
-
     const host = document.createElement('div');
-    const child1 = host.appendChild(document.createComment('start'))
-    const child2 = host.appendChild(document.createComment('end'))
+    const child1 = host.appendChild(document.createComment('start'));
+    const child2 = host.appendChild(document.createComment('end'));
     const target = drekInserter(host, null);
     const node = document.createElement('test');
 
@@ -30,7 +28,6 @@ describe('drekInserter', () => {
     expect(Array.from(host.childNodes)).toEqual([child1, child2, node]);
   });
   it('uses explicit context', () => {
-
     const context: DrekContext = {} as any;
     const host = document.createElement('div');
     const target = drekInserter(host, null, context);

@@ -16,7 +16,8 @@ export function drekAppender(host: Node, context: DrekContext = drekContextOf(ho
     host,
     placeContent(content: Node) {
       host.appendChild(content);
+
       return context;
-    }
+    },
   };
 }

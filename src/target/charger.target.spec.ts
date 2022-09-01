@@ -6,7 +6,6 @@ import { drekReplacer } from './replacer.target';
 import { DrekTarget } from './target';
 
 describe('drekCharger', () => {
-
   let host: Element;
   let target: DrekTarget;
   let content: Node;
@@ -20,7 +19,7 @@ describe('drekCharger', () => {
   it('encloses content into random comments', () => {
     target.placeContent(content);
 
-    const [start, placed, end] = Array.from(host.childNodes)
+    const [start, placed, end] = Array.from(host.childNodes);
 
     expect(target.host).toBe(host);
     expect(isCommentNode(start)).toBe(true);
@@ -43,41 +42,37 @@ describe('drekCharger', () => {
     target = drekCharger(drekAppender(host), 'test-content');
     target.placeContent(content);
 
-    const [start, placed, end] = Array.from(host.childNodes)
+    const [start, placed, end] = Array.from(host.childNodes);
 
     expect(start.textContent).toBe(' [[ test-content [[ ');
     expect(end.textContent).toBe(' ]] test-content ]] ');
     expect(placed).toBe(content);
   });
   it('uses custom charger', () => {
-    target = drekCharger(
-        drekReplacer(host),
-        {
-          charge(content, target) {
+    target = drekCharger(drekReplacer(host), {
+      charge(content, target) {
+        const fragment = document.createDocumentFragment();
 
-            const fragment = document.createDocumentFragment();
+        fragment.appendChild(document.createComment('content start'));
+        fragment.appendChild(content);
+        fragment.appendChild(document.createComment('content end'));
 
-            fragment.appendChild(document.createComment('content start'));
-            fragment.appendChild(content);
-            fragment.appendChild(document.createComment('content end'));
-
-            return target.placeContent(fragment);
-          },
-        },
-    );
+        return target.placeContent(fragment);
+      },
+    });
     target.placeContent(content);
 
     const children = Array.from(host.childNodes);
 
-    expect(children[0].textContent).toBe('content start')
+    expect(children[0].textContent).toBe('content start');
     expect(children[1]).toBe(content);
-    expect(children[2].textContent).toBe('content end')
+    expect(children[2].textContent).toBe('content end');
   });
   it('uses charger created by factory', () => {
     target = drekCharger(drekAppender(host), () => 'test-content');
     target.placeContent(content);
 
-    const [start, placed, end] = Array.from(host.childNodes)
+    const [start, placed, end] = Array.from(host.childNodes);
 
     expect(start.textContent).toBe(' [[ test-content [[ ');
     expect(end.textContent).toBe(' ]] test-content ]] ');

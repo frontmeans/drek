@@ -10,7 +10,6 @@ import { DrekPlacement } from '../placement';
  * @typeParam TStatus - A tuple type reflecting a content {@link DrekContentStatus placement status}.
  */
 export interface DrekTarget<TStatus extends [DrekContentStatus] = [DrekContentStatus]> {
-
   /**
    * Rendering context of this rendering target.
    */
@@ -34,6 +33,5 @@ export interface DrekTarget<TStatus extends [DrekContentStatus] = [DrekContentSt
    *
    * @returns Rendered content placement status.
    */
-  placeContent(content: Node): DrekPlacement<TStatus>
-
+  placeContent(content: Node): DrekPlacement<TStatus>;
 }

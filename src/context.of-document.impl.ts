@@ -13,8 +13,9 @@ import { DrekContext$Holder, DrekContext$State, DrekContext__symbol } from './co
 /**
  * @internal
  */
-export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): DrekContext.Updatable {
-
+export function DrekContext$ofDocument(
+  document: DrekContext$Holder<Document>,
+): DrekContext.Updatable {
   const existing = document[DrekContext__symbol] as DrekContext$OfDocument | undefined;
 
   if (existing) {
@@ -27,12 +28,10 @@ export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): 
   });
 
   const view = document.defaultView || window;
-  const scheduler = (
-      options?: RenderScheduleOptions,
-  ): RenderSchedule => state.scheduler({
-    window: view,
-    ...options,
-  });
+  const scheduler = (options?: RenderScheduleOptions): RenderSchedule => state.scheduler({
+      window: view,
+      ...options,
+    });
   const readStatus = afterThe<[DrekContentStatus]>({ connected: true });
 
   class DrekContext$OfDocument extends DrekContext implements DrekContext.Updatable {
@@ -65,18 +64,13 @@ export function DrekContext$ofDocument(document: DrekContext$Holder<Document>): 
       return this;
     }
 
-    update(
-        {
-          nsAlias = state._nsAlias,
-          scheduler = state._scheduler,
-        }: DrekContext.Update,
-    ): this {
+    update({ nsAlias = state._nsAlias, scheduler = state._scheduler }: DrekContext.Update): this {
       state.set({ nsAlias, scheduler });
 
       return this;
     }
 
-  }
+}
 
-  return document[DrekContext__symbol] = new DrekContext$OfDocument();
+  return (document[DrekContext__symbol] = new DrekContext$OfDocument());
 }

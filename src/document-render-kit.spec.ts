@@ -7,7 +7,6 @@ import { drekContextOf } from './context-of';
 import { DocumentRenderKit } from './document-render-kit';
 
 describe('DocumentRenderKit', () => {
-
   let doc: Document;
 
   beforeEach(() => {
@@ -31,7 +30,6 @@ describe('DocumentRenderKit', () => {
   });
 
   it('initializes document rendering context with `NamespaceAliaser`', () => {
-
     const drCtx = renderKit.contextOf(doc.createElement('div'));
     const ns = new NamespaceDef('uri:test:ns');
 
@@ -39,7 +37,6 @@ describe('DocumentRenderKit', () => {
     expect(nsAlias).toHaveBeenCalledWith(ns);
   });
   it('initializes document rendering context with global `RenderScheduler`', () => {
-
     const drCtx = renderKit.contextOf(doc.createElement('div'));
 
     drCtx.scheduler();

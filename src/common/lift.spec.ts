@@ -6,7 +6,6 @@ import { drekLift } from './lift';
 
 describe('drekLift', () => {
   it('lifts node rendering context', () => {
-
     const element = document.createElement('test-element');
     const context = drekContextOf(element);
     const fragment = new DrekFragment(drekAppender(document.body));
@@ -19,7 +18,6 @@ describe('drekLift', () => {
     expect(context.lift()).toBe(fragment.innerContext);
   });
   it('does nothing when the node has no rendering context attached', () => {
-
     const element = document.createElement('test-element');
     const fragment = new DrekFragment(drekAppender(document.body));
 

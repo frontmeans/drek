@@ -17,19 +17,20 @@ export function DrekContext$register(context: DrekContext): void {
 /**
  * @internal
  */
-export function DrekContext$setRegistrar(registrar: DrekContext$Registrar): () => DrekContext$Registrar {
-
+export function DrekContext$setRegistrar(
+  registrar: DrekContext$Registrar,
+): () => DrekContext$Registrar {
   const priorRegistrar = DrekContext$registrar;
 
   DrekContext$registrar = registrar;
 
   return priorRegistrar === DrekContext$autoRegister
-      ? () => {
+    ? () => {
         DrekContext$registrar = priorRegistrar;
 
         return DrekContext$dontRegister;
       }
-      : () => DrekContext$registrar = priorRegistrar;
+    : () => (DrekContext$registrar = priorRegistrar);
 }
 
 function DrekContext$dontRegister(_context: DrekContext): void {
@@ -43,18 +44,21 @@ function DrekContext$autoRegister(context: DrekContext): void {
 }
 
 function DrekContext$autoRegisterFirst(context: DrekContext): void {
-
   const registered: DrekContext[] = [context];
 
   DrekContext$autoRegistrar = DrekContext$createAutoRegistrar(registered);
-  Promise.resolve().then(() => {
-    DrekContext$autoRegistrar = DrekContext$autoRegisterFirst;
-    for (const context of registered) {
-      context.lift();
-    }
-  }).catch(console.error);
+  Promise.resolve()
+    .then(() => {
+      DrekContext$autoRegistrar = DrekContext$autoRegisterFirst;
+      for (const context of registered) {
+        context.lift();
+      }
+    })
+    .catch(console.error);
 }
 
-function DrekContext$createAutoRegistrar(registered: DrekContext[]): (context: DrekContext) => void {
+function DrekContext$createAutoRegistrar(
+  registered: DrekContext[],
+): (context: DrekContext) => void {
   return context => registered.push(context);
 }

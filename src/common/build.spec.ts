@@ -4,7 +4,6 @@ import { drekContextOf } from '../context-of';
 import { drekBuild } from './build';
 
 describe('drekBuild', () => {
-
   let doc: Document;
   let docContext: DrekContext;
 
@@ -14,9 +13,7 @@ describe('drekBuild', () => {
   });
 
   it('lifts created unrooted contexts', () => {
-
     const { element, context } = drekBuild(() => {
-
       const element = doc.createElement('test-element');
       const context = drekContextOf(element);
 
@@ -33,13 +30,10 @@ describe('drekBuild', () => {
     expect(drekContextOf(element)).toBe(docContext);
   });
   it('lifts unrooted contexts not lifted by nested build', () => {
-
     const { element, context } = drekBuild(() => {
-
       const element = doc.createElement('root-element');
 
       const context = drekBuild(() => {
-
         const nested = element.appendChild(doc.createElement('nested-element'));
 
         return drekContextOf(nested);
@@ -65,9 +59,7 @@ describe('drekBuild', () => {
     expect(drekContextOf(element)).toBe(docContext);
   });
   it('prevents auto-lifting of failed to unrooted contexts failed to lift', async () => {
-
     const { element, context } = drekBuild(() => {
-
       const element = doc.createElement('test-element');
       const context = drekContextOf(element);
 

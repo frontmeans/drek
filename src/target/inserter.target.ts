@@ -13,16 +13,17 @@ import { DrekTarget } from './target';
  * @returns Rendering target.
  */
 export function drekInserter(
-    host: Node,
-    before: Node | null,
-    context: DrekContext = drekContextOf(host),
+  host: Node,
+  before: Node | null,
+  context: DrekContext = drekContextOf(host),
 ): DrekTarget {
   return {
     context,
     host,
     placeContent(content: Node) {
       host.insertBefore(content, before);
+
       return context;
-    }
+    },
   };
 }

@@ -2,7 +2,6 @@
  * A rendered content status.
  */
 export interface DrekContentStatus {
-
   /**
    * Whether the content connected to the document.
    *
@@ -12,5 +11,4 @@ export interface DrekContentStatus {
   readonly connected: boolean;
 
   readonly withinFragment?: unknown | undefined;
-
 }

@@ -16,14 +16,11 @@ import { DrekFragment } from '../fragment';
  * @returns Updated rendering context, or the `base` one if nothing to update.
  */
 export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekContentStatus]>(
-    base: DrekContext<TStatus>,
-    update: DrekContext.Update = {},
+  base: DrekContext<TStatus>,
+  update: DrekContext.Update = {},
 ): DrekContext<TStatus> {
-
-  const {
-    nsAlias: initialNsAlias = base.nsAlias,
-    scheduler: initialScheduler = base.scheduler,
-  } = update;
+  const { nsAlias: initialNsAlias = base.nsAlias, scheduler: initialScheduler = base.scheduler }
+    = update;
 
   if (initialNsAlias === base.nsAlias && initialScheduler === base.scheduler) {
     return base;
@@ -34,7 +31,6 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
     scheduler: initialScheduler,
   });
   let lift = (derived: DrekContext): DrekContext => {
-
     const lifted = base.lift();
 
     if (lifted === base) {
@@ -77,7 +73,7 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
       return lift(this);
     }
 
-  }
+}
 
   return new DrekContext$Derived();
 }
