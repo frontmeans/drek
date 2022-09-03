@@ -19,8 +19,8 @@ export function deriveDrekContext<TStatus extends [DrekContentStatus] = [DrekCon
   base: DrekContext<TStatus>,
   update: DrekContext.Update = {},
 ): DrekContext<TStatus> {
-  const { nsAlias: initialNsAlias = base.nsAlias, scheduler: initialScheduler = base.scheduler }
-    = update;
+  const { nsAlias: initialNsAlias = base.nsAlias, scheduler: initialScheduler = base.scheduler } =
+    update;
 
   if (initialNsAlias === base.nsAlias && initialScheduler === base.scheduler) {
     return base;

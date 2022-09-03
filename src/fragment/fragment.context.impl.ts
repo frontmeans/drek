@@ -150,8 +150,8 @@ export class DrekFragment$Context<TStatus extends [DrekContentStatus]>
           this._getFragment = () => placement.fragment;
 
           // Reset the inner context.
-          this._content[DrekContext__symbol] = this._fragment[DrekFragment$Context__symbol]
-            = new DrekFragment$Context(
+          this._content[DrekContext__symbol] = this._fragment[DrekFragment$Context__symbol] =
+            new DrekFragment$Context(
               this._fragment,
               this._target,
               this._content,
