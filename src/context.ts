@@ -8,7 +8,7 @@ import { DrekPlacement } from './placement';
 /**
  * Document rendering context.
  *
- * Can be obtained by {@link drekContextOf} function, or {@link DrekFragment.innerContext provided} by rendered
+ * Can be obtained by {@link drekContextOf} function, or {@link DrekFragment#innerContext provided} by rendered
  * fragment.
  *
  * There are three kinds of rendering contexts:
@@ -20,17 +20,19 @@ import { DrekPlacement } from './placement';
  *
  * 2. Fragment content rendering context.
  *
- *    It is created for each rendered fragment and is available via {@link DrekFragment.innerContext} property.
- *    The {@link drekContextOf} function returns this context for fragment's {@link DrekContext.content content},
+ *    It is created for each rendered fragment and is available via {@link DrekFragment#innerContext} property.
+ *    The {@link drekContextOf} function returns this context for fragment's {@link DrekFragment#content content},
  *    as well as for each DOM node added to it.
  *
  * 3. Unrooted rendering context.
  *
- *    When a DOM node is neither connected to a document, nor part of a rendered fragment's {@link DrekFragment.content
- *    content}, the {@link drekContextOf} function creates an unrooted context for the [root node] of that node.
+ *    When a DOM node is neither connected to a document, nor part of a rendered fragment's
+ *    {@link DrekFragment#content content}, the {@link drekContextOf} function creates an unrooted context for the
+ *    [root node] of that node.
  *
- *    Unrooted context tracks a {@link whenConnected document connection} and {@link whenSettled settlement}
- *    semi-automatically. A {@link lift} method can be used to forcibly update them.
+ *    Unrooted context tracks a {@link DrekPlacement#whenConnected document connection} and
+ *    {@link DrekContext#whenSettled settlement} semi-automatically. A {@link DrekContext#lift} method can be used
+ *    to forcibly update them.
  *
  *    Semi-automatic tracking means that each time an unrooted context {@link drekContextOf created}, it is registered
  *    for automatic lifting. The lifting happens either asynchronously, or synchronously right before the

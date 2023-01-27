@@ -1,0 +1,37 @@
+# Node.js modules
+node_modules/
+
+# IntelliJ IDEA files
+.idea
+*.iml
+
+# Logs
+*.log
+
+# Package archive
+*.tgz
+
+# Source files
+/src/
+
+# Intermediate files
+/target/
+
+# Build configurations
+/.*
+/*.cjs
+/*.js
+/*.json
+/*.mjs
+
+# Package lock
+yarn.lock
+package-lock.json
+pnpm-lock.yaml
+
+# Include distribution dir
+!/dist/
+
+# Include type definitions
+!*.d.ts
+!*.d.ts.map

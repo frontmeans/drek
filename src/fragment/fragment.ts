@@ -9,7 +9,7 @@ import { DrekFragmentRenderScheduler } from './fragment-scheduler';
 import { DrekFragment$Context, DrekFragment$Context__symbol } from './fragment.context.impl';
 
 /**
- * A fragment of DOM tree, which content is to be {@link DrekTarget.placeContent placed} to the document once rendered.
+ * A fragment of DOM tree, which content is to be {@link DrekTarget#placeContent placed} to the document once rendered.
  *
  * Provides separate {@link DrekContext rendering context} for its nodes.
  *
@@ -52,7 +52,7 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
   /**
    * An `OnEvent` sender of fragment rendering event.
    *
-   * Sends a fragment content {@link DrekTarget.placeContent placement} to {@link target} when the fragment is actually
+   * Sends a fragment content {@link DrekTarget#placeContent placement} to {@link target} when the fragment is actually
    * {@link render rendered}.
    *
    * Cuts off the event supply after sending the first event.
@@ -74,7 +74,7 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
   /**
    * Settles previously rendered content.
    *
-   * A {@link whenSettled} event sender notifies its receivers once settled.
+   * A {@link DrekContext#whenSettled} event sender notifies its receivers once settled.
    *
    * @returns `this` instance.
    */
@@ -85,12 +85,12 @@ export class DrekFragment<TStatus extends [DrekContentStatus] = [DrekContentStat
   }
 
   /**
-   * Renders this fragment by {@link DrekTarget.placeContent placing} its {@link DrekFragmentRenderExecution.content
+   * Renders this fragment by {@link DrekTarget#placeContent placing} its {@link DrekFragmentRenderExecution#content
    * content} to {@link target rendering target}.
    *
    * Once rendered the fragment {@link content} becomes empty and can be reused. Its rendering context is updated.
    *
-   * @returns Content {@link DrekTarget.placeContent placement} to {@link target}.
+   * @returns Content {@link DrekTarget#placeContent placement} to {@link target}.
    */
   render(): DrekPlacement<DrekFragment.Status<TStatus>> {
     return this[DrekFragment$Context__symbol]._render();
@@ -109,9 +109,10 @@ export namespace DrekFragment {
     readonly scheduler: DrekFragmentRenderScheduler<TStatus>;
 
     /**
-     * Tries to lift this rendering context to {@link target} one.
+     * Tries to lift this rendering context to {@link DrekFragment#target target} one.
      *
-     * @returns The {@link target} context when the fragment is rendered, or `this` instance otherwise.
+     * @returns The {@link DrekFragment#target target's} context when the fragment is rendered, or `this` instance
+     * otherwise.
      */
     lift(): DrekContext;
   }
@@ -135,7 +136,7 @@ export namespace DrekFragment {
      * Can be one of:
      *
      * - `'added'` - when the content is added to the fragment, but not yet rendered.
-     * - `'rendered'` - while the content is being rendered, but not yet placed to {@link DrekFragment.target target}.
+     * - `'rendered'` - while the content is being rendered, but not yet placed to {@link DrekFragment#target target}.
      */
     readonly withinFragment: 'added' | 'rendered';
   }
@@ -147,7 +148,7 @@ export namespace DrekFragment {
     /**
      * Namespace aliaser to use by content nodes.
      *
-     * The one from the {@link DrekFragment.target.context target context} is used when omitted.
+     * The one from the {@link DrekTarget#context target context} is used when omitted.
      */
     readonly nsAlias?: NamespaceAliaser | undefined;
 
