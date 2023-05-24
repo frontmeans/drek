@@ -25,6 +25,7 @@
     "types": "./dist/drek.d.ts",
     "default": "./dist/drek.js"
   },
+  "sideEffects": false,
   "peerDependencies": {
     "@proc7ts/fun-events": "^10.5.1"
   },
