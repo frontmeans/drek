@@ -32,8 +32,8 @@ The rendering context serves several purposes:
 
 - Provides a [render scheduler] suitable for performant DOM manipulations.
 - Provides a [namespace aliaser].
-- Provides a [settlement] phase of rendering. A DOM node (e.g. custom element) may use to perform custom actions before
-  it is added to the document.
+- Provides a [settlement] phase of rendering. A DOM node (e.g. custom element) may utilize this phase for custom actions
+  before adding to document.
 - Notifies when node added (connected) to document.
 
 The rendering context of particular DOM node may be obtained using [drekContextOf] function.
@@ -65,12 +65,12 @@ There are three kinds of rendering contexts:
 
 [render scheduler]: https://www.npmjs.com/package/@frontmeans/render-scheduler
 [namespace aliaser]: https://www.npmjs.com/package/@frontmeans/namespace-aliaser
-[drekbuild]: https://frontmeans.github.io/drek/modules.html#drekBuild
-[dreklift]: https://frontmeans.github.io/drek/modules.html#drekLift
-[drekcontextof]: https://frontmeans.github.io/drek/modules.html#drekContextOf
-[drekfragment]: https://frontmeans.github.io/drek/classes/drekFragment.html
-[drekfragment.innercontext]: https://frontmeans.github.io/drek/classes/drekFragment.html#innerContext
-[drekcontext.lift]: https://frontmeans.github.io/drek/classes/DrekContext.html#lift
+[drekBuild]: https://frontmeans.github.io/drek/modules.html#drekBuild
+[drekLift]: https://frontmeans.github.io/drek/modules.html#drekLift
+[drekContextOf]: https://frontmeans.github.io/drek/modules.html#drekContextOf
+[DrekDragment]: https://frontmeans.github.io/drek/classes/drekFragment.html
+[DrekFragment.innerContext]: https://frontmeans.github.io/drek/classes/drekFragment.html#innerContext
+[DrekContext.lift]: https://frontmeans.github.io/drek/classes/DrekContext.html#lift
 [root node]: https://developer.mozilla.org/en-US/docs/Web/API/Node/getRootNode
 
 ## Rendered Fragment
@@ -89,7 +89,7 @@ import { drekAppender, drekContextOf, DrekFragment } from '@frontmeans/drek';
 
 // A fragment appended to document body once rendered.
 // Another rendering target can be specified. E.g. it may be another fragment.
-const fragment = new DrekTarget(drekAppender(document.body));
+const fragment = new DrekFragment(drekAppender(document.body));
 
 // Render content.
 render(fragment.content);
@@ -122,7 +122,7 @@ function render(content: Node): void {
 }
 ```
 
-[documentfragment]: https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
+[DocumentFragment]: https://developer.mozilla.org/en-US/docs/Web/API/DocumentFragment
 
 ## Settlement Phase
 
@@ -152,7 +152,7 @@ Here is a usage example.
 ```typescript
 import { drekAppender, drekContextOf, DrekFragment } from '@frontmeans/drek';
 
-const fragment = new DrekTarget(drekAppender(document.body));
+const fragment = new DrekFragment(drekAppender(document.body));
 
 // Render content.
 render(fragment.content);
@@ -182,10 +182,10 @@ function render(content: Node): void {
 }
 ```
 
-[document.createelement]: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
-[connectedcallback]: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#using_the_lifecycle_callbacks
-[drekcontext.whensettled]: https://frontmeans.github.io/drek/classes/DrekContext.html#whenSettled
-[drekfragment.settle]: https://frontmeans.github.io/drek/classes/DrekFragment.html#settle
+[Document.createElement]: https://developer.mozilla.org/en-US/docs/Web/API/Document/createElement
+[connectedCallback]: https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#using_the_lifecycle_callbacks
+[DrekContext.whenSettled]: https://frontmeans.github.io/drek/classes/DrekContext.html#whenSettled
+[DrekFragment.settle]: https://frontmeans.github.io/drek/classes/DrekFragment.html#settle
 
 ## Rendering Target
 
@@ -204,11 +204,11 @@ There are several convenient target implementations available:
 
 - [drekReplacer] - Creates a rendering target that replaces content of the given node.
 
-[drektarget]: https://frontmeans.github.io/drek/interfaces/DrekTarget.html
-[drekappender]: https://frontmeans.github.io/drek/modules.html#drekAppender
-[drekcharger]: https://frontmeans.github.io/drek/modules.html#drekCharger
-[drekinserter]: https://frontmeans.github.io/drek/modules.html#drekInserter
-[drekreplacer]: https://frontmeans.github.io/drek/modules.html#drekReplacer
+[DrekTarget]: https://frontmeans.github.io/drek/interfaces/DrekTarget.html
+[drekAppender]: https://frontmeans.github.io/drek/modules.html#drekAppender
+[drekCharger]: https://frontmeans.github.io/drek/modules.html#drekCharger
+[drekInserter]: https://frontmeans.github.io/drek/modules.html#drekInserter
+[drekReplacer]: https://frontmeans.github.io/drek/modules.html#drekReplacer
 
 ## Miscellaneous
 
@@ -216,4 +216,4 @@ A [DrekCssClasses] is an accessor to CSS classes of some element. With it, eleme
 concurrently in a safe manner. E.g. multiple parties may add and remove CSS classes to the same element, even if the
 class names are the same.
 
-[drekcssclasses]: https://frontmeans.github.io/drek/interfaces/DrekCssClasses.html
+[DrekCssClasses]: https://frontmeans.github.io/drek/interfaces/DrekCssClasses.html
